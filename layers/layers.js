@@ -24,7 +24,7 @@ var jsonSource_moradias_geocodificado_1 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_moradias_geocodificado_1.addFeatures(features_moradias_geocodificado_1);
-var lyr_moradias_geocodificado_1 = new ol.layer.Vector({
+ lyr_moradias_geocodificado_1 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_moradias_geocodificado_1, 
                 style: style_moradias_geocodificado_1,
@@ -39,7 +39,7 @@ var jsonSource_moradias_geocodificado_2 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_moradias_geocodificado_2.addFeatures(features_moradias_geocodificado_2);
-var lyr_moradias_geocodificado_2 = new ol.layer.Vector({
+lyr_moradias_geocodificado_2 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_moradias_geocodificado_2, 
                 style: style_moradias_geocodificado_2,
@@ -54,7 +54,7 @@ var jsonSource_moradias_geocodificado_3 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_moradias_geocodificado_3.addFeatures(features_moradias_geocodificado_3);
-var lyr_moradias_geocodificado_3 = new ol.layer.Vector({
+lyr_moradias_geocodificado_3 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_moradias_geocodificado_3, 
                 style: style_moradias_geocodificado_3,
@@ -69,7 +69,7 @@ var jsonSource_BRASIL_4 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_BRASIL_4.addFeatures(features_BRASIL_4);
-var lyr_BRASIL_4 = new ol.layer.Vector({
+lyr_BRASIL_4 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_BRASIL_4, 
                 style: style_BRASIL_4,
@@ -84,7 +84,7 @@ var jsonSource_ESTADO_5 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_ESTADO_5.addFeatures(features_ESTADO_5);
-var lyr_ESTADO_5 = new ol.layer.Vector({
+lyr_ESTADO_5 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_ESTADO_5, 
                 style: style_ESTADO_5,
@@ -99,7 +99,7 @@ var jsonSource_MUNICIPIOS_6 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_MUNICIPIOS_6.addFeatures(features_MUNICIPIOS_6);
-var lyr_MUNICIPIOS_6 = new ol.layer.Vector({
+lyr_MUNICIPIOS_6 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_MUNICIPIOS_6, 
                 style: style_MUNICIPIOS_6,
@@ -114,7 +114,7 @@ var jsonSource_BAIRROS_7 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_BAIRROS_7.addFeatures(features_BAIRROS_7);
-var lyr_BAIRROS_7 = new ol.layer.Vector({
+lyr_BAIRROS_7 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_BAIRROS_7, 
                 style: style_BAIRROS_7,
@@ -129,7 +129,7 @@ var jsonSource_MUNICIPVIZINHOS_8 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_MUNICIPVIZINHOS_8.addFeatures(features_MUNICIPVIZINHOS_8);
-var lyr_MUNICIPVIZINHOS_8 = new ol.layer.Vector({
+lyr_MUNICIPVIZINHOS_8 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_MUNICIPVIZINHOS_8, 
                 style: style_MUNICIPVIZINHOS_8,
@@ -144,7 +144,7 @@ var jsonSource_MOVIMENTODEMASSA_9 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_MOVIMENTODEMASSA_9.addFeatures(features_MOVIMENTODEMASSA_9);
-var lyr_MOVIMENTODEMASSA_9 = new ol.layer.Vector({
+lyr_MOVIMENTODEMASSA_9 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_MOVIMENTODEMASSA_9, 
                 style: style_MOVIMENTODEMASSA_9,
@@ -159,7 +159,7 @@ var jsonSource_BACIAS_10 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_BACIAS_10.addFeatures(features_BACIAS_10);
-var lyr_BACIAS_10 = new ol.layer.Vector({
+lyr_BACIAS_10 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_BACIAS_10, 
                 style: style_BACIAS_10,
@@ -174,7 +174,7 @@ var jsonSource_ENXURRADAS_11 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_ENXURRADAS_11.addFeatures(features_ENXURRADAS_11);
-var lyr_ENXURRADAS_11 = new ol.layer.Vector({
+lyr_ENXURRADAS_11 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_ENXURRADAS_11, 
                 style: style_ENXURRADAS_11,
@@ -189,7 +189,7 @@ var jsonSource_INUNDACAO_12 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_INUNDACAO_12.addFeatures(features_INUNDACAO_12);
-var lyr_INUNDACAO_12 = new ol.layer.Vector({
+lyr_INUNDACAO_12 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_INUNDACAO_12, 
                 style: style_INUNDACAO_12,
@@ -204,7 +204,7 @@ var jsonSource_CAPITAIS_13 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_CAPITAIS_13.addFeatures(features_CAPITAIS_13);
-var lyr_CAPITAIS_13 = new ol.layer.Vector({
+lyr_CAPITAIS_13 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_CAPITAIS_13, 
                 style: style_CAPITAIS_13,
@@ -219,7 +219,7 @@ var jsonSource_QGISPROJECT_14 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_QGISPROJECT_14.addFeatures(features_QGISPROJECT_14);
-var lyr_QGISPROJECT_14 = new ol.layer.Vector({
+lyr_QGISPROJECT_14 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_QGISPROJECT_14, 
                 style: style_QGISPROJECT_14,
@@ -234,7 +234,7 @@ var jsonSource_CAMADACOLAB_15 = new ol.source.Vector({
     attributions: ' ',
 });
 jsonSource_CAMADACOLAB_15.addFeatures(features_CAMADACOLAB_15);
-var lyr_CAMADACOLAB_15 = new ol.layer.Vector({
+lyr_CAMADACOLAB_15 = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_CAMADACOLAB_15, 
                 style: style_CAMADACOLAB_15,
