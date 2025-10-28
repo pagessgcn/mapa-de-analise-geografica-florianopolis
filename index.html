@@ -12,10 +12,18 @@
         <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
         <link rel="stylesheet" href="./resources/qgis2web.css">
         <style>
-        /* ESTILOS ORIGINAIS */
+        /* ESTILOS DE CORREÇÃO (Flexbox para Layout Principal) */
         html, body {
             background-color: #ffffff;
+            margin: 0; 
+            padding: 0;
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; /* Coloca header e map em coluna */
+            overflow: hidden; 
         }
+        
+        /* ESTILOS ORIGINAIS DO QGIS2WEB */
         .ol-control > * {
             background-color: #f8f8f8!important;
             color: #154a93!important;
@@ -35,30 +43,42 @@
             padding: 2px !important;
         } 
         
-        /* NOVOS ESTILOS DO CABEÇALHO */
+        /* ESTILOS DO CABEÇALHO */
         #cabecalho-simples {
-            background-color: #2b3e50; /* Cor de fundo */
-            padding: 15px;             /* Espaçamento interno */
-            text-align: center;        /* Centraliza o texto */
-            font-family: 'Arial', sans-serif; /* Fonte padrão */
+            background-color: #2b3e50; 
+            padding: 15px;             
+            text-align: center;        
+            font-family: 'Arial', sans-serif; 
             width: 100%;               
             box-sizing: border-box;
             z-index: 2000;
-            position: relative;
         }
 
         #cabecalho-simples h1 {
-            font-size: 24px;           /* Tamanho do título */
-            color: white;              /* Cor do texto: Branco */
-            font-weight: bold;         /* Texto em negrito */
-            margin: 0;                 /* Remove as margens padrão do h1 */
+            font-size: 24px;           
+            color: white;              
+            font-weight: bold;         
+            margin: 0;                 
+        }
+        
+        /* CONTÊINER WRAPPER (Para centralizar o mapa de 50%) */
+        #map-wrapper {
+            display: flex;
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center;     /* Centraliza verticalmente */
+            flex-grow: 1;            /* Ocupa todo o espaço restante abaixo do cabeçalho */
+            padding: 10px;           /* Espaço ao redor do mapa */
+            background-color: #f0f0f0; /* Cor de fundo para ver a margem */
         }
 
-        /* AJUSTE DO MAPA: Substitui o width: 1263px e height: 814px */
+        /* AJUSTE DO MAPA: Mapa em 50% de Largura e Altura, SEM BORDA */
         #map {
-            width: 100%; 
-            height: calc(100vh - 54px); /* Calcula a altura da tela menos o cabeçalho */
-            margin-top: 0;
+            width: 50%; /* Ocupa 50% da largura do contêiner */
+            height: 50%; /* Ocupa 50% da altura do contêiner */
+            margin: 0;
+            /* BORDA REMOVIDA */
+            flex-grow: 0; /* Não permite que o mapa cresça além de 50% */
+            box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Sombra mantida para um visual moderno */
         }
         
         </style>
@@ -66,18 +86,24 @@
     </head>
     <body>
         
-        <!-- CABEÇALHO INSERIDO AQUI -->
+        <!-- CABEÇALHO -->
         <header id="cabecalho-simples">
             <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
         </header>
         <!-- FIM DO CABEÇALHO -->
 
-        <div id="map">
-            <div id="popup" class="ol-popup">
-                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                <div id="popup-content"></div>
+        <!-- CONTÊINER WRAPPER -->
+        <div id="map-wrapper">
+            <!-- MAPA DENTRO DO WRAPPER -->
+            <div id="map">
+                <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content"></div>
+                </div>
             </div>
         </div>
+        <!-- FIM CONTÊINER WRAPPER -->
+
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="resources/proj4.js"></script>
         <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
@@ -90,8 +116,6 @@
         <script src="./layers/layers.js" type="text/javascript"></script> 
         <script src="./resources/Autolinker.min.js"></script>
         <script src="./resources/qgis2web.js"></script>
-        
-        <!-- O bloco de script no final da sua cópia foi removido por estar incompleto -->
         
     </body>
 </html>
