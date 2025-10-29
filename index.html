@@ -12,6 +12,11 @@
         <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
         <link rel="stylesheet" href="./resources/qgis2web.css">
         <style>
+        /* Define a cor azul escura original com 90% de opacidade para uso global */
+        :root {
+            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
+        }
+
         /* ESTILOS DE CORREÇÃO (Flexbox para Layout Principal) */
         html, body {
             background-color: #ffffff;
@@ -19,8 +24,10 @@
             padding: 0;
             height: 100%; 
             display: flex; 
-            flex-direction: column; /* Coloca header e main-content em coluna */
+            flex-direction: column; 
             overflow: hidden; 
+            /* NOVA FONTE PARA O TEXTO GERAL */
+            font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
         }
         
         /* ESTILOS ORIGINAIS DO QGIS2WEB */
@@ -45,10 +52,9 @@
         
         /* ESTILOS DO CABEÇALHO */
         #cabecalho-simples {
-            background-color: #2b3e50; 
+            background-color: var(--azul-escuro-transparente); /* Aplicando azul transparente */
             padding: 15px; 
             text-align: center; 
-            font-family: 'Arial', sans-serif; 
             width: 100%; 
             box-sizing: border-box;
             z-index: 2000;
@@ -63,8 +69,8 @@
         
         /* NOVO CONTÊINER PRINCIPAL: Gerencia o layout horizontal de Mapa + Lateral */
         #main-content {
-            display: flex; /* Habilita layout horizontal */
-            flex-grow: 1; /* Ocupa todo o espaço restante abaixo do cabeçalho */
+            display: flex; 
+            flex-grow: 1; 
             padding: 0; 
             background-color: #f0f0f0; 
         }
@@ -98,22 +104,22 @@
             width: 100%;
         }
 
-        /* Estilo base para todas as caixas (AGORA TRANSPARENTE E MAIOR) */
+        /* Estilo base para todas as caixas (AGORA TRANSPARENTE, MAIOR E ARREDONDADO) */
         .stat-card {
             background-color: transparent; /* FUNDO TRANSPARENTE */
-            color: #0b1f3c; /* Cor do texto alterada para escuro */
-            padding: 15px; /* MAIOR */
+            color: var(--azul-escuro-transparente); /* Cor do texto mais transparente */
+            padding: 15px; 
             margin-right: 5px; 
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
             text-align: center;
-            line-height: 1.3; /* MAIOR */
-            font-size: 16px; /* MAIOR */
+            line-height: 1.4; /* MAIOR ESPAÇAMENTO */
+            font-size: 16px; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 2px solid #0b1f3c; /* Borda escura para definir a caixa */
+            border: 2px solid var(--azul-escuro-transparente); /* Borda mais transparente */
+            border-radius: 8px; /* ARREDONDAMENTO DAS BORDAS */
         }
         .stat-card:last-child {
             margin-right: 0;
@@ -132,23 +138,29 @@
             width: 100%;
         }
 
-        /* Estilo para o título centralizado (FUNDO ESCURO MANTIDO) */
+        /* Estilo para o título centralizado (Fundo Escuro Arredondado) */
         .title-card {
-            font-weight: bold;
-            font-size: 18px; /* MAIOR */
-            padding: 20px 15px; /* MAIOR */
-            background-color: #0b1f3c; 
+            font-weight: 600; /* LEVEMENTE MAIS FINO */
+            font-size: 18px; 
+            padding: 20px 15px; 
+            background-color: var(--azul-escuro-transparente); 
             color: white; 
-            border: none; /* Remove a borda dupla */
+            border: none; 
+            border-radius: 8px; /* ARREDONDAMENTO DAS BORDAS */
         }
 
-        /* Estilo para as caixas de Região (FUNDO ESCURO MANTIDO) */
+        /* Estilo para a linha de Regiões (Bloco Único Arredondado) */
+        .region-row {
+            border-radius: 8px; /* ARREDONDAMENTO DO BLOCO INTEIRO */
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
         .region-card {
-            background-color: #0b1f3c; 
+            background-color: var(--azul-escuro-transparente); /* Fundo mais transparente */
             color: white; 
-            font-size: 18px; /* MAIOR */
+            font-size: 18px; 
             padding: 30px 15px; /* MUITO MAIOR */
-            border: none; /* Remove a borda dupla */
+            border: none; 
         }
         /* Borda divisória branca */
         .region-card:not(.last-region) {
@@ -159,15 +171,16 @@
             margin-right: 0;
         }
 
-        /* Estilo para a grande área inferior (FUNDO ESCURO MANTIDO) */
+        /* Estilo para a grande área inferior (Fundo Escuro Arredondado) */
         .large-area {
-            min-height: 450px; /* MAIOR */
-            font-size: 20px; /* MAIOR */
+            min-height: 450px; 
+            font-size: 20px; 
             font-style: italic;
             text-transform: uppercase;
-            background-color: #0b1f3c; 
+            background-color: var(--azul-escuro-transparente); 
             color: white;
             border: none;
+            border-radius: 8px; /* ARREDONDAMENTO DAS BORDAS */
         }
         /* --- FIM: ESTILOS PARA AS CAIXAS (CARDS) --- */
 
