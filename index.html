@@ -65,41 +65,106 @@
         #main-content {
             display: flex; /* Habilita layout horizontal */
             flex-grow: 1; /* Ocupa todo o espaço restante abaixo do cabeçalho */
-            padding: 0; /* Remove padding */
-            background-color: #f0f0f0; /* Cor de fundo para ver a separação */
-            /* align-items: stretch; é o padrão, garante que #map e #sidebar tenham 100% de altura */
+            padding: 0; 
+            background-color: #f0f0f0; 
         }
 
         /* AJUSTE DO MAPA: Fica à esquerda, ocupa 60% da largura */
         #map {
-            width: 60%; /* Mapa ocupa 60% da largura do #main-content */
-            height: 100%; /* Ocupa 100% da altura do #main-content */
+            width: 60%; 
+            height: 100%; 
             margin: 0;
-            flex-shrink: 0; /* Não encolhe se houver espaço */
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2); /* Sombra lateral sutil */
-            background-color: white; /* Garante que o fundo do mapa seja branco */
+            flex-shrink: 0; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
+            background-color: white; 
         }
 
         /* ESTILO PARA A ÁREA LATERAL (Sidebar): Fica à direita, ocupa 40% da largura */
         #sidebar {
-            width: 40%; /* Área lateral ocupa os 40% restantes */
+            width: 40%; 
             height: 100%;
-            padding: 15px;
+            padding: 15px 15px 15px 10px; /* Ajuste para espaçamento das caixas */
             box-sizing: border-box;
-            overflow-y: auto; /* Permite scroll se o conteúdo for grande */
-            background-color: #ffffff; /* Fundo branco para o conteúdo lateral */
-        }
-
-        /* Estilo para conteúdo de exemplo da Sidebar */
-        #sidebar h2 {
-            color: #154a93;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 5px;
-        }
-        #sidebar p {
-            color: #333;
+            overflow-y: auto; 
+            background-color: #ffffff; 
         }
         
+        /* --- INÍCIO: ESTILOS PARA AS CAIXAS (CARDS) --- */
+
+        /* Contêiner para organizar caixas na horizontal */
+        .card-row {
+            display: flex;
+            margin-bottom: 5px; /* Espaçamento entre as linhas de caixas */
+            width: 100%;
+        }
+
+        /* Estilo base para todas as caixas */
+        .stat-card {
+            background-color: #0b1f3c; /* Azul Marinho Escuro */
+            color: white;
+            padding: 10px;
+            margin-right: 5px; /* Espaçamento entre as caixas na mesma linha */
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 1.2;
+            font-size: 14px;
+            /* Usar display flex e align-items/justify-content pode ajudar a centralizar o texto verticalmente, se necessário */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Remover margem do último item em uma linha */
+        .stat-card:last-child {
+            margin-right: 0;
+        }
+
+        /* Tamanhos das caixas */
+        .stat-card.half {
+            width: 50%;
+        }
+
+        .stat-card.quarter {
+            width: 25%;
+            padding: 15px 10px; 
+        }
+
+        .stat-card.full {
+            width: 100%;
+        }
+
+        /* Estilo para o título centralizado */
+        .title-card {
+            font-weight: bold;
+            font-size: 16px;
+            padding: 15px 10px;
+        }
+
+        /* Estilo para as caixas de Região (com a borda divisória branca) */
+        .region-row {
+            margin-bottom: 10px;
+        }
+        .region-card {
+            border-right: 1px solid white; 
+            padding: 25px 10px; /* Mais padding para altura */
+            font-size: 16px;
+        }
+        /* Remove a borda da última região para fechar o contêiner */
+        .region-card.last-region {
+            border-right: none;
+            margin-right: 0;
+        }
+
+        /* Estilo para a grande área inferior */
+        .large-area {
+            min-height: 350px; 
+            font-size: 18px;
+            font-style: italic;
+            text-transform: uppercase;
+        }
+        /* --- FIM: ESTILOS PARA AS CAIXAS (CARDS) --- */
+
         </style>
         <title></title>
     </head>
@@ -118,17 +183,45 @@
             </div>
             
             <div id="sidebar">
-                <h2>📊 Legendas e Controles</h2>
-                <p>Este espaço agora está à direita e ocupa 40% da tela.</p>
-                <p>Aqui você pode adicionar:</p>
-                <ul>
-                    <li>Legenda do Mapa (LayerSwitcher)</li>
-                    <li>Filtros e Ferramentas de Busca</li>
-                    <li>Gráficos ou Dashboards de Monitoramento</li>
-                </ul>
-                <p>Ajuste as porcentagens (60% para o mapa e 40% para a lateral) no CSS se precisar de um equilíbrio diferente!</p>
+                
+                <div class="card-row">
+                    <div class="stat-card half">
+                        Colaboradores <br> **AdviceHealth**
+                    </div>
+                    <div class="stat-card half">
+                        Colaboradores <br> **Mapeados**
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="stat-card full title-card">
+                        Colaboradores por Região da Grande Florianópolis
+                    </div>
+                </div>
+
+                <div class="card-row region-row">
+                    <div class="stat-card quarter region-card">
+                        **Norte**
+                    </div>
+                    <div class="stat-card quarter region-card">
+                        **Sul**
+                    </div>
+                    <div class="stat-card quarter region-card">
+                        **Centro**
+                    </div>
+                    <div class="stat-card quarter region-card last-region">
+                        **Leste**
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="stat-card full large-area">
+                        <p>Grande Área de Visualização de Dados</p>
+                    </div>
+                </div>
+
             </div>
-        </div>
+            </div>
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="resources/proj4.js"></script>
         <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
