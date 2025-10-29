@@ -19,7 +19,7 @@
             padding: 0;
             height: 100%; 
             display: flex; 
-            flex-direction: column; /* Coloca header e map em coluna */
+            flex-direction: column; /* Coloca header e main-content em coluna */
             overflow: hidden; 
         }
         
@@ -46,39 +46,58 @@
         /* ESTILOS DO CABEÇALHO */
         #cabecalho-simples {
             background-color: #2b3e50; 
-            padding: 15px;             
-            text-align: center;        
+            padding: 15px; 
+            text-align: center; 
             font-family: 'Arial', sans-serif; 
-            width: 100%;               
+            width: 100%; 
             box-sizing: border-box;
             z-index: 2000;
         }
 
         #cabecalho-simples h1 {
-            font-size: 24px;           
-            color: white;              
-            font-weight: bold;         
-            margin: 0;                 
+            font-size: 24px; 
+            color: white; 
+            font-weight: bold; 
+            margin: 0; 
         }
         
-        /* CONTÊINER WRAPPER (Para centralizar o mapa de 50%) */
-        #map-wrapper {
-            display: flex;
-            justify-content: center; /* Centraliza horizontalmente */
-            align-items: center;     /* Centraliza verticalmente */
-            flex-grow: 1;            /* Ocupa todo o espaço restante abaixo do cabeçalho */
-            padding: 10px;           /* Espaço ao redor do mapa */
-            background-color: #f0f0f0; /* Cor de fundo para ver a margem */
+        /* NOVO CONTÊINER PRINCIPAL: Gerencia o layout horizontal de Mapa + Lateral */
+        #main-content {
+            display: flex; /* Habilita layout horizontal */
+            flex-grow: 1; /* Ocupa todo o espaço restante abaixo do cabeçalho */
+            padding: 0; /* Remove padding */
+            background-color: #f0f0f0; /* Cor de fundo para ver a separação */
+            /* align-items: stretch; é o padrão, garante que #map e #sidebar tenham 100% de altura */
         }
 
-        /* AJUSTE DO MAPA: Mapa em 50% de Largura e Altura, SEM BORDA */
+        /* AJUSTE DO MAPA: Fica à esquerda, ocupa 60% da largura */
         #map {
-            width: 50%; /* Ocupa 50% da largura do contêiner */
-            height: 50%; /* Ocupa 50% da altura do contêiner */
+            width: 60%; /* Mapa ocupa 60% da largura do #main-content */
+            height: 100%; /* Ocupa 100% da altura do #main-content */
             margin: 0;
-            /* BORDA REMOVIDA */
-            flex-grow: 0; /* Não permite que o mapa cresça além de 50% */
-            box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Sombra mantida para um visual moderno */
+            flex-shrink: 0; /* Não encolhe se houver espaço */
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2); /* Sombra lateral sutil */
+            background-color: white; /* Garante que o fundo do mapa seja branco */
+        }
+
+        /* ESTILO PARA A ÁREA LATERAL (Sidebar): Fica à direita, ocupa 40% da largura */
+        #sidebar {
+            width: 40%; /* Área lateral ocupa os 40% restantes */
+            height: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Permite scroll se o conteúdo for grande */
+            background-color: #ffffff; /* Fundo branco para o conteúdo lateral */
+        }
+
+        /* Estilo para conteúdo de exemplo da Sidebar */
+        #sidebar h2 {
+            color: #154a93;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+        #sidebar p {
+            color: #333;
         }
         
         </style>
@@ -86,24 +105,30 @@
     </head>
     <body>
         
-        <!-- CABEÇALHO -->
         <header id="cabecalho-simples">
             <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
         </header>
-        <!-- FIM DO CABEÇALHO -->
-
-        <!-- CONTÊINER WRAPPER -->
-        <div id="map-wrapper">
-            <!-- MAPA DENTRO DO WRAPPER -->
+        <div id="main-content">
+            
             <div id="map">
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                     <div id="popup-content"></div>
                 </div>
             </div>
+            
+            <div id="sidebar">
+                <h2>📊 Legendas e Controles</h2>
+                <p>Este espaço agora está à direita e ocupa 40% da tela.</p>
+                <p>Aqui você pode adicionar:</p>
+                <ul>
+                    <li>Legenda do Mapa (LayerSwitcher)</li>
+                    <li>Filtros e Ferramentas de Busca</li>
+                    <li>Gráficos ou Dashboards de Monitoramento</li>
+                </ul>
+                <p>Ajuste as porcentagens (60% para o mapa e 40% para a lateral) no CSS se precisar de um equilíbrio diferente!</p>
+            </div>
         </div>
-        <!-- FIM CONTÊINER WRAPPER -->
-
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="resources/proj4.js"></script>
         <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
