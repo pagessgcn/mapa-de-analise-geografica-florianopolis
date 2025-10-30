@@ -6,15 +6,25 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="./resources/ol.css">
-        <link rel="stylesheet" href="resources/fontawesome-all.min.css">
+        
+        <!-- Carregamento de estilos de bibliotecas (Links externos simulados) -->
+        <!-- O QGIS2web utiliza estes links para OpenLayers, FontAwesome e Geocoder -->
+        <link rel="stylesheet" href="./resources/ol.css"> 
+        <!-- Adicionado Font Awesome 5 para ícones de IA e scroll -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
         <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
         <link rel="stylesheet" href="./resources/qgis2web.css">
+        <!-- Adicionando a fonte Inter para um visual moderno -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        
         <style>
         /* Define a cor azul escura original com 90% de opacidade para uso global */
         :root {
             --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
+            --cor-primaria: #154a93; /* Azul primário mais claro */
+            --cor-secundaria: #f8f8f8; /* Cinza claro */
+            --cor-alerta: #e53e3e; /* Vermelho para alertas */
         }
 
         /* ESTILOS DE CORREÇÃO (Flexbox para Layout Principal) */
@@ -27,7 +37,7 @@
             flex-direction: column; 
             overflow: hidden; 
             /* NOVA FONTE PARA O TEXTO GERAL */
-            font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Inter', sans-serif; /* Usando Inter */
         }
         
         /* ESTILOS ORIGINAIS DO QGIS2WEB */
@@ -50,6 +60,15 @@
             padding: 2px !important;
         } 
         
+        /* NOVO: Reposicionamento dos controles OpenLayers para o canto inferior direito do mapa */
+        .ol-zoom {
+            top: auto !important;
+            left: auto !important;
+            bottom: 10px !important;
+            right: 10px !important;
+            position: absolute;
+        }
+        
         /* ESTILOS DO CABEÇALHO */
         #cabecalho-simples {
             background-color: var(--azul-escuro-transparente); /* Aplicando azul transparente */
@@ -58,6 +77,8 @@
             width: 100%; 
             box-sizing: border-box;
             z-index: 2000;
+            /* Estilo para sombra suave na parte inferior do cabeçalho */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
 
         #cabecalho-simples h1 {
@@ -65,6 +86,8 @@
             color: white; 
             font-weight: bold; 
             margin: 0; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         /* NOVO CONTÊINER PRINCIPAL: Gerencia o layout horizontal de Mapa + Lateral */
@@ -83,6 +106,7 @@
             flex-shrink: 0; 
             box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
             background-color: white; 
+            position: relative; /* Necessário para posicionar o popup e controles OL */
         }
 
         /* ESTILO PARA A ÁREA LATERAL (Sidebar): Fica à direita, ocupa 40% da largura */
@@ -91,8 +115,9 @@
             height: 100%;
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
-            overflow-y: auto; 
+            overflow-y: auto; /* Permite scroll nesta área */
             background-color: #ffffff; 
+            padding-bottom: 120px; /* NOVO: Espaço para os botões de scroll fixos */
         }
         
         /* --- INÍCIO: ESTILOS PARA AS CAIXAS (CARDS) --- */
@@ -100,101 +125,345 @@
         /* Contêiner para organizar caixas na horizontal */
         .card-row {
             display: flex;
-            margin-bottom: 5px; 
+            margin-bottom: 10px; 
             width: 100%;
+            gap: 10px; 
         }
 
-        /* Estilo base para todas as caixas (AGORA TRANSPARENTE, MAIOR E ARREDONDADO) */
+        /* Estilo base para todas as caixas */
         .stat-card {
-            background-color: transparent; /* FUNDO TRANSPARENTE */
-            color: var(--azul-escuro-transparente); /* Cor do texto mais transparente */
+            background-color: transparent; 
+            color: var(--azul-escuro-transparente); 
             padding: 15px; 
-            margin-right: 5px; 
             box-sizing: border-box;
             text-align: center;
-            line-height: 1.4; /* MAIOR ESPAÇAMENTO */
+            line-height: 1.4; 
             font-size: 16px; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--azul-escuro-transparente); /* Borda mais transparente */
-            border-radius: 8px; /* ARREDONDAMENTO DAS BORDAS */
+            border: 2px solid var(--azul-escuro-transparente); 
+            border-radius: 8px; 
+            transition: all 0.3s ease; 
         }
-        .stat-card:last-child {
-            margin-right: 0;
-        }
-
-        /* Tamanhos das caixas */
+        
         .stat-card.half {
-            width: 50%;
+            flex-basis: 50%;
+            flex-grow: 1;
         }
 
         .stat-card.quarter {
-            width: 25%;
+            flex-basis: 25%;
+            flex-grow: 1;
         }
 
         .stat-card.full {
-            width: 100%;
+            flex-basis: 100%;
+            flex-grow: 1;
         }
 
-        /* Estilo para o título centralizado (Fundo Escuro Arredondado) */
         .title-card {
-            font-weight: 600; /* LEVEMENTE MAIS FINO */
+            font-weight: 600; 
             font-size: 18px; 
-            padding: 20px 15px; 
+            padding: 15px; 
             background-color: var(--azul-escuro-transparente); 
             color: white; 
             border: none; 
-            border-radius: 8px; /* ARREDONDAMENTO DAS BORDAS */
+            border-radius: 8px; 
+            text-transform: uppercase;
         }
 
-        /* Estilo para a linha de Regiões (Bloco Único Arredondado) */
         .region-row {
-            border-radius: 8px; /* ARREDONDAMENTO DO BLOCO INTEIRO */
-            overflow: hidden;
             margin-bottom: 10px;
+            gap: 10px; 
         }
         .region-card {
-            background-color: var(--azul-escuro-transparente); /* Fundo mais transparente */
+            background-color: var(--azul-escuro-transparente); 
             color: white; 
             font-size: 18px; 
-            padding: 30px 15px; /* MUITO MAIOR */
+            padding: 20px 10px; 
             border: none; 
-        }
-        /* Borda divisória branca */
-        .region-card:not(.last-region) {
-            border-right: 2px solid white; 
-        }
-        .region-card.last-region {
-            border-right: none;
-            margin-right: 0;
+            border-radius: 8px;
         }
 
-        /* Estilo para a grande área inferior (Fundo Escuro Arredondado) */
         .large-area {
-            min-height: 450px; 
+            min-height: 400px; 
             font-size: 20px; 
-            font-style: italic;
-            text-transform: uppercase;
             background-color: var(--azul-escuro-transparente); 
             color: white;
             border: none;
-            border-radius: 8px; /* ARREDONDAMENTO DAS BORDAS */
+            border-radius: 8px; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 20px;
+            box-sizing: border-box;
+            gap: 10px;
         }
-        /* --- FIM: ESTILOS PARA AS CAIXAS (CARDS) --- */
 
+        /* Estilos dos Componentes Gemini */
+        .gemini-tool-title {
+            font-weight: 700;
+            color: var(--azul-escuro-transparente);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .gemini-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            color: #333; 
+        }
+
+        .gemini-button {
+            background-color: var(--cor-primaria);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .gemini-button:hover:not(:disabled) {
+            background-color: #1a5aae;
+        }
+
+        .gemini-button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        .tts-audio-player {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .gemini-result-area {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.9em;
+            text-transform: none;
+            font-style: normal;
+            margin-top: 10px;
+            line-height: 1.6;
+            flex-grow: 1; 
+            overflow-y: auto;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .citation {
+            margin-top: 15px;
+            font-size: 0.8em;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 5px;
+        }
+        .citation a {
+            color: #add8e6; 
+            text-decoration: none;
+        }
+        .citation a:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- INÍCIO: ESTILOS PARA BOTÕES DE SCROLL (SUBIR/DESCER) --- */
+
+        /* Contêiner de botões fixos na lateral direita */
+        #scroll-controls-sidebar {
+            position: fixed;
+            /* Calcula a posição: 60% da tela é o mapa. O botão deve começar logo após o mapa + um offset de 20px. */
+            left: calc(60% + 20px); 
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 3000;
+        }
+
+        .scroll-button {
+            background-color: var(--cor-primaria);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+        }
+
+        .scroll-button:active {
+            transform: scale(0.95);
+        }
+
+        .scroll-button:hover {
+            background-color: #1a5aae;
+        }
+
+        /* Media Query para responsividade do botão (mobile) */
+        @media (max-width: 1024px) {
+            #scroll-controls-sidebar {
+                left: auto; /* Remove o cálculo baseado em 60% */
+                right: 20px; /* Ancorado na direita da viewport */
+                bottom: 20px;
+            }
+        }
+
+        /* --- FIM: ESTILOS PARA BOTÕES DE SCROLL (SUBIR/DESCER) --- */
+
+        /* Media Queries para Responsividade */
+        @media (max-width: 1024px) {
+            #main-content {
+                flex-direction: column; 
+                overflow-y: auto;
+            }
+            #map {
+                width: 100%; 
+                height: 400px; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+            }
+            #sidebar {
+                width: 100%; 
+                padding: 15px;
+                padding-bottom: 120px; /* Mantém o espaço extra no mobile */
+            }
+            .card-row {
+                flex-wrap: wrap; 
+            }
+            .stat-card.half, .stat-card.quarter, .stat-card.full {
+                flex-basis: 100%; 
+                margin-bottom: 10px;
+            }
+            .stat-card.quarter, .region-card {
+                flex-basis: 48%; 
+            }
+            .region-card {
+                padding: 15px 10px;
+            }
+            .region-row .stat-card.quarter {
+                flex-basis: 23%; 
+            }
+             @media (max-width: 600px) {
+                 .region-row .stat-card.quarter {
+                    flex-basis: 48%; 
+                }
+            }
+            .large-area {
+                min-height: 300px;
+            }
+            
+            /* Ajuste o OL zoom para não conflitar no mobile */
+            .ol-zoom {
+                right: 5px !important;
+                bottom: 5px !important;
+            }
+        }
+        /* FIM: Media Queries */
+        
+        /* Estilos para o Popup do OpenLayers (melhorando a aparência) */
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 250px;
+            font-family: 'Inter', sans-serif;
+            z-index: 100;
+        }
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            color: #333;
+            font-size: 1.2em;
+        }
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+        #popup-content {
+            max-height: 200px;
+            overflow-y: auto;
+            color: #333;
+            font-size: 0.9em;
+        }
+        /* FIM: Estilos para o Popup */
         </style>
-        <title></title>
+        <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
     </head>
     <body>
         
+        <!-- Importações Firebase para o ambiente (Requerido para a API) -->
+        <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        window.initializeApp = initializeApp;
+        window.getAuth = getAuth;
+        window.signInAnonymously = signInAnonymously;
+        window.signInWithCustomToken = signInWithCustomToken;
+        </script>
+
         <header id="cabecalho-simples">
             <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
         </header>
         <div id="main-content">
             
             <div id="map">
+                <!-- OpenLayers Popup Container -->
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                     <div id="popup-content"></div>
@@ -204,6 +473,7 @@
             <div id="sidebar">
                 
                 <div class="card-row">
+                    <!-- Conteúdo será preenchido via JS (Simulação de dados) -->
                     <div class="stat-card half">
                         Colaboradores <br> **AdviceHealth**
                     </div>
@@ -219,6 +489,7 @@
                 </div>
 
                 <div class="card-row region-row">
+                    <!-- Conteúdo será preenchido via JS (Simulação de dados) -->
                     <div class="stat-card quarter region-card">
                         **Norte**
                     </div>
@@ -228,19 +499,53 @@
                     <div class="stat-card quarter region-card">
                         **Centro**
                     </div>
-                    <div class="stat-card quarter region-card last-region">
+                    <div class="stat-card quarter region-card">
                         **Leste**
                     </div>
                 </div>
 
+                <!-- GRANDE ÁREA DE VISUALIZAÇÃO DE DADOS AGORA É UM GERADOR DE RESUMO DE RISCO (GEMINI) -->
                 <div class="card-row">
                     <div class="stat-card full large-area">
-                        <p>GRANDE ÁREA DE VISUALIZAÇÃO DE DADOS</p>
+                        <div class="gemini-tool-title" style="color:white; font-size:1.2em; font-weight: bold;">Resumo de Risco em Tempo Real ✨</div>
+                        <p style="font-size: 0.9em; margin: 0 0 10px 0; font-style: normal; text-transform: none;">Use a IA para gerar um resumo baseado em fontes atuais sobre riscos na região.</p>
+                        <input type="text" id="risk-query-input" class="gemini-input" placeholder="Ex: 'Previsão de chuvas e risco de deslizamento em Florianópolis'" style="width: 100%; min-height: 40px;"/>
+                        <button id="generate-risk-summary-btn" class="gemini-button">
+                            <i class="fas fa-magic"></i> Gerar Resumo
+                        </button>
+                        <div id="risk-summary-output" class="gemini-result-area">
+                            O resumo da situação de risco aparecerá aqui.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NOVO CARD: SISTEMA DE ALERTA DE VOZ (GEMINI TTS) -->
+                <div class="card-row">
+                    <div class="stat-card full" style="background-color: var(--cor-secundaria); border-color: var(--cor-primaria);">
+                        <div class="gemini-tool-title" style="margin-bottom: 15px; text-transform: uppercase;">Sistema de Alerta por Voz (TTS) ✨</div>
+                        <textarea id="tts-text-input" class="gemini-input" placeholder="Digite a mensagem de alerta de emergência (Ex: 'Atenção! Risco elevado de enchente no Norte da Ilha. Busque abrigo imediato.')." rows="3" style="min-height: 80px;"></textarea>
+                        <button id="generate-tts-btn" class="gemini-button" style="background-color: var(--cor-alerta);">
+                            <i class="fas fa-volume-up"></i> Gerar e Tocar Alerta
+                        </button>
+                        <audio id="tts-audio-player" controls class="tts-audio-player" style="display: none;"></audio>
                     </div>
                 </div>
 
             </div>
-            </div>
+        </div>
+        
+        <!-- Botões de scroll flutuantes na lateral direita (NOVOS ELEMENTOS) -->
+        <div id="scroll-controls-sidebar">
+            <button id="scroll-to-top" class="scroll-button" aria-label="Rolar para o topo">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            <button id="scroll-to-bottom" class="scroll-button" aria-label="Rolar para o fundo">
+                <i class="fas fa-arrow-down"></i>
+            </button>
+        </div>
+
+
+        <!-- Scripts de Bibliotecas QGIS2Web e OpenLayers (Apenas links simulados) -->
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="resources/proj4.js"></script>
         <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
@@ -248,11 +553,359 @@
         <script src="./resources/ol.js"></script>
         <script src="./resources/ol-layerswitcher.js"></script>
         <script src="resources/photon-geocoder-autocomplete.min.js"></script>
+
+        <!-- Scripts de Camadas e Estilos (Links simulados que o QGIS2web geraria) -->
         <script src="layers/temp1_0.js"></script><script src="layers/moradias_geocodificado_1.js"></script><script src="layers/moradias_geocodificado_2.js"></script><script src="layers/moradias_geocodificado_3.js"></script><script src="layers/BRASIL_4.js"></script><script src="layers/ESTADO_5.js"></script><script src="layers/MUNICIPIOS_6.js"></script><script src="layers/BAIRROS_7.js"></script><script src="layers/MUNICIPVIZINHOS_8.js"></script><script src="layers/MOVIMENTODEMASSA_9.js"></script><script src="layers/BACIAS_10.js"></script><script src="layers/ENXURRADAS_11.js"></script><script src="layers/INUNDACAO_12.js"></script><script src="layers/CAPITAIS_13.js"></script><script src="layers/QGISPROJECT_14.js"></script><script src="layers/CAMADACOLAB_15.js"></script>
         <script src="styles/temp1_0_style.js"></script><script src="styles/moradias_geocodificado_1_style.js"></script><script src="styles/moradias_geocodificado_2_style.js"></script><script src="styles/moradias_geocodificado_3_style.js"></script><script src="styles/BRASIL_4_style.js"></script><script src="styles/ESTADO_5_style.js"></script><script src="styles/MUNICIPIOS_6_style.js"></script><script src="styles/BAIRROS_7_style.js"></script><script src="styles/MUNICIPVIZINHOS_8_style.js"></script><script src="styles/MOVIMENTODEMASSA_9_style.js"></script><script src="styles/BACIAS_10_style.js"></script><script src="styles/ENXURRADAS_11_style.js"></script><script src="styles/INUNDACAO_12_style.js"></script><script src="styles/CAPITAIS_13_style.js"></script><script src="styles/QGISPROJECT_14_style.js"></script><script src="styles/CAMADACOLAB_15_style.js"></script>
         <script src="./layers/layers.js" type="text/javascript"></script> 
         <script src="./resources/Autolinker.min.js"></script>
         <script src="./resources/qgis2web.js"></script>
         
+        <!-- INÍCIO: Código customizado para o Dashboard com Integrações Gemini -->
+        <script type="text/javascript">
+        // Variáveis Globais de Configuração (Obrigatórias no ambiente Canvas)
+        const apiKey = ""; 
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // --- FUNÇÕES AUXILIARES PARA TTS (Áudio PCM para WAV) ---
+        /** Converte string base64 em ArrayBuffer. */
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        /** Converte Int16Array (PCM) para um blob WAV. */
+        function pcmToWav(pcm16, sampleRate) {
+            const numChannels = 1;
+            const bitDepth = 16;
+            const blockAlign = numChannels * (bitDepth / 8);
+            const byteRate = sampleRate * blockAlign;
+            const dataSize = pcm16.byteLength;
+            const buffer = new ArrayBuffer(44 + dataSize);
+            const view = new DataView(buffer);
+
+            let offset = 0;
+
+            function writeString(str) {
+                for (let i = 0; i < str.length; i++) {
+                    view.setUint8(offset + i, str.charCodeAt(i));
+                }
+                offset += str.length;
+            }
+
+            function writeUint32(val) {
+                view.setUint32(offset, val, true);
+                offset += 4;
+            }
+
+            function writeUint16(val) {
+                view.setUint16(offset, val, true);
+                offset += 2;
+            }
+
+            // RIFF chunk
+            writeString('RIFF');
+            writeUint32(36 + dataSize); // ChunkSize
+            writeString('WAVE');
+
+            // FMT chunk
+            writeString('fmt ');
+            writeUint32(16); // Subchunk1Size (16 for PCM)
+            writeUint16(1);  // AudioFormat (1 for PCM)
+            writeUint16(numChannels);
+            writeUint32(sampleRate);
+            writeUint32(byteRate);
+            writeUint16(blockAlign);
+            writeUint16(bitDepth);
+
+            // DATA chunk
+            writeString('data');
+            writeUint32(dataSize);
+
+            // PCM data
+            const pcmBytes = new Uint8Array(pcm16.buffer);
+            for (let i = 0; i < dataSize; i++) {
+                view.setUint8(offset + i, pcmBytes[i]);
+            }
+
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+
+        // --- FUNÇÕES GERAIS DE UTILIDADE ---
+
+        /** Função genérica de chamada à API com backoff exponencial. */
+        async function fetchWithBackoff(url, options, maxRetries = 5) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return response;
+                    }
+                    if (response.status === 429 && i < maxRetries - 1) {
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue;
+                    }
+                    throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error;
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+        
+        // --- FUNÇÃO 1: RESUMO DE RISCO EM TEMPO REAL (GEMINI + GROUNDING) ---
+
+        const riskQueryInput = document.getElementById('risk-query-input');
+        const generateRiskSummaryBtn = document.getElementById('generate-risk-summary-btn');
+        const riskSummaryOutput = document.getElementById('risk-summary-output');
+
+        async function handleRiskSummaryGeneration() {
+            const query = riskQueryInput.value.trim();
+            if (!query) {
+                riskSummaryOutput.innerHTML = `<p style="color: yellow;">Por favor, digite uma consulta sobre a situação de risco.</p>`;
+                return;
+            }
+
+            // UI de carregamento
+            generateRiskSummaryBtn.disabled = true;
+            generateRiskSummaryBtn.innerHTML = `<span class="loading-spinner"></span> Gerando...`;
+            riskSummaryOutput.innerHTML = `<p style="font-style: italic;">Buscando dados em tempo real e gerando resumo...</p>`;
+
+            // Gera queries em Português e Inglês para o Google Search
+            const userQuery = `Gere um resumo detalhado em português, em 3 parágrafos, sobre: ${query}. Use a ferramenta de pesquisa para obter informações atuais.`;
+            const searchQueries = [`${query}`, `risk status ${query}`];
+            
+            const systemPrompt = "Você é um analista de risco especializado em desastres naturais e segurança regional. Sua resposta deve ser informativa, factual e focada em dados de monitoramento e recomendações de segurança. Use o tom de um boletim oficial.";
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                tools: [{ "google_search": { queries: searchQueries } }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                config: {
+                    temperature: 0.2
+                }
+            };
+
+            try {
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    let text = candidate.content.parts[0].text;
+                    let sourcesHtml = '';
+
+                    const groundingMetadata = candidate.groundingMetadata;
+                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                        const sources = groundingMetadata.groundingAttributions
+                            .map(attribution => ({
+                                uri: attribution.web?.uri,
+                                title: attribution.web?.title,
+                            }))
+                            .filter(source => source.uri && source.title)
+                            .slice(0, 3); // Limita a 3 fontes
+
+                        if (sources.length > 0) {
+                            sourcesHtml = `<div class="citation">
+                                <p style="margin-top:0;">Fontes:</p>
+                                <ul>
+                                ${sources.map((src, index) => `<li>${index + 1}. <a href="${src.uri}" target="_blank">${src.title}</a></li>`).join('')}
+                                </ul>
+                            </div>`;
+                        }
+                    }
+
+                    riskSummaryOutput.innerHTML = text.replace(/\n/g, '<br>') + sourcesHtml;
+
+                } else {
+                    riskSummaryOutput.innerHTML = `<p style="color: orange;">Não foi possível obter um resumo. Tente uma consulta diferente.</p>`;
+                }
+
+            } catch (error) {
+                console.error("Erro ao gerar resumo:", error);
+                const corAlerta = getComputedStyle(document.documentElement).getPropertyValue('--cor-alerta').trim() || '#e53e3e';
+                riskSummaryOutput.innerHTML = `<p style="color: ${corAlerta};">ERRO: Falha na comunicação com o sistema de IA. Verifique sua conexão.</p>`;
+            } finally {
+                generateRiskSummaryBtn.disabled = false;
+                generateRiskSummaryBtn.innerHTML = `<i class="fas fa-magic"></i> Gerar Resumo`;
+            }
+        }
+
+        // --- FUNÇÃO 2: SISTEMA DE ALERTA DE VOZ (TTS) ---
+        
+        const ttsTextInput = document.getElementById('tts-text-input');
+        const generateTtsBtn = document.getElementById('generate-tts-btn');
+        const ttsAudioPlayer = document.getElementById('tts-audio-player');
+
+        async function handleTextToSpeech() {
+            const text = ttsTextInput.value.trim();
+            if (!text) {
+                generateTtsBtn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Digite a mensagem!`;
+                setTimeout(() => generateTtsBtn.innerHTML = `<i class="fas fa-volume-up"></i> Gerar e Tocar Alerta`, 2000);
+                return;
+            }
+
+            // UI de carregamento
+            generateTtsBtn.disabled = true;
+            generateTtsBtn.innerHTML = `<span class="loading-spinner" style="border-top: 4px solid white;"></span> Gerando Áudio...`;
+            ttsAudioPlayer.style.display = 'none';
+
+            const systemPrompt = "Você é um sistema de alerta de emergência. A voz deve ser firme e clara, com um tom de urgência e informativa. O idioma é português.";
+            
+            // Voz 'Kore' é clara e firme e apropriada para um alerta
+            const payload = {
+                contents: [{ 
+                    parts: [{ text: `Diga com um tom urgente e claro a seguinte mensagem de alerta: ${text}` }] 
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Kore" }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts",
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+            
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const rateMatch = mimeType.match(/rate=(\d+)/);
+                    if (!rateMatch) {
+                         throw new Error("Taxa de amostragem (sample rate) não encontrada no mimeType.");
+                    }
+                    const sampleRate = parseInt(rateMatch[1], 10);
+                    
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    
+                    ttsAudioPlayer.src = audioUrl;
+                    ttsAudioPlayer.style.display = 'block';
+                    ttsAudioPlayer.play();
+                    
+                } else {
+                    throw new Error("Dados de áudio inválidos ou ausentes.");
+                }
+
+            } catch (error) {
+                console.error("Erro ao gerar áudio TTS:", error);
+                generateTtsBtn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Erro ao Gerar Alerta`;
+                ttsAudioPlayer.style.display = 'none';
+                setTimeout(() => generateTtsBtn.innerHTML = `<i class="fas fa-volume-up"></i> Gerar e Tocar Alerta`, 3000);
+            } finally {
+                generateTtsBtn.disabled = false;
+                if(ttsAudioPlayer.style.display === 'block') {
+                    generateTtsBtn.innerHTML = `<i class="fas fa-volume-up"></i> Reproduzir Novamente`;
+                } else if (generateTtsBtn.innerHTML.includes("Gerando")) {
+                    generateTtsBtn.innerHTML = `<i class="fas fa-volume-up"></i> Gerar e Tocar Alerta`;
+                }
+            }
+        }
+
+
+        // --- INICIALIZAÇÃO E LISTENERS ---
+
+        window.onload = function() {
+            // Inicializa Firebase/Autenticação (Modelo padrão)
+            try {
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                
+                if (initialAuthToken) {
+                    signInWithCustomToken(auth, initialAuthToken).catch(err => console.error("Erro ao autenticar com token customizado:", err));
+                } else {
+                    signInAnonymously(auth).catch(err => console.error("Erro ao autenticar anonimamente:", err));
+                }
+
+            } catch (e) {
+                console.warn("Aviso: Falha na inicialização do Firebase/Auth. Recursos de persistência de dados não estarão disponíveis.", e);
+            }
+            
+            // Adiciona Listeners para os botões Gemini
+            const riskQueryInput = document.getElementById('risk-query-input');
+            const generateRiskSummaryBtn = document.getElementById('generate-risk-summary-btn');
+            const ttsTextInput = document.getElementById('tts-text-input');
+            const generateTtsBtn = document.getElementById('generate-tts-btn');
+
+            generateRiskSummaryBtn.addEventListener('click', handleRiskSummaryGeneration);
+            generateTtsBtn.addEventListener('click', handleTextToSpeech);
+            
+            // --- Lógica dos Botões de Scroll (NOVA) ---
+            const sidebar = document.getElementById('sidebar');
+            const scrollToTopBtn = document.getElementById('scroll-to-top');
+            const scrollToBottomBtn = document.getElementById('scroll-to-bottom');
+
+            scrollToTopBtn.addEventListener('click', () => {
+                sidebar.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            scrollToBottomBtn.addEventListener('click', () => {
+                sidebar.scrollTo({
+                    top: sidebar.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
+            // FIM: Lógica dos Botões de Scroll
+
+            // Simulação de inicialização do Mapa OpenLayers/QGIS2web
+            const closer = document.getElementById('popup-closer');
+            closer.onclick = function() {
+                // Lógica de fechar o popup
+                return false;
+            };
+
+            // Simulação de preenchimento de dados estáticos
+            document.querySelector('.stat-card:nth-child(1)').innerHTML = 'Colaboradores <br> <strong>120 AdviceHealth</strong>';
+            document.querySelector('.stat-card:nth-child(2)').innerHTML = 'Colaboradores <br> <strong>95 Mapeados</strong>';
+            
+            document.querySelector('.region-row .stat-card:nth-child(1)').innerHTML = '<strong>Norte</strong><br>15';
+            document.querySelector('.region-row .stat-card:nth-child(2)').innerHTML = '<strong>Sul</strong><br>40';
+            document.querySelector('.region-row .stat-card:nth-child(3)').innerHTML = '<strong>Centro</strong><br>25';
+            document.querySelector('.region-row .stat-card:nth-child(4)').innerHTML = '<strong>Leste</strong><br>15';
+        };
+
+        </script>
+        <!-- FIM: Código customizado para o Dashboard -->
+
     </body>
 </html>
