@@ -116,7 +116,11 @@
             padding-bottom: 120px; /* Espaço para os botões de scroll fixos */
         }
         
+<<<<<<< HEAD
         /* --- ESTILOS PARA O CARD DE PREVISÃO DO TEMPO --- */
+=======
+        /* --- INÍCIO: ESTILOS PARA O CARD DE PREVISÃO DO TEMPO (NOVO) --- */
+>>>>>>> b565d73280707c58597e260edec000e11d3e1520
         .weather-card {
             background-color: var(--azul-escuro-transparente); /* Usando a cor de fundo do cabeçalho */
             color: white;
@@ -153,8 +157,14 @@
             height: 100%;
             border: none;
         }
+<<<<<<< HEAD
         
         /* --- ESTILOS PARA AS CAIXAS (CARDS) --- */
+=======
+        /* --- FIM: ESTILOS PARA O CARD DE PREVISÃO DO TEMPO --- */
+        
+        /* --- INÍCIO: ESTILOS PARA AS CAIXAS (CARDS) --- */
+>>>>>>> b565d73280707c58597e260edec000e11d3e1520
 
         /* Contêiner para organizar caixas na horizontal */
         .card-row {
@@ -372,6 +382,18 @@
     </head>
     <body>
         
+<<<<<<< HEAD
+=======
+        <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        window.initializeApp = initializeApp;
+        window.getAuth = getAuth;
+        window.signInAnonymously = signInAnonymously;
+        window.signInWithCustomToken = signInWithCustomToken;
+        </script>
+
+>>>>>>> b565d73280707c58597e260edec000e11d3e1520
         <header id="cabecalho-simples">
             <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
         </header>
@@ -386,6 +408,20 @@
             
             <div id="sidebar">
                 
+                <div class="weather-card">
+                    <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (Florianópolis)</h3>
+                    <div class="weather-iframe-container">
+                        <iframe 
+                            src="https://www.accuweather.com/pt/br/florian%C3%B3polis/43118/current-weather/43118" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            sandbox="allow-scripts allow-same-origin"
+                            title="Previsão do Tempo"
+                            style="height: 250px; width: 100%;">
+                        </iframe>
+                    </div>
+                    <p style="font-size: 0.8em; margin-top: 10px;">Widget integrado para informações de risco.</p>
+                </div>
                 <div class="card-row">
                     <div class="stat-card half">
                         Colaboradores <br> **120 AdviceHealth**
@@ -412,6 +448,7 @@
                         **Centro** <br> 25
                     </div>
                     <div class="stat-card quarter region-card">
+<<<<<<< HEAD
                         **Leste** <br> 15
                     </div>
                 </div>
@@ -427,6 +464,34 @@
                             title="Previsão do Tempo"
                             style="height: 250px; width: 100%;">
                         </iframe>
+=======
+                        **Leste**
+                    </div>
+                </div>
+
+                <div class="card-row">
+                    <div class="stat-card full large-area">
+                        <div class="gemini-tool-title" style="color:white; font-size:1.2em; font-weight: bold;">Resumo de Risco em Tempo Real ✨</div>
+                        <p style="font-size: 0.9em; margin: 0 0 10px 0; font-style: normal; text-transform: none;">Use a IA para gerar um resumo baseado em fontes atuais sobre riscos na região.</p>
+                        <input type="text" id="risk-query-input" class="gemini-input" placeholder="Ex: 'Previsão de chuvas e risco de deslizamento em Florianópolis'" style="width: 100%; min-height: 40px;"/>
+                        <button id="generate-risk-summary-btn" class="gemini-button">
+                            <i class="fas fa-magic"></i> Gerar Resumo
+                        </button>
+                        <div id="risk-summary-output" class="gemini-result-area">
+                            O resumo da situação de risco aparecerá aqui.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-row">
+                    <div class="stat-card full" style="background-color: var(--cor-secundaria); border-color: var(--cor-primaria);">
+                        <div class="gemini-tool-title" style="margin-bottom: 15px; text-transform: uppercase;">Sistema de Alerta por Voz (TTS) ✨</div>
+                        <textarea id="tts-text-input" class="gemini-input" placeholder="Digite a mensagem de alerta de emergência (Ex: 'Atenção! Risco elevado de enchente no Norte da Ilha. Busque abrigo imediato.')." rows="3" style="min-height: 80px;"></textarea>
+                        <button id="generate-tts-btn" class="gemini-button" style="background-color: var(--cor-alerta);">
+                            <i class="fas fa-volume-up"></i> Gerar e Tocar Alerta
+                        </button>
+                        <audio id="tts-audio-player" controls class="tts-audio-player" style="display: none;"></audio>
+>>>>>>> b565d73280707c58597e260edec000e11d3e1520
                     </div>
                     <p style="font-size: 0.8em; margin-top: 10px;">Widget integrado para informações de risco.</p>
                 </div>
@@ -488,6 +553,103 @@
             autoPanAnimation: {
                 duration: 250
             }
+<<<<<<< HEAD
+=======
+
+            // UI de carregamento
+            generateTtsBtn.disabled = true;
+            generateTtsBtn.innerHTML = `<span class="loading-spinner" style="border-top: 4px solid white;"></span> Gerando Áudio...`;
+            ttsAudioPlayer.style.display = 'none';
+
+            const systemPrompt = "Você é um sistema de alerta de emergência. A voz deve ser firme e clara, com um tom de urgência e informativa. O idioma é português.";
+            
+            // Voz 'Kore' é clara e firme e apropriada para um alerta
+            const payload = {
+                contents: [{ 
+                    parts: [{ text: `Diga com um tom urgente e claro a seguinte mensagem de alerta: ${text}` }] 
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            gender: "FEMALE",
+                            name: "kore"
+                        }
+                    }
+                },
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                const audioBase64 = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+
+                if (audioBase64) {
+                    // O Gemini retorna PCM Int16, que precisa de um cabeçalho WAV
+                    const pcmBuffer = base64ToArrayBuffer(audioBase64);
+                    const pcm16 = new Int16Array(pcmBuffer);
+                    
+                    // A taxa de amostragem padrão para este modelo é 24000 Hz
+                    const wavBlob = pcmToWav(pcm16, 24000); 
+                    
+                    // Toca o áudio
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    ttsAudioPlayer.src = audioUrl;
+                    ttsAudioPlayer.style.display = 'block';
+                    ttsAudioPlayer.play();
+
+                    generateTtsBtn.innerHTML = `<i class="fas fa-volume-up"></i> Tocar Novamente`;
+                } else {
+                    generateTtsBtn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Erro ao gerar áudio!`;
+                }
+
+            } catch (error) {
+                console.error("Erro ao gerar áudio TTS:", error);
+                generateTtsBtn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Falha no Alerta (API)!`;
+            } finally {
+                generateTtsBtn.disabled = false;
+                setTimeout(() => {
+                    if (generateTtsBtn.innerHTML.includes('Falha') || generateTtsBtn.innerHTML.includes('Erro')) {
+                         generateTtsBtn.innerHTML = `<i class="fas fa-volume-up"></i> Gerar e Tocar Alerta`;
+                    }
+                }, 3000);
+            }
+        }
+        
+        // --- FUNÇÕES DE SCROLL DA SIDEBAR ---
+        const sidebar = document.getElementById('sidebar');
+        document.getElementById('scroll-to-top').addEventListener('click', () => {
+            sidebar.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('scroll-to-bottom').addEventListener('click', () => {
+            sidebar.scrollTo({ top: sidebar.scrollHeight, behavior: 'smooth' });
+        });
+        
+        // --- EVENT LISTENERS GERAIS ---
+        generateRiskSummaryBtn.addEventListener('click', handleRiskSummaryGeneration);
+        generateTtsBtn.addEventListener('click', handleTextToSpeech);
+
+        // Inicialização de Popups OL (Simulado/Requerido pelo QGIS2Web)
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+        var popup = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+>>>>>>> b565d73280707c58597e260edec000e11d3e1520
         });
         map.addOverlay(popup);
         closer.onclick = function() {
@@ -500,3 +662,16 @@
 
     </body>
 </html>
+📌 Próximos Passos Importantes
+Substitua o Widget de Clima: No bloco:
+
+HTML
+
+<iframe 
+    src="https://www.accuweather.com/pt/br/florian%C3%B3polis/43118/current-weather/43118" 
+    frameborder="0" 
+    allowfullscreen 
+    sandbox="allow-scripts allow-same-origin"
+    title="Previsão do Tempo"
+    style="height: 250px; width: 100%;">
+</iframe>
