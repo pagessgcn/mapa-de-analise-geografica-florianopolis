@@ -24,6 +24,7 @@
             --cor-secundaria: #f8f8f8;
             --cor-alerta: #e53e3e;
             --cor-ia: #ffc107;
+            --header-height: 84px; /* Altura do cabeçalho */
         }
 
         /* --- ESTILOS BASE E LAYOUT PRINCIPAL (FLEXBOX) --- */
@@ -31,12 +32,10 @@
             background-color: #ffffff;
             margin: 0; 
             padding: 0;
-            height: 100%; 
+            height: 100%; /* FIXO: Ocupa 100% da viewport */
             display: flex; 
             flex-direction: column; 
-            /* ALTERAÇÃO 1: Permite rolagem vertical na página principal */
-            overflow-y: auto; 
-            overflow-x: hidden; /* Mantém a rolagem horizontal desativada */
+            overflow: hidden; /* FIXO: Não permite rolagem na página principal */
             font-family: 'Inter', sans-serif; 
         }
         
@@ -98,6 +97,8 @@
             box-sizing: border-box;
             z-index: 2000;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            /* Garante que o cabeçalho não encolha */
+            flex-shrink: 0;
         }
 
         #cabecalho-simples h1 {
@@ -112,19 +113,16 @@
         /* CONTÊINER PRINCIPAL: MAPA + DIVISÓRIA + SIDEBAR */
         #main-content {
             display: flex; 
-            /* ALTERAÇÃO 2: Remove o flex-grow e a altura fixa, permitindo que a div cresça ou que a página role */
-            /* flex-grow: 1; REMOVIDO */
-            /* height: 100%; REMOVIDO */
-            min-height: calc(100vh - 84px); /* Garante que preencha a tela na altura mínima */
-            width: 100%; /* Garante a largura total */
+            flex-grow: 1; /* Permite que ocupe o restante da altura da tela */
             padding: 0; 
             background-color: #f0f0f0; 
+            overflow: hidden; /* Garante que a rolagem seja apenas dentro da sidebar */
         }
         
         /* Barra arrastável */
         #dragbar {
-            width: 8px; /* Largura da barra */
-            cursor: ew-resize; /* Cursor para indicar redimensionamento horizontal */
+            width: 8px; 
+            cursor: ew-resize; 
             background-color: #d1d1d1;
             z-index: 1000; 
             flex-shrink: 0; 
@@ -133,11 +131,11 @@
         /* AJUSTE DO MAPA (40% inicial) */
         #map {
             width: 40%; /* Largura inicial */
-            height: auto; /* Permite que o mapa se adapte, mas manter 100% da altura do main-content é melhor para o mapa */
-            min-height: calc(100vh - 84px); /* Altura mínima para o mapa */
+            height: 100%; /* Ocupa 100% da altura do main-content */
             margin: 0;
-            position: sticky; /* Mantém o mapa visível enquanto a sidebar rola */
-            top: 84px; /* Altura do cabeçalho */
+            position: relative; /* Volta ao normal, sem sticky */
+            top: auto;
+            min-height: 0;
             background-color: white; 
             box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
         }
@@ -145,10 +143,11 @@
         /* ESTILO PARA A SIDEBAR (60% inicial) */
         #sidebar {
             width: 60%; /* Largura inicial */
-            height: auto; /* Permite que a sidebar cresça */
+            height: 100%; /* Ocupa 100% da altura do main-content */
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
-            /* overflow-y: auto; REMOVIDO: A rolagem agora será na página inteira (body) */
+            /* FIXO: A rolagem agora é interna à sidebar */
+            overflow-y: auto; 
             background-color: #ffffff; 
             padding-bottom: 20px; 
         }
@@ -183,7 +182,6 @@
             align-items: center;
         }
         
-        /* Estilo específico para o iframe da Defesa Civil */
         .defesacivil-container {
             height: 450px; 
         }
@@ -253,12 +251,11 @@
             #map {
                 width: 100% !important; 
                 height: 400px; 
-                position: relative; /* Desativa o sticky em mobile */
-                top: auto;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
             }
             #sidebar {
                 width: 100% !important; 
+                height: auto; /* Permite que ocupe o espaço necessário */
+                overflow-y: visible; /* Desativa a rolagem interna em mobile */
                 padding: 15px;
                 padding-bottom: 20px; 
             }
@@ -386,7 +383,7 @@
                         </iframe>
                     </div>
                     <p style="font-size: 0.8em; margin-top: 10px;">
-                        Fonte: Defesa Civil de Santa Catarina. (Pode ser bloqueado por questões de segurança).
+                        Fonte: Defesa Civil de Santa Catarina.
                     </p>
                 </div>
 
@@ -420,11 +417,12 @@
                     </div>
                 </div>
                 
-                <div style="height: 1000px; background-color: #f0f0f0; border: 1px dashed #ccc; margin-top: 20px; padding: 20px; color: #333;">
-                    <h2>Espaço para Conteúdo Adicional (Gráficos/Tabelas)</h2>
-                    <p>Este bloco tem uma altura grande (1000px) e demonstra que a página inteira agora pode rolar para baixo, permitindo que você adicione mais elementos abaixo dos cards principais, enquanto o mapa tenta permanecer fixo na lateral esquerda (usando `position: sticky;`).</p>
+                <div style="height: 400px; background-color: #f0f0f0; border: 1px dashed #ccc; margin-top: 20px; padding: 20px; color: #333;">
+                    <h2>Conteúdo Adicional na Barra Lateral (Rola com a Barra Lateral)</h2>
+                    <p>Este bloco demonstra que, ao adicionar mais conteúdo na barra lateral, apenas a **barra lateral** rolará, e o mapa permanecerá fixo na lateral esquerda. A página principal não rola.</p>
                 </div>
-                </div>
+
+            </div>
         </div>
         
         <script src="resources/qgis2web_expressions.js"></script>
