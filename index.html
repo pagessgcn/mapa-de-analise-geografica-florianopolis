@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="pt-BR">
     <head>
@@ -114,13 +113,11 @@
             flex-grow: 1; 
             padding: 0; 
             background-color: #f0f0f0; 
-            /* Se o mapa sumiu, pode ser necessário mudar para overflow: auto */
-            /* overflow: auto; */ 
         }
 
-        /* AJUSTE DO MAPA */
+        /* AJUSTE DO MAPA (40%) */
         #map {
-            width: 60%; 
+            width: 40%; /* ALTERADO DE 60% */
             height: 100%; 
             margin: 0;
             flex-shrink: 0; 
@@ -129,9 +126,9 @@
             position: relative; 
         }
 
-        /* ESTILO PARA A SIDEBAR */
+        /* ESTILO PARA A SIDEBAR (60%) */
         #sidebar {
-            width: 40%; 
+            width: 60%; /* ALTERADO DE 40% */
             height: 100%;
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
@@ -162,8 +159,7 @@
 
         .weather-iframe-container {
             width: 100%;
-            /* Aumentado para 450px para o widget Epagri */
-            height: 450px; 
+            height: 350px; /* ALTERADO DE 450px */
             overflow: hidden;
             border-radius: 6px;
             display: flex;
@@ -199,7 +195,7 @@
             border: 2px solid var(--azul-escuro-transparente); 
             border-radius: 8px; 
             transition: all 0.3s ease; 
-            flex-grow: 1; /* Permite que os cards cresçam igualmente */
+            flex-grow: 1; 
         }
         
         .title-card {
@@ -280,7 +276,7 @@
             #map {
                 width: 100%; 
                 height: 400px; 
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+                box-shadow: 0 0 5px rgba(0,0,0,0.2); 
             }
             #sidebar {
                 width: 100%; 
@@ -310,7 +306,6 @@
         
         /* --- ESTILOS DO POPUP OPENLAYERS --- */
         .ol-popup {
-            /* ... (Estilos do popup OpenLayers) ... */
             position: absolute;
             background-color: white;
             box-shadow: 0 1px 4px rgba(0,0,0,0.2);
