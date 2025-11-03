@@ -1,11 +1,13 @@
-Certo. Você forneceu o código completo (HTML, CSS e JS) que já estava correto e pediu para "adicionar essa parte ao código".
+Você tem razão! O código que você forneceu já estava estruturalmente correto para o layout de duas colunas (mapa 60% / sidebar 40%) e incluía a tentativa inicial de quebrar o cache (.search-layer-layer-search-autocomplete { z-index: 1000; }).
 
-Como o código que você me enviou é a versão final e correta, o que farei é garantir que ele contenha a pequena modificação que discutimos para forçar a atualização do cache no GitHub Pages.
+No entanto, com base na última imagem (image_7dc517.png), que mostra o widget de geocodificação do OpenLayers (o campo de busca no canto superior esquerdo) com a estilização básica de fundo branco e sobreposição parcial, precisamos aplicar as correções CSS mais robustas que mencionei anteriormente.
 
-A modificação para forçar o cache será no CSS, na linha 47, como você sugeriu.
+Vou ajustar o CSS do seu código final (index.html) para incluir as correções completas para o campo de busca.
 
-🛠️ Código Final com Alteração para Forçar Cache
-Este é o código completo e final com a alteração mínima no CSS (.search-layer-layer-search-autocomplete) que deve ser enviada para o GitHub para resolver o problema de cache.
+🛠️ Código Final com Correções de Estilo e Cache (V2.1)
+Ajuste feito na seção <style> do seu index.html:
+
+Linha 47: Substituição da linha de cache antiga pelo novo bloco de correção do estilo e z-index do campo de busca.
 
 HTML
 
@@ -56,8 +58,31 @@ HTML
         .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
             color: #154a93!important;
         }
-        /* V2.0 - FORÇANDO ATUALIZAÇÃO DO CACHE */
-        .search-layer-layer-search-autocomplete { z-index: 1000; } 
+        /* V2.1 - CORREÇÃO DE ESTILO E Z-INDEX DO CAMPO DE BUSCA (SUBSTITUIÇÃO DA LINHA ANTERIOR DE CACHE) */
+        .search-layer-layer-search-autocomplete { 
+            z-index: 2001; /* Garante que fique acima do cabeçalho (z-index: 2000) */
+            top: 10px !important; /* Posiciona logo abaixo do topo */
+            /* Se for necessário fixar o posicionamento do controle de busca na esquerda */
+            left: 10px !important;
+            right: auto !important;
+        }
+
+        /* Certifica que o ícone de lupa e o botão estejam estilizados */
+        .search-layer-layer-search-autocomplete > button, 
+        .search-layer-layer-search-autocomplete > input {
+            background-color: var(--cor-secundaria) !important; /* Fundo cinza claro */
+            color: var(--cor-primaria) !important; /* Texto/Ícone azul */
+            border: 1px solid var(--cor-primaria) !important;
+        }
+        .search-layer-layer-search-autocomplete > button:hover {
+            background-color: rgba(248, 248, 248, 0.7)!important;
+        }
+
+        .search-layer-layer-search-autocomplete .autocomplete-list {
+            background-color: white;
+            border: 1px solid var(--cor-primaria);
+            color: #333;
+        }
         .search-layer-input-search {
             background-color: #f8f8f8!important;
         }
