@@ -34,7 +34,9 @@
             height: 100%; 
             display: flex; 
             flex-direction: column; 
-            overflow: hidden; 
+            /* ALTERAÇÃO 1: Permite rolagem vertical na página principal */
+            overflow-y: auto; 
+            overflow-x: hidden; /* Mantém a rolagem horizontal desativada */
             font-family: 'Inter', sans-serif; 
         }
         
@@ -110,7 +112,11 @@
         /* CONTÊINER PRINCIPAL: MAPA + DIVISÓRIA + SIDEBAR */
         #main-content {
             display: flex; 
-            flex-grow: 1; 
+            /* ALTERAÇÃO 2: Remove o flex-grow e a altura fixa, permitindo que a div cresça ou que a página role */
+            /* flex-grow: 1; REMOVIDO */
+            /* height: 100%; REMOVIDO */
+            min-height: calc(100vh - 84px); /* Garante que preencha a tela na altura mínima */
+            width: 100%; /* Garante a largura total */
             padding: 0; 
             background-color: #f0f0f0; 
         }
@@ -121,15 +127,17 @@
             cursor: ew-resize; /* Cursor para indicar redimensionamento horizontal */
             background-color: #d1d1d1;
             z-index: 1000; 
-            flex-shrink: 0; /* Impede que seja esmagada */
+            flex-shrink: 0; 
         }
 
         /* AJUSTE DO MAPA (40% inicial) */
         #map {
             width: 40%; /* Largura inicial */
-            height: 100%; 
+            height: auto; /* Permite que o mapa se adapte, mas manter 100% da altura do main-content é melhor para o mapa */
+            min-height: calc(100vh - 84px); /* Altura mínima para o mapa */
             margin: 0;
-            position: relative; 
+            position: sticky; /* Mantém o mapa visível enquanto a sidebar rola */
+            top: 84px; /* Altura do cabeçalho */
             background-color: white; 
             box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
         }
@@ -137,10 +145,10 @@
         /* ESTILO PARA A SIDEBAR (60% inicial) */
         #sidebar {
             width: 60%; /* Largura inicial */
-            height: 100%;
+            height: auto; /* Permite que a sidebar cresça */
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
-            overflow-y: auto; 
+            /* overflow-y: auto; REMOVIDO: A rolagem agora será na página inteira (body) */
             background-color: #ffffff; 
             padding-bottom: 20px; 
         }
@@ -167,7 +175,7 @@
 
         .weather-iframe-container {
             width: 100%;
-            height: 350px; /* Altura padrão para o Epagri */
+            height: 350px; 
             overflow: hidden;
             border-radius: 6px;
             display: flex;
@@ -177,7 +185,7 @@
         
         /* Estilo específico para o iframe da Defesa Civil */
         .defesacivil-container {
-            height: 450px; /* Altura maior para Defesa Civil */
+            height: 450px; 
         }
 
         .weather-iframe-container iframe {
@@ -243,17 +251,19 @@
                 overflow-y: auto;
             }
             #map {
-                width: 100% !important; /* Força 100% no mobile */
+                width: 100% !important; 
                 height: 400px; 
+                position: relative; /* Desativa o sticky em mobile */
+                top: auto;
                 box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
             }
             #sidebar {
-                width: 100% !important; /* Força 100% no mobile */
+                width: 100% !important; 
                 padding: 15px;
                 padding-bottom: 20px; 
             }
             #dragbar {
-                display: none; /* Esconde a barra arrastável em telas pequenas */
+                display: none; 
             }
             .card-row {
                 flex-wrap: wrap; 
@@ -379,6 +389,7 @@
                         Fonte: Defesa Civil de Santa Catarina. (Pode ser bloqueado por questões de segurança).
                     </p>
                 </div>
+
                 <div class="card-row">
                     <div class="stat-card">
                         Colaboradores <br> **120 AdviceHealth**
@@ -408,7 +419,12 @@
                         **Leste** <br> 15
                     </div>
                 </div>
-            </div>
+                
+                <div style="height: 1000px; background-color: #f0f0f0; border: 1px dashed #ccc; margin-top: 20px; padding: 20px; color: #333;">
+                    <h2>Espaço para Conteúdo Adicional (Gráficos/Tabelas)</h2>
+                    <p>Este bloco tem uma altura grande (1000px) e demonstra que a página inteira agora pode rolar para baixo, permitindo que você adicione mais elementos abaixo dos cards principais, enquanto o mapa tenta permanecer fixo na lateral esquerda (usando `position: sticky;`).</p>
+                </div>
+                </div>
         </div>
         
         <script src="resources/qgis2web_expressions.js"></script>
@@ -457,7 +473,6 @@
             
             layer_ESTADO_5.setStyle(function(feature) {
                 
-                // Mantenha 'NM_ESTADO' ou altere para o nome exato do atributo do estado no GeoJSON
                 const stateName = feature.get('NM_ESTADO'); 
 
                 let styles = [
