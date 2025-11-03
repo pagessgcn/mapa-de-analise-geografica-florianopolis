@@ -115,7 +115,7 @@
             background-color: #f0f0f0; 
         }
         
-        /* NOVO: Barra arrastável */
+        /* Barra arrastável */
         #dragbar {
             width: 8px; /* Largura da barra */
             cursor: ew-resize; /* Cursor para indicar redimensionamento horizontal */
@@ -142,7 +142,7 @@
             box-sizing: border-box;
             overflow-y: auto; 
             background-color: #ffffff; 
-            padding-bottom: 20px; /* Reduzido, pois o TTS sumiu */
+            padding-bottom: 20px; 
         }
         
         /* --- ESTILOS PARA CARDS (Estatísticas e Tempo) --- */
@@ -167,12 +167,17 @@
 
         .weather-iframe-container {
             width: 100%;
-            height: 350px; /* Altura do iframe Epagri */
+            height: 350px; /* Altura padrão para o Epagri */
             overflow: hidden;
             border-radius: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        
+        /* Estilo específico para o iframe da Defesa Civil */
+        .defesacivil-container {
+            height: 450px; /* Altura maior para Defesa Civil */
         }
 
         .weather-iframe-container iframe {
@@ -358,6 +363,22 @@
                     <p style="font-size: 0.8em; margin-top: 10px;">Fonte: CIRAM/Epagri - Previsão Municipal</p>
                 </div>
 
+                <div class="weather-card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
+                    <div class="weather-iframe-container defesacivil-container">
+                        <iframe 
+                            src="https://www.defesacivil.sc.gov.br/" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            sandbox="allow-scripts allow-same-origin allow-forms"
+                            title="Defesa Civil SC - Alertas e Notícias"
+                            style="height: 100%; width: 100%;">
+                        </iframe>
+                    </div>
+                    <p style="font-size: 0.8em; margin-top: 10px;">
+                        Fonte: Defesa Civil de Santa Catarina. (Pode ser bloqueado por questões de segurança).
+                    </p>
+                </div>
                 <div class="card-row">
                     <div class="stat-card">
                         Colaboradores <br> **120 AdviceHealth**
@@ -387,8 +408,7 @@
                         **Leste** <br> 15
                     </div>
                 </div>
-                
-                </div>
+            </div>
         </div>
         
         <script src="resources/qgis2web_expressions.js"></script>
@@ -419,7 +439,6 @@
             }
         });
         
-        // Adiciona o popup ao mapa (a variável 'map' é inicializada em qgis2web.js)
         if (typeof map !== 'undefined') {
             map.addOverlay(popup);
         }
@@ -429,6 +448,59 @@
             closer.blur();
             return false;
         };
+
+        // ===============================================
+        // IMPLEMENTAÇÃO DOS RÓTULOS (LABELS) NOS ESTADOS
+        // ===============================================
+
+        if (typeof layer_ESTADO_5 !== 'undefined') {
+            
+            layer_ESTADO_5.setStyle(function(feature) {
+                
+                // Mantenha 'NM_ESTADO' ou altere para o nome exato do atributo do estado no GeoJSON
+                const stateName = feature.get('NM_ESTADO'); 
+
+                let styles = [
+                    new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(21, 74, 147, 0.7)',
+                            lineDash: null,
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            width: 2
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 255, 0.01)'
+                        })
+                    })
+                ];
+
+                if (stateName) {
+                    styles.push(new ol.style.Style({
+                        text: new ol.style.Text({
+                            text: stateName, 
+                            font: 'bold 16px Inter', 
+                            fill: new ol.style.Fill({
+                                color: 'rgba(11, 31, 60, 1)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                width: 3
+                            }),
+                            textAlign: 'center',
+                            textBaseline: 'middle'
+                        })
+                    }));
+                }
+
+                return styles;
+            });
+        }
+
+        // ===============================================
+        // FIM DA IMPLEMENTAÇÃO DOS RÓTULOS
+        // ===============================================
+
 
         // --- FUNÇÃO DE REDIMENSIONAMENTO ARRASTÁVEL (DRAGBAR) ---
         const dragbar = document.getElementById('dragbar');
@@ -441,10 +513,8 @@
         // Inicia o arrasto
         dragbar.addEventListener('mousedown', function(e) {
             e.preventDefault();
-            // Verifica se o redimensionamento deve ser ativo (apenas em desktop)
             if (window.innerWidth > 1024) { 
                 isDragging = true;
-                // Adiciona classes para melhor feedback visual durante o arrasto
                 document.body.style.cursor = 'ew-resize';
                 mapContainer.style.userSelect = 'none';
                 sidebar.style.userSelect = 'none';
@@ -455,22 +525,16 @@
         document.addEventListener('mousemove', function(e) {
             if (!isDragging) return;
             
-            // Obtém a posição da barra principal e do mouse
             const mainRect = mainContent.getBoundingClientRect();
             let newMapWidth = e.clientX - mainRect.left;
-            
-            // Calcula a largura total
             const totalWidth = mainRect.width;
             
-            // Largura mínima do mapa e da sidebar (15% para evitar que desapareçam)
             const minWidth = totalWidth * 0.15;
             
             // Limita o novo tamanho
-            // Limite inferior (Map min 15%)
             if (newMapWidth < minWidth) {
                 newMapWidth = minWidth;
             }
-            // Limite superior (Sidebar min 15%)
             if (totalWidth - newMapWidth - dragbar.offsetWidth < minWidth) {
                 newMapWidth = totalWidth - minWidth - dragbar.offsetWidth;
             }
