@@ -1,16 +1,3 @@
-Você tem razão! O código que você forneceu já estava estruturalmente correto para o layout de duas colunas (mapa 60% / sidebar 40%) e incluía a tentativa inicial de quebrar o cache (.search-layer-layer-search-autocomplete { z-index: 1000; }).
-
-No entanto, com base na última imagem (image_7dc517.png), que mostra o widget de geocodificação do OpenLayers (o campo de busca no canto superior esquerdo) com a estilização básica de fundo branco e sobreposição parcial, precisamos aplicar as correções CSS mais robustas que mencionei anteriormente.
-
-Vou ajustar o CSS do seu código final (index.html) para incluir as correções completas para o campo de busca.
-
-🛠️ Código Final com Correções de Estilo e Cache (V2.1)
-Ajuste feito na seção <style> do seu index.html:
-
-Linha 47: Substituição da linha de cache antiga pelo novo bloco de correção do estilo e z-index do campo de busca.
-
-HTML
-
 <!doctype html>
 <html lang="en">
     <head>
