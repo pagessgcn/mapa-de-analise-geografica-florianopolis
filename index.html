@@ -17,7 +17,7 @@
         <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
 
         <style>
-        /* Define a cor azul escura original com 90% de opacidade para uso global */
+        /* --- VARIÁVEIS DE COR --- */
         :root {
             --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
             --cor-primaria: #154a93; /* Azul primário mais claro */
@@ -26,7 +26,7 @@
             --cor-ia: #ffc107; /* Amarelo/Dourado para destaque de IA */
         }
 
-        /* ESTILOS DE CORREÇÃO (Flexbox para Layout Principal) */
+        /* --- ESTILOS BASE E LAYOUT PRINCIPAL (FLEXBOX) --- */
         html, body {
             background-color: #ffffff;
             margin: 0; 
@@ -35,11 +35,10 @@
             display: flex; 
             flex-direction: column; 
             overflow: hidden; 
-            /* NOVA FONTE PARA O TEXTO GERAL */
-            font-family: 'Inter', sans-serif; /* Usando Inter */
+            font-family: 'Inter', sans-serif; 
         }
         
-        /* ESTILOS ORIGINAIS DO QGIS2WEB */
+        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB */
         .ol-control > * {
             background-color: #f8f8f8!important;
             color: #154a93!important;
@@ -48,15 +47,12 @@
         .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
             color: #154a93!important;
         }
-        /* V2.1 - CORREÇÃO DE ESTILO E Z-INDEX DO CAMPO DE BUSCA */
         .search-layer-layer-search-autocomplete { 
             z-index: 2001; 
             top: 10px !important; 
             left: 10px !important;
             right: auto !important;
         }
-
-        /* Certifica que o ícone de lupa e o botão estejam estilizados */
         .search-layer-layer-search-autocomplete > button, 
         .search-layer-layer-search-autocomplete > input {
             background-color: var(--cor-secundaria) !important; 
@@ -66,7 +62,6 @@
         .search-layer-layer-search-autocomplete > button:hover {
             background-color: rgba(248, 248, 248, 0.7)!important;
         }
-
         .search-layer-layer-search-autocomplete .autocomplete-list {
             background-color: white;
             border: 1px solid var(--cor-primaria);
@@ -83,7 +78,7 @@
             padding: 2px !important;
         } 
         
-        /* NOVO: Reposicionamento dos controles OpenLayers para o canto inferior direito do mapa */
+        /* Reposicionamento do controle de zoom */
         .ol-zoom {
             top: auto !important;
             left: auto !important;
@@ -112,7 +107,7 @@
             letter-spacing: 1px;
         }
         
-        /* NOVO CONTÊINER PRINCIPAL: Gerencia o layout horizontal de Mapa + Lateral */
+        /* CONTÊINER PRINCIPAL: MAPA + SIDEBAR */
         #main-content {
             display: flex; 
             flex-grow: 1; 
@@ -120,7 +115,7 @@
             background-color: #f0f0f0; 
         }
 
-        /* AJUSTE DO MAPA: Fica à esquerda, ocupa 60% da largura */
+        /* AJUSTE DO MAPA */
         #map {
             width: 60%; 
             height: 100%; 
@@ -131,7 +126,7 @@
             position: relative; 
         }
 
-        /* ESTILO PARA A ÁREA LATERAL (Sidebar): Fica à direita, ocupa 40% da largura */
+        /* ESTILO PARA A SIDEBAR */
         #sidebar {
             width: 40%; 
             height: 100%;
@@ -142,7 +137,7 @@
             padding-bottom: 120px; 
         }
         
-        /* --- ESTILOS PARA O CARD DE PREVISÃO DO TEMPO --- */
+        /* --- ESTILOS PARA CARDS (Estatísticas e Tempo) --- */
         .weather-card {
             background-color: var(--azul-escuro-transparente); 
             color: white;
@@ -178,7 +173,6 @@
             border: none;
         }
         
-        /* --- ESTILOS PARA AS CAIXAS (CARDS) --- */
         .card-row {
             display: flex;
             margin-bottom: 10px; 
@@ -251,7 +245,7 @@
         }
 
         .ia-card {
-            background-color: #f0f0f0; /* Fundo cinza suave */
+            background-color: #f0f0f0; 
             border-left: 5px solid var(--cor-ia);
         }
 
@@ -293,7 +287,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             margin-top: 10px;
-            white-space: pre-wrap; /* Mantém quebras de linha da IA */
+            white-space: pre-wrap; 
             font-size: 0.9em;
         }
 
@@ -325,7 +319,7 @@
             background-color: #c0392b;
         }
 
-        /* --- ESTILOS PARA BOTÕES DE SCROLL (SUBIR/DESCER) --- */
+        /* --- BOTÕES DE SCROLL --- */
 
         #scroll-controls-sidebar {
             position: fixed;
@@ -361,17 +355,13 @@
             background-color: #1a5aae;
         }
 
-        /* Media Query para responsividade do botão (mobile) */
+        /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
         @media (max-width: 1024px) {
             #scroll-controls-sidebar {
                 left: auto; 
                 right: 20px; 
                 bottom: 20px;
             }
-        }
-
-        /* Media Queries para Responsividade */
-        @media (max-width: 1024px) {
             #main-content {
                 flex-direction: column; 
                 overflow-y: auto;
@@ -404,19 +394,13 @@
                     flex-basis: 48%; 
                 }
             }
-            .large-area {
-                min-height: 300px;
-            }
-            
-            /* Ajuste o OL zoom para não conflitar no mobile */
             .ol-zoom {
                 right: 5px !important;
                 bottom: 5px !important;
             }
         }
-        /* FIM: Media Queries */
         
-        /* Estilos para o Popup do OpenLayers */
+        /* --- ESTILOS DO POPUP OPENLAYERS --- */
         .ol-popup {
             position: absolute;
             background-color: white;
@@ -468,7 +452,6 @@
             color: #333;
             font-size: 0.9em;
         }
-        /* FIM: Estilos para o Popup */
         </style>
     </head>
     <body>
@@ -501,6 +484,7 @@
                     </div>
                     <p style="font-size: 0.8em; margin-top: 10px;">Widget integrado para informações de risco.</p>
                 </div>
+
                 <div class="card-row">
                     <div class="stat-card half">
                         Colaboradores <br> **120 AdviceHealth**
@@ -595,7 +579,7 @@
             });
         }
         
-        // Inicialização de Popups OL (Simulado/Requerido pelo QGIS2Web)
+        // Inicialização de Popups OL (Requerido pelo QGIS2Web)
         var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
         var closer = document.getElementById('popup-closer');
@@ -606,14 +590,22 @@
                 duration: 250
             }
         });
-        map.addOverlay(popup);
+        // A variável 'map' é inicializada no qgis2web.js (ou similar)
+        // Certifique-se de que 'map' esteja disponível antes desta linha,
+        // mas em uma configuração padrão do QGIS2Web, isso geralmente é o caso.
+        if (typeof map !== 'undefined') {
+            map.addOverlay(popup);
+        } else {
+            console.error("O objeto 'map' do OpenLayers não foi encontrado.");
+        }
+        
         closer.onclick = function() {
             popup.setPosition(undefined);
             closer.blur();
             return false;
         };
 
-        // --- NOVO: FUNÇÕES DE INTEGRAÇÃO IA (GEMINI) E TTS ---
+        // --- NOVO: FUNÇÕES DE INTEGRAÇÃO IA (GEMINI - SIMULAÇÃO) E TTS ---
 
         const btnGerarResumo = document.getElementById('btn-gerar-resumo');
         const inputPrompt = document.getElementById('input-resumo-risco');
@@ -622,7 +614,7 @@
         const btnGerarAlerta = document.getElementById('btn-gerar-alerta');
         const inputAlertaTTS = document.getElementById('input-alerta-tts');
 
-        // 1. Lógica do Gerar Resumo (IA)
+        // 1. Lógica do Gerar Resumo (IA - Simulação)
         if (btnGerarResumo) {
             btnGerarResumo.addEventListener('click', () => {
                 const prompt = inputPrompt.value.trim();
@@ -632,12 +624,11 @@
                 }
                 
                 // Exibindo status de carregamento
-                outputResumo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando resumo... (Implementação da API Gemini necessária)';
+                outputResumo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando resumo... (Simulação: Implementação da API Gemini necessária em um backend)';
 
-                // AQUI SERÁ IMPLEMENTADA A FUNÇÃO ASYNC PARA CHAMAR A API GEMINI/OUTRA IA
-                // POR ENQUANTO, É UM SIMULADOR:
+                // SIMULADOR DE RESPOSTA DA IA
                 setTimeout(() => {
-                    const respostaIA = `**Resumo de Risco (Simulação)**: A previsão indica chuvas fortes nas próximas 48h, elevando o risco de deslizamento em encostas com baixa cobertura vegetal e áreas próximas a rios no Sul e Centro da Ilha. Recomenda-se evacuação preventiva das áreas de risco mais elevadas. ${prompt}`;
+                    const respostaIA = `**Resumo de Risco (Simulação)**: Análise de dados meteorológicos e topográficos indica um **Risco Alto** de enxurradas e deslizamentos na área do ${prompt}. Recomenda-se o monitoramento constante das cotas de rios e a preparação para evacuação imediata, especialmente nas áreas de ocupação informal próximas às encostas. Atualizado: ${new Date().toLocaleTimeString('pt-BR')}`;
                     outputResumo.innerHTML = respostaIA.replace(/\n/g, '<br>');
                 }, 2000); 
             });
@@ -652,13 +643,23 @@
                     return;
                 }
                 
+                // Cancelar qualquer fala anterior
+                window.speechSynthesis.cancel();
+
                 const utterance = new SpeechSynthesisUtterance(textoAlerta);
                 
-                // Opcional: Configurar idioma (por exemplo, pt-BR)
+                // Configurar idioma para português do Brasil
                 utterance.lang = 'pt-BR';
                 
+                // Configurar voz (opcional, pode variar por navegador)
+                const voices = window.speechSynthesis.getVoices();
+                const ptVoice = voices.find(voice => voice.lang === 'pt-BR');
+                if (ptVoice) {
+                    utterance.voice = ptVoice;
+                }
+                
                 window.speechSynthesis.speak(utterance);
-                alert(`Alerta de Voz Iniciado (TTS): "${textoAlerta}"`);
+                alert(`Alerta de Voz Iniciado (TTS) em Português: "${textoAlerta}"`);
             });
         } else if (btnGerarAlerta) {
             // Caso o navegador não suporte TTS
