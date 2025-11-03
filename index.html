@@ -107,34 +107,42 @@
             letter-spacing: 1px;
         }
         
-        /* CONTÊINER PRINCIPAL: MAPA + SIDEBAR */
+        /* CONTÊINER PRINCIPAL: MAPA + DIVISÓRIA + SIDEBAR */
         #main-content {
             display: flex; 
             flex-grow: 1; 
             padding: 0; 
             background-color: #f0f0f0; 
         }
-
-        /* AJUSTE DO MAPA (40%) */
-        #map {
-            width: 40%; /* ALTERADO DE 60% */
-            height: 100%; 
-            margin: 0;
-            flex-shrink: 0; 
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
-            background-color: white; 
-            position: relative; 
+        
+        /* NOVO: Barra arrastável */
+        #dragbar {
+            width: 8px; /* Largura da barra */
+            cursor: ew-resize; /* Cursor para indicar redimensionamento horizontal */
+            background-color: #d1d1d1;
+            z-index: 1000; 
+            flex-shrink: 0; /* Impede que seja esmagada */
         }
 
-        /* ESTILO PARA A SIDEBAR (60%) */
+        /* AJUSTE DO MAPA (40% inicial) */
+        #map {
+            width: 40%; /* Largura inicial */
+            height: 100%; 
+            margin: 0;
+            position: relative; 
+            background-color: white; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
+        }
+
+        /* ESTILO PARA A SIDEBAR (60% inicial) */
         #sidebar {
-            width: 60%; /* ALTERADO DE 40% */
+            width: 60%; /* Largura inicial */
             height: 100%;
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
             overflow-y: auto; 
             background-color: #ffffff; 
-            padding-bottom: 120px; 
+            padding-bottom: 20px; /* Reduzido, pois o TTS sumiu */
         }
         
         /* --- ESTILOS PARA CARDS (Estatísticas e Tempo) --- */
@@ -159,7 +167,7 @@
 
         .weather-iframe-container {
             width: 100%;
-            height: 350px; /* ALTERADO DE 450px */
+            height: 350px; /* Altura do iframe Epagri */
             overflow: hidden;
             border-radius: 6px;
             display: flex;
@@ -222,50 +230,6 @@
             border-radius: 8px;
             flex-grow: 1;
         }
-        
-        /* --- ESTILOS PARA SEÇÃO TTS (Text-to-Speech) --- */
-        .tts-card {
-            background-color: #f0f0f0;
-            border-left: 5px solid var(--cor-alerta);
-            margin-top: 10px;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .tts-card h3 {
-            color: var(--azul-escuro-transparente);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-            font-weight: 700;
-        }
-
-        .tts-input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-
-        .btn-tts {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.2s;
-            width: 100%;
-            background-color: var(--cor-alerta);
-            color: white;
-        }
-
-        .btn-tts:hover {
-            background-color: #c0392b;
-        }
 
         /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
         @media (max-width: 1024px) {
@@ -274,14 +238,17 @@
                 overflow-y: auto;
             }
             #map {
-                width: 100%; 
+                width: 100% !important; /* Força 100% no mobile */
                 height: 400px; 
-                box-shadow: 0 0 5px rgba(0,0,0,0.2); 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
             }
             #sidebar {
-                width: 100%; 
+                width: 100% !important; /* Força 100% no mobile */
                 padding: 15px;
-                padding-bottom: 120px; 
+                padding-bottom: 20px; 
+            }
+            #dragbar {
+                display: none; /* Esconde a barra arrastável em telas pequenas */
             }
             .card-row {
                 flex-wrap: wrap; 
@@ -372,6 +339,8 @@
                 </div>
             </div>
             
+            <div id="dragbar"></div> 
+
             <div id="sidebar">
                 
                 <div class="weather-card">
@@ -419,14 +388,7 @@
                     </div>
                 </div>
                 
-                <div class="tts-card">
-                    <h3><i class="fas fa-volume-up"></i> Sistema de Alerta por Voz (TTS)</h3>
-                    <p style="font-size: 0.9em;">Digite a mensagem de alerta de emergência.</p>
-                    <textarea id="input-alerta-tts" class="tts-input" rows="3" placeholder="Digite a mensagem de alerta aqui..."></textarea>
-                    <button id="btn-gerar-alerta" class="btn-tts"><i class="fas fa-bullhorn"></i> Gerar Alerta Agora</button>
                 </div>
-
-            </div>
         </div>
         
         <script src="resources/qgis2web_expressions.js"></script>
@@ -468,37 +430,68 @@
             return false;
         };
 
-        // --- FUNÇÃO DO ALERTA DE VOZ (TTS) ---
-        const btnGerarAlerta = document.getElementById('btn-gerar-alerta');
-        const inputAlertaTTS = document.getElementById('input-alerta-tts');
+        // --- FUNÇÃO DE REDIMENSIONAMENTO ARRASTÁVEL (DRAGBAR) ---
+        const dragbar = document.getElementById('dragbar');
+        const mapContainer = document.getElementById('map');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
 
-        if (btnGerarAlerta && 'speechSynthesis' in window) {
-            btnGerarAlerta.addEventListener('click', () => {
-                const textoAlerta = inputAlertaTTS.value.trim();
-                if (textoAlerta === "") {
-                    alert("Por favor, digite a mensagem de alerta.");
-                    return;
-                }
-                
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(textoAlerta);
-                
-                // Configurar idioma para português do Brasil
-                utterance.lang = 'pt-BR';
-                
-                const voices = window.speechSynthesis.getVoices();
-                const ptVoice = voices.find(voice => voice.lang === 'pt-BR');
-                if (ptVoice) {
-                    utterance.voice = ptVoice;
-                }
-                
-                window.speechSynthesis.speak(utterance);
-                alert(`Alerta de Voz Iniciado (TTS): "${textoAlerta}"`);
-            });
-        } else if (btnGerarAlerta) {
-            btnGerarAlerta.disabled = true;
-            btnGerarAlerta.innerHTML = 'TTS Não Suportado (Atualize o Navegador)';
-        }
+        let isDragging = false;
+        
+        // Inicia o arrasto
+        dragbar.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            // Verifica se o redimensionamento deve ser ativo (apenas em desktop)
+            if (window.innerWidth > 1024) { 
+                isDragging = true;
+                // Adiciona classes para melhor feedback visual durante o arrasto
+                document.body.style.cursor = 'ew-resize';
+                mapContainer.style.userSelect = 'none';
+                sidebar.style.userSelect = 'none';
+            }
+        });
+
+        // Durante o arrasto
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            
+            // Obtém a posição da barra principal e do mouse
+            const mainRect = mainContent.getBoundingClientRect();
+            let newMapWidth = e.clientX - mainRect.left;
+            
+            // Calcula a largura total
+            const totalWidth = mainRect.width;
+            
+            // Largura mínima do mapa e da sidebar (15% para evitar que desapareçam)
+            const minWidth = totalWidth * 0.15;
+            
+            // Limita o novo tamanho
+            // Limite inferior (Map min 15%)
+            if (newMapWidth < minWidth) {
+                newMapWidth = minWidth;
+            }
+            // Limite superior (Sidebar min 15%)
+            if (totalWidth - newMapWidth - dragbar.offsetWidth < minWidth) {
+                newMapWidth = totalWidth - minWidth - dragbar.offsetWidth;
+            }
+
+            // Aplica o novo tamanho (em pixels)
+            mapContainer.style.width = newMapWidth + 'px';
+            sidebar.style.width = (totalWidth - newMapWidth - dragbar.offsetWidth) + 'px';
+
+            // Dispara o evento de redimensionamento do mapa OpenLayers
+            if (typeof map !== 'undefined' && map) {
+                map.updateSize();
+            }
+        });
+
+        // Finaliza o arrasto
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+            document.body.style.cursor = 'default';
+            mapContainer.style.userSelect = 'auto';
+            sidebar.style.userSelect = 'auto';
+        });
 
         </script>
         
