@@ -1,502 +1,515 @@
+Certo. Você forneceu o código completo (HTML, CSS e JS) que já estava correto e pediu para "adicionar essa parte ao código".
+
+Como o código que você me enviou é a versão final e correta, o que farei é garantir que ele contenha a pequena modificação que discutimos para forçar a atualização do cache no GitHub Pages.
+
+A modificação para forçar o cache será no CSS, na linha 47, como você sugeriu.
+
+🛠️ Código Final com Alteração para Forçar Cache
+Este é o código completo e final com a alteração mínima no CSS (.search-layer-layer-search-autocomplete) que deve ser enviada para o GitHub para resolver o problema de cache.
+
+HTML
+
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        
-        <link rel="stylesheet" href="./resources/ol.css"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
-        <link rel="stylesheet" href="./resources/qgis2web.css">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-        
-        <style>
-        /* Define a cor azul escura original com 90% de opacidade para uso global */
-        :root {
-            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
-            --cor-primaria: #154a93; /* Azul primário mais claro */
-            --cor-secundaria: #f8f8f8; /* Cinza claro */
-            --cor-alerta: #e53e3e; /* Vermelho para alertas */
-        }
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
+        <link rel="stylesheet" href="./resources/ol.css"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
+        <link rel="stylesheet" href="./resources/qgis2web.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        
+        <style>
+        /* Define a cor azul escura original com 90% de opacidade para uso global */
+        :root {
+            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
+            --cor-primaria: #154a93; /* Azul primário mais claro */
+            --cor-secundaria: #f8f8f8; /* Cinza claro */
+            --cor-alerta: #e53e3e; /* Vermelho para alertas */
+        }
 
-        /* ESTILOS DE CORREÇÃO (Flexbox para Layout Principal) */
-        html, body {
-            background-color: #ffffff;
-            margin: 0; 
-            padding: 0;
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-            /* NOVA FONTE PARA O TEXTO GERAL */
-            font-family: 'Inter', sans-serif; /* Usando Inter */
-        }
-        
-        /* ESTILOS ORIGINAIS DO QGIS2WEB */
-        .ol-control > * {
-            background-color: #f8f8f8!important;
-            color: #154a93!important;
-            border-radius: 0px;
-        }
-        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
-            color: #154a93!important;
-        }
-        .search-layer-input-search {
-            background-color: #f8f8f8!important;
-        }
-        .ol-control > *:focus, .ol-control >*:hover {
-            background-color: rgba(248, 248, 248, 0.7)!important;
-        } 
-        .ol-control {
-            background-color: rgba(255,255,255,.4) !important;
-            padding: 2px !important;
-        } 
-        
-        /* NOVO: Reposicionamento dos controles OpenLayers para o canto inferior direito do mapa */
-        .ol-zoom {
-            top: auto !important;
-            left: auto !important;
-            bottom: 10px !important;
-            right: 10px !important;
-            position: absolute;
-        }
-        
-        /* ESTILOS DO CABEÇALHO */
-        #cabecalho-simples {
-            background-color: var(--azul-escuro-transparente); /* Aplicando azul transparente */
-            padding: 15px; 
-            text-align: center; 
-            width: 100%; 
-            box-sizing: border-box;
-            z-index: 2000;
-            /* Estilo para sombra suave na parte inferior do cabeçalho */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-        }
+        /* ESTILOS DE CORREÇÃO (Flexbox para Layout Principal) */
+        html, body {
+            background-color: #ffffff;
+            margin: 0; 
+            padding: 0;
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            /* NOVA FONTE PARA O TEXTO GERAL */
+            font-family: 'Inter', sans-serif; /* Usando Inter */
+        }
+        
+        /* ESTILOS ORIGINAIS DO QGIS2WEB */
+        .ol-control > * {
+            background-color: #f8f8f8!important;
+            color: #154a93!important;
+            border-radius: 0px;
+        }
+        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
+            color: #154a93!important;
+        }
+        /* V2.0 - FORÇANDO ATUALIZAÇÃO DO CACHE */
+        .search-layer-layer-search-autocomplete { z-index: 1000; } 
+        .search-layer-input-search {
+            background-color: #f8f8f8!important;
+        }
+        .ol-control > *:focus, .ol-control >*:hover {
+            background-color: rgba(248, 248, 248, 0.7)!important;
+        } 
+        .ol-control {
+            background-color: rgba(255,255,255,.4) !important;
+            padding: 2px !important;
+        } 
+        
+        /* NOVO: Reposicionamento dos controles OpenLayers para o canto inferior direito do mapa */
+        .ol-zoom {
+            top: auto !important;
+            left: auto !important;
+            bottom: 10px !important;
+            right: 10px !important;
+            position: absolute;
+        }
+        
+        /* ESTILOS DO CABEÇALHO */
+        #cabecalho-simples {
+            background-color: var(--azul-escuro-transparente); /* Aplicando azul transparente */
+            padding: 15px; 
+            text-align: center; 
+            width: 100%; 
+            box-sizing: border-box;
+            z-index: 2000;
+            /* Estilo para sombra suave na parte inferior do cabeçalho */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
 
-        #cabecalho-simples h1 {
-            font-size: 24px; 
-            color: white; 
-            font-weight: bold; 
-            margin: 0; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        /* NOVO CONTÊINER PRINCIPAL: Gerencia o layout horizontal de Mapa + Lateral */
-        #main-content {
-            display: flex; 
-            flex-grow: 1; 
-            padding: 0; 
-            background-color: #f0f0f0; 
-        }
+        #cabecalho-simples h1 {
+            font-size: 24px; 
+            color: white; 
+            font-weight: bold; 
+            margin: 0; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* NOVO CONTÊINER PRINCIPAL: Gerencia o layout horizontal de Mapa + Lateral */
+        #main-content {
+            display: flex; 
+            flex-grow: 1; 
+            padding: 0; 
+            background-color: #f0f0f0; 
+        }
 
-        /* AJUSTE DO MAPA: Fica à esquerda, ocupa 60% da largura */
-        #map {
-            width: 60%; 
-            height: 100%; 
-            margin: 0;
-            flex-shrink: 0; 
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
-            background-color: white; 
-            position: relative; /* Necessário para posicionar o popup e controles OL */
-        }
+        /* AJUSTE DO MAPA: Fica à esquerda, ocupa 60% da largura */
+        #map {
+            width: 60%; 
+            height: 100%; 
+            margin: 0;
+            flex-shrink: 0; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
+            background-color: white; 
+            position: relative; /* Necessário para posicionar o popup e controles OL */
+        }
 
-        /* ESTILO PARA A ÁREA LATERAL (Sidebar): Fica à direita, ocupa 40% da largura */
-        #sidebar {
-            width: 40%; 
-            height: 100%;
-            padding: 15px 15px 15px 10px; 
-            box-sizing: border-box;
-            overflow-y: auto; /* Permite scroll nesta área */
-            background-color: #ffffff; 
-            padding-bottom: 120px; /* Espaço para os botões de scroll fixos */
-        }
-        
-        /* --- ESTILOS PARA O CARD DE PREVISÃO DO TEMPO --- */
-        .weather-card {
-            background-color: var(--azul-escuro-transparente); /* Usando a cor de fundo do cabeçalho */
-            color: white;
-            padding: 15px;
-            box-sizing: border-box;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 20px; /* Adiciona espaço abaixo do card */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+        /* ESTILO PARA A ÁREA LATERAL (Sidebar): Fica à direita, ocupa 40% da largura */
+        #sidebar {
+            width: 40%; 
+            height: 100%;
+            padding: 15px 15px 15px 10px; 
+            box-sizing: border-box;
+            overflow-y: auto; /* Permite scroll nesta área */
+            background-color: #ffffff; 
+            padding-bottom: 120px; /* Espaço para os botões de scroll fixos */
+        }
+        
+        /* --- ESTILOS PARA O CARD DE PREVISÃO DO TEMPO --- */
+        .weather-card {
+            background-color: var(--azul-escuro-transparente); /* Usando a cor de fundo do cabeçalho */
+            color: white;
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px; /* Adiciona espaço abaixo do card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-        .weather-card h3 {
-            font-weight: 700;
-            font-size: 1.5em;
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #ffd700; /* Destaque em amarelo (ouro) */
-        }
+        .weather-card h3 {
+            font-weight: 700;
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #ffd700; /* Destaque em amarelo (ouro) */
+        }
 
-        /* Estilo para iframe de previsão para garantir que ele se ajuste */
-        .weather-iframe-container {
-            width: 100%;
-            /* Altura definida para um widget de clima básico. Ajuste se o seu widget for diferente. */
-            height: 250px; 
-            overflow: hidden;
-            border-radius: 6px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        /* Estilo para iframe de previsão para garantir que ele se ajuste */
+        .weather-iframe-container {
+            width: 100%;
+            /* Altura definida para um widget de clima básico. Ajuste se o seu widget for diferente. */
+            height: 250px; 
+            overflow: hidden;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        .weather-iframe-container iframe {
-            width: 100%; 
-            height: 100%;
-            border: none;
-        }
-        
-        /* --- ESTILOS PARA AS CAIXAS (CARDS) --- */
+        .weather-iframe-container iframe {
+            width: 100%; 
+            height: 100%;
+            border: none;
+        }
+        
+        /* --- ESTILOS PARA AS CAIXAS (CARDS) --- */
 
-        /* Contêiner para organizar caixas na horizontal */
-        .card-row {
-            display: flex;
-            margin-bottom: 10px; 
-            width: 100%;
-            gap: 10px; 
-        }
+        /* Contêiner para organizar caixas na horizontal */
+        .card-row {
+            display: flex;
+            margin-bottom: 10px; 
+            width: 100%;
+            gap: 10px; 
+        }
 
-        /* Estilo base para todas as caixas */
-        .stat-card {
-            background-color: transparent; 
-            color: var(--azul-escuro-transparente); 
-            padding: 15px; 
-            box-sizing: border-box;
-            text-align: center;
-            line-height: 1.4; 
-            font-size: 16px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--azul-escuro-transparente); 
-            border-radius: 8px; 
-            transition: all 0.3s ease; 
-        }
-        
-        .stat-card.half {
-            flex-basis: 50%;
-            flex-grow: 1;
-        }
+        /* Estilo base para todas as caixas */
+        .stat-card {
+            background-color: transparent; 
+            color: var(--azul-escuro-transparente); 
+            padding: 15px; 
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 1.4; 
+            font-size: 16px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--azul-escuro-transparente); 
+            border-radius: 8px; 
+            transition: all 0.3s ease; 
+        }
+        
+        .stat-card.half {
+            flex-basis: 50%;
+            flex-grow: 1;
+        }
 
-        .stat-card.quarter {
-            flex-basis: 25%;
-            flex-grow: 1;
-        }
+        .stat-card.quarter {
+            flex-basis: 25%;
+            flex-grow: 1;
+        }
 
-        .stat-card.full {
-            flex-basis: 100%;
-            flex-grow: 1;
-        }
+        .stat-card.full {
+            flex-basis: 100%;
+            flex-grow: 1;
+        }
 
-        .title-card {
-            font-weight: 600; 
-            font-size: 18px; 
-            padding: 15px; 
-            background-color: var(--azul-escuro-transparente); 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            text-transform: uppercase;
-        }
+        .title-card {
+            font-weight: 600; 
+            font-size: 18px; 
+            padding: 15px; 
+            background-color: var(--azul-escuro-transparente); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            text-transform: uppercase;
+        }
 
-        .region-row {
-            margin-bottom: 10px;
-            gap: 10px; 
-        }
-        .region-card {
-            background-color: var(--azul-escuro-transparente); 
-            color: white; 
-            font-size: 18px; 
-            padding: 20px 10px; 
-            border: none; 
-            border-radius: 8px;
-        }
+        .region-row {
+            margin-bottom: 10px;
+            gap: 10px; 
+        }
+        .region-card {
+            background-color: var(--azul-escuro-transparente); 
+            color: white; 
+            font-size: 18px; 
+            padding: 20px 10px; 
+            border: none; 
+            border-radius: 8px;
+        }
 
-        /* --- ESTILOS PARA BOTÕES DE SCROLL (SUBIR/DESCER) --- */
+        /* --- ESTILOS PARA BOTÕES DE SCROLL (SUBIR/DESCER) --- */
 
-        /* Contêiner de botões fixos na lateral direita */
-        #scroll-controls-sidebar {
-            position: fixed;
-            /* Calcula a posição: 60% da tela é o mapa. O botão deve começar logo após o mapa + um offset de 20px. */
-            left: calc(60% + 20px); 
-            bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 3000;
-        }
+        /* Contêiner de botões fixos na lateral direita */
+        #scroll-controls-sidebar {
+            position: fixed;
+            /* Calcula a posição: 60% da tela é o mapa. O botão deve começar logo após o mapa + um offset de 20px. */
+            left: calc(60% + 20px); 
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 3000;
+        }
 
-        .scroll-button {
-            background-color: var(--cor-primaria);
-            color: white;
-            width: 48px;
-            height: 48px;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4em;
-        }
+        .scroll-button {
+            background-color: var(--cor-primaria);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+        }
 
-        .scroll-button:active {
-            transform: scale(0.95);
-        }
+        .scroll-button:active {
+            transform: scale(0.95);
+        }
 
-        .scroll-button:hover {
-            background-color: #1a5aae;
-        }
+        .scroll-button:hover {
+            background-color: #1a5aae;
+        }
 
-        /* Media Query para responsividade do botão (mobile) */
-        @media (max-width: 1024px) {
-            #scroll-controls-sidebar {
-                left: auto; /* Remove o cálculo baseado em 60% */
-                right: 20px; /* Ancorado na direita da viewport */
-                bottom: 20px;
-            }
-        }
+        /* Media Query para responsividade do botão (mobile) */
+        @media (max-width: 1024px) {
+            #scroll-controls-sidebar {
+                left: auto; /* Remove o cálculo baseado em 60% */
+                right: 20px; /* Ancorado na direita da viewport */
+                bottom: 20px;
+            }
+        }
 
-        /* Media Queries para Responsividade */
-        @media (max-width: 1024px) {
-            #main-content {
-                flex-direction: column; 
-                overflow-y: auto;
-            }
-            #map {
-                width: 100%; 
-                height: 400px; 
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
-            }
-            #sidebar {
-                width: 100%; 
-                padding: 15px;
-                padding-bottom: 120px; /* Mantém o espaço extra no mobile */
-            }
-            .card-row {
-                flex-wrap: wrap; 
-            }
-            .stat-card.half, .stat-card.quarter, .stat-card.full {
-                flex-basis: 100%; 
-                margin-bottom: 10px;
-            }
-            .stat-card.quarter, .region-card {
-                flex-basis: 48%; 
-            }
-            .region-row .stat-card.quarter {
-                flex-basis: 23%; 
-            }
-             @media (max-width: 600px) {
-                 .region-row .stat-card.quarter {
-                    flex-basis: 48%; 
-                }
-            }
-            .large-area {
-                min-height: 300px;
-            }
-            
-            /* Ajuste o OL zoom para não conflitar no mobile */
-            .ol-zoom {
-                right: 5px !important;
-                bottom: 5px !important;
-            }
-        }
-        /* FIM: Media Queries */
-        
-        /* Estilos para o Popup do OpenLayers (melhorando a aparência) */
-        .ol-popup {
-            position: absolute;
-            background-color: white;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
-            min-width: 250px;
-            font-family: 'Inter', sans-serif;
-            z-index: 100;
-        }
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
-        }
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
-        }
-        .ol-popup-closer {
-            text-decoration: none;
-            position: absolute;
-            top: 2px;
-            right: 8px;
-            color: #333;
-            font-size: 1.2em;
-        }
-        .ol-popup-closer:after {
-            content: "✖";
-        }
-        #popup-content {
-            max-height: 200px;
-            overflow-y: auto;
-            color: #333;
-            font-size: 0.9em;
-        }
-        /* FIM: Estilos para o Popup */
-        </style>
-        <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
-    </head>
-    <body>
-        
-        <header id="cabecalho-simples">
-            <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
-        </header>
-        <div id="main-content">
-            
-            <div id="map">
-                <div id="popup" class="ol-popup">
-                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                    <div id="popup-content"></div>
-                </div>
-            </div>
-            
-            <div id="sidebar">
-                
-                <div class="weather-card">
-                    <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (Florianópolis)</h3>
-                    <div class="weather-iframe-container">
-                        <iframe 
-                            src="https://www.accuweather.com/pt/br/florian%C3%B3polis/43118/current-weather/43118" 
-                            frameborder="0" 
-                            allowfullscreen 
-                            sandbox="allow-scripts allow-same-origin"
-                            title="Previsão do Tempo"
-                            style="height: 250px; width: 100%;">
-                        </iframe>
-                    </div>
-                    <p style="font-size: 0.8em; margin-top: 10px;">Widget integrado para informações de risco.</p>
-                </div>
-                <div class="card-row">
-                    <div class="stat-card half">
-                        Colaboradores <br> **120 AdviceHealth**
-                    </div>
-                    <div class="stat-card half">
-                        Colaboradores <br> **95 Mapeados**
-                    </div>
-                </div>
+        /* Media Queries para Responsividade */
+        @media (max-width: 1024px) {
+            #main-content {
+                flex-direction: column; 
+                overflow-y: auto;
+            }
+            #map {
+                width: 100%; 
+                height: 400px; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+            }
+            #sidebar {
+                width: 100%; 
+                padding: 15px;
+                padding-bottom: 120px; /* Mantém o espaço extra no mobile */
+            }
+            .card-row {
+                flex-wrap: wrap; 
+            }
+            .stat-card.half, .stat-card.quarter, .stat-card.full {
+                flex-basis: 100%; 
+                margin-bottom: 10px;
+            }
+            .stat-card.quarter, .region-card {
+                flex-basis: 48%; 
+            }
+            .region-row .stat-card.quarter {
+                flex-basis: 23%; 
+            }
+             @media (max-width: 600px) {
+                 .region-row .stat-card.quarter {
+                    flex-basis: 48%; 
+                }
+            }
+            .large-area {
+                min-height: 300px;
+            }
+            
+            /* Ajuste o OL zoom para não conflitar no mobile */
+            .ol-zoom {
+                right: 5px !important;
+                bottom: 5px !important;
+            }
+        }
+        /* FIM: Media Queries */
+        
+        /* Estilos para o Popup do OpenLayers (melhorando a aparência) */
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 250px;
+            font-family: 'Inter', sans-serif;
+            z-index: 100;
+        }
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            color: #333;
+            font-size: 1.2em;
+        }
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+        #popup-content {
+            max-height: 200px;
+            overflow-y: auto;
+            color: #333;
+            font-size: 0.9em;
+        }
+        /* FIM: Estilos para o Popup */
+        </style>
+        <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
+    </head>
+    <body>
+        
+        <header id="cabecalho-simples">
+            <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
+        </header>
+        <div id="main-content">
+            
+            <div id="map">
+                <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content"></div>
+                </div>
+            </div>
+            
+            <div id="sidebar">
+                
+                <div class="weather-card">
+                    <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (Florianópolis)</h3>
+                    <div class="weather-iframe-container">
+                        <iframe 
+                            src="https://www.accuweather.com/pt/br/florian%C3%B3polis/43118/current-weather/43118" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            sandbox="allow-scripts allow-same-origin"
+                            title="Previsão do Tempo"
+                            style="height: 250px; width: 100%;">
+                        </iframe>
+                    </div>
+                    <p style="font-size: 0.8em; margin-top: 10px;">Widget integrado para informações de risco.</p>
+                </div>
+                <div class="card-row">
+                    <div class="stat-card half">
+                        Colaboradores <br> **120 AdviceHealth**
+                    </div>
+                    <div class="stat-card half">
+                        Colaboradores <br> **95 Mapeados**
+                    </div>
+                </div>
 
-                <div class="card-row">
-                    <div class="stat-card full title-card">
-                        Colaboradores por Região da Grande Florianópolis
-                    </div>
-                </div>
+                <div class="card-row">
+                    <div class="stat-card full title-card">
+                        Colaboradores por Região da Grande Florianópolis
+                    </div>
+                </div>
 
-                <div class="card-row region-row">
-                    <div class="stat-card quarter region-card">
-                        **Norte** <br> 15
-                    </div>
-                    <div class="stat-card quarter region-card">
-                        **Sul** <br> 40
-                    </div>
-                    <div class="stat-card quarter region-card">
-                        **Centro** <br> 25
-                    </div>
-                    <div class="stat-card quarter region-card">
-                        **Leste** <br> 15
-                    </div>
-                </div>
-                
-                </div>
-        </div>
-        
-        <div id="scroll-controls-sidebar">
-            <button id="scroll-to-top" class="scroll-button" aria-label="Rolar para o topo">
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            <button id="scroll-to-bottom" class="scroll-button" aria-label="Rolar para o fundo">
-                <i class="fas fa-arrow-down"></i>
-            </button>
-        </div>
+                <div class="card-row region-row">
+                    <div class="stat-card quarter region-card">
+                        **Norte** <br> 15
+                    </div>
+                    <div class="stat-card quarter region-card">
+                        **Sul** <br> 40
+                    </div>
+                    <div class="stat-card quarter region-card">
+                        **Centro** <br> 25
+                    </div>
+                    <div class="stat-card quarter region-card">
+                        **Leste** <br> 15
+                    </div>
+                </div>
+                
+                </div>
+        </div>
+        
+        <div id="scroll-controls-sidebar">
+            <button id="scroll-to-top" class="scroll-button" aria-label="Rolar para o topo">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            <button id="scroll-to-bottom" class="scroll-button" aria-label="Rolar para o fundo">
+                <i class="fas fa-arrow-down"></i>
+            </button>
+        </div>
 
 
-        <script src="resources/qgis2web_expressions.js"></script>
-        <script src="resources/proj4.js"></script>
-        <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
-        <script src="./resources/functions.js"></script>
-        <script src="./resources/ol.js"></script>
-        <script src="./resources/ol-layerswitcher.js"></script>
-        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
+        <script src="resources/qgis2web_expressions.js"></script>
+        <script src="resources/proj4.js"></script>
+        <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
+        <script src="./resources/functions.js"></script>
+        <script src="./resources/ol.js"></script>
+        <script src="./resources/ol-layerswitcher.js"></script>
+        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
 
-        <script src="layers/temp1_0.js"></script><script src="layers/moradias_geocodificado_1.js"></script><script src="layers/moradias_geocodificado_2.js"></script><script src="layers/moradias_geocodificado_3.js"></script><script src="layers/BRASIL_4.js"></script><script src="layers/ESTADO_5.js"></script><script src="layers/MUNICIPIOS_6.js"></script><script src="layers/BAIRROS_7.js"></script><script src="layers/MUNICIPVIZINHOS_8.js"></script><script src="layers/MOVIMENTODEMASSA_9.js"></script><script src="layers/BACIAS_10.js"></script><script src="layers/ENXURRADAS_11.js"></script><script src="layers/INUNDACAO_12.js"></script><script src="layers/CAPITAIS_13.js"></script><script src="layers/QGISPROJECT_14.js"></script><script src="layers/CAMADACOLAB_15.js"></script>
-        <script src="styles/temp1_0_style.js"></script><script src="styles/moradias_geocodificado_1_style.js"></script><script src="styles/moradias_geocodificado_2_style.js"></script><script src="styles/moradias_geocodificado_3_style.js"></script><script src="styles/BRASIL_4_style.js"></script><script src="styles/ESTADO_5_style.js"></script><script src="styles/MUNICIPIOS_6_style.js"></script><script src="styles/BAIRROS_7_style.js"></script><script src="styles/MUNICIPVIZINHOS_8_style.js"></script><script src="styles/MOVIMENTODEMASSA_9_style.js"></script><script src="styles/BACIAS_10_style.js"></script><script src="styles/ENXURRADAS_11_style.js"></script><script src="styles/INUNDACAO_12_style.js"></script><script src="styles/CAPITAIS_13_style.js"></script><script src="styles/QGISPROJECT_14_style.js"></script><script src="styles/CAMADACOLAB_15_style.js"></script>
-        <script src="./layers/layers.js" type="text/javascript"></script> 
-        <script src="./resources/Autolinker.min.js"></script>
-        <script src="./resources/qgis2web.js"></script>
-        
-        <script type="text/javascript">
-        
-        // --- FUNÇÕES DE SCROLL DA SIDEBAR ---
-        const sidebar = document.getElementById('sidebar');
-        
-        // Verifica se os elementos existem antes de adicionar event listeners
-        const scrollTopBtn = document.getElementById('scroll-to-top');
-        const scrollBottomBtn = document.getElementById('scroll-to-bottom');
+        <script src="layers/temp1_0.js"></script><script src="layers/moradias_geocodificado_1.js"></script><script src="layers/moradias_geocodificado_2.js"></script><script src="layers/moradias_geocodificado_3.js"></script><script src="layers/BRASIL_4.js"></script><script src="layers/ESTADO_5.js"></script><script src="layers/MUNICIPIOS_6.js"></script><script src="layers/BAIRROS_7.js"></script><script src="layers/MUNICIPVIZINHOS_8.js"></script><script src="layers/MOVIMENTODEMASSA_9.js"></script><script src="layers/BACIAS_10.js"></script><script src="layers/ENXURRADAS_11.js"></script><script src="layers/INUNDACAO_12.js"></script><script src="layers/CAPITAIS_13.js"></script><script src="layers/QGISPROJECT_14.js"></script><script src="layers/CAMADACOLAB_15.js"></script>
+        <script src="styles/temp1_0_style.js"></script><script src="styles/moradias_geocodificado_1_style.js"></script><script src="styles/moradias_geocodificado_2_style.js"></script><script src="styles/moradias_geocodificado_3_style.js"></script><script src="styles/BRASIL_4_style.js"></script><script src="styles/ESTADO_5_style.js"></script><script src="styles/MUNICIPIOS_6_style.js"></script><script src="styles/BAIRROS_7_style.js"></script><script src="styles/MUNICIPVIZINHOS_8_style.js"></script><script src="styles/MOVIMENTODEMASSA_9_style.js"></script><script src="styles/BACIAS_10_style.js"></script><script src="styles/ENXURRADAS_11_style.js"></script><script src="styles/INUNDACAO_12_style.js"></script><script src="styles/CAPITAIS_13_style.js"></script><script src="styles/QGISPROJECT_14_style.js"></script><script src="styles/CAMADACOLAB_15_style.js"></script>
+        <script src="./layers/layers.js" type="text/javascript"></script> 
+        <script src="./resources/Autolinker.min.js"></script>
+        <script src="./resources/qgis2web.js"></script>
+        
+        <script type="text/javascript">
+        
+        // --- FUNÇÕES DE SCROLL DA SIDEBAR ---
+        const sidebar = document.getElementById('sidebar');
+        
+        // Verifica se os elementos existem antes de adicionar event listeners
+        const scrollTopBtn = document.getElementById('scroll-to-top');
+        const scrollBottomBtn = document.getElementById('scroll-to-bottom');
 
-        if (scrollTopBtn) {
-            scrollTopBtn.addEventListener('click', () => {
-                sidebar.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
-        
-        if (scrollBottomBtn) {
-            scrollBottomBtn.addEventListener('click', () => {
-                sidebar.scrollTo({ top: sidebar.scrollHeight, behavior: 'smooth' });
-            });
-        }
-        
-        // Inicialização de Popups OL (Simulado/Requerido pelo QGIS2Web)
-        var container = document.getElementById('popup');
-        var content = document.getElementById('popup-content');
-        var closer = document.getElementById('popup-closer');
-        var popup = new ol.Overlay({
-            element: container,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
-        });
-        map.addOverlay(popup);
-        closer.onclick = function() {
-            popup.setPosition(undefined);
-            closer.blur();
-            return false;
-        };
+        if (scrollTopBtn) {
+            scrollTopBtn.addEventListener('click', () => {
+                sidebar.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        if (scrollBottomBtn) {
+            scrollBottomBtn.addEventListener('click', () => {
+                sidebar.scrollTo({ top: sidebar.scrollHeight, behavior: 'smooth' });
+            });
+        }
+        
+        // Inicialização de Popups OL (Simulado/Requerido pelo QGIS2Web)
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+        var popup = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        });
+        map.addOverlay(popup);
+        closer.onclick = function() {
+            popup.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
 
-        </script>
+        </script>
 
-    </body>
+    </body>
 </html>
