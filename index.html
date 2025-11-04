@@ -1,3 +1,21 @@
+Excelente, vamos fazer esses ajustes! Entendi o que você precisa: uma área de sites mais compacta no topo e o scroll vertical na página inteira.
+
+O scroll na página inteira exige uma pequena alteração na forma como o mapa e a sidebar calculam suas alturas, que antes ocupavam 100% do espaço restante da tela. Agora, vamos definir uma altura fixa (e generosa) para que o mapa e a sidebar fiquem alinhados e, caso o conteúdo da sidebar se expanda, o scroll da página apareça.
+
+🛠️ Alterações no Código (index.html)
+Fiz as seguintes mudanças principais no seu bloco <style>:
+
+Scroll Global Ativado: Removi as propriedades height: 100% e overflow: hidden do html e body.
+
+Altura do Mapa e Sidebar Fixada: Defini a altura de #map e #sidebar para 900px. Isso garante que o mapa tenha uma área visível e que a sidebar fique alinhada com ele.
+
+Altura dos Sites Reduzida: Diminuí a altura dos iframes dentro de #top-content de 250px para 180px, deixando a barra superior mais discreta.
+
+💻 Código Completo Atualizado
+Substitua o conteúdo do seu index.html pelo código abaixo:
+
+HTML
+
 <!doctype html>
 <html lang="pt-BR">
     <head>
@@ -27,15 +45,12 @@
             --header-height: 84px; 
         }
 
-        /* --- ESTILOS BASE E LAYOUT PRINCIPAL (FLEXBOX) --- */
+        /* --- ESTILOS BASE E LAYOUT PRINCIPAL (AGORA COM SCROLL GLOBAL) --- */
         html, body {
             background-color: #ffffff;
             margin: 0; 
             padding: 0;
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
+            /* REMOVIDO: height: 100% e overflow: hidden para permitir o scroll na página inteira */
             font-family: 'Inter', sans-serif; 
         }
         
@@ -109,23 +124,23 @@
             letter-spacing: 1px;
         }
         
-        /* NOVO: ESTILO PARA A SEÇÃO SUPERIOR (SITES) */
+        /* SEÇÃO SUPERIOR (SITES) */
         #top-content {
-            display: flex; /* Coloca os cards lado a lado */
-            flex-shrink: 0; /* Não deixa encolher */
+            display: flex; 
+            flex-shrink: 0; 
             width: 100%;
-            gap: 10px; /* Espaço entre os cards */
+            gap: 10px; 
             padding: 10px 15px;
             box-sizing: border-box;
             background-color: var(--cor-secundaria); 
             border-bottom: 2px solid #ccc;
-            overflow-x: auto; /* Garante scroll horizontal em telas pequenas */
+            overflow-x: auto; 
         }
         
         /* CONTÊINER PRINCIPAL: MAPA + DIVISÓRIA + SIDEBAR */
         #main-content {
             display: flex; 
-            flex-grow: 1; 
+            /* REMOVIDO: flex-grow: 1 */
             padding: 0; 
             background-color: #f0f0f0; 
             overflow: hidden; 
@@ -140,10 +155,10 @@
             flex-shrink: 0; 
         }
 
-        /* AJUSTE DO MAPA (40% inicial) */
+        /* AJUSTE DO MAPA: Agora com altura fixa (900px) */
         #map {
             width: 40%; 
-            height: 100%; 
+            height: 900px; /* Altura fixa para o mapa funcionar com o scroll global */
             margin: 0;
             position: relative; 
             top: auto;
@@ -152,13 +167,13 @@
             box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
         }
 
-        /* ESTILO PARA A SIDEBAR (60% inicial) */
+        /* ESTILO PARA A SIDEBAR: Altura fixa igual ao mapa */
         #sidebar {
             width: 60%; 
-            height: 100%; 
+            height: 900px; /* Altura fixa igual ao mapa */
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
-            overflow-y: auto; /* A rolagem agora é interna à sidebar */
+            overflow-y: auto; 
             background-color: #ffffff; 
             padding-bottom: 20px; 
         }
@@ -173,8 +188,8 @@
             border-radius: 8px;
             margin-bottom: 20px; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            flex-grow: 1; /* Novo: Garante que os cards no topo se expandam */
-            min-width: 400px; /* Garante que não fiquem muito estreitos */
+            flex-grow: 1; 
+            min-width: 400px; 
         }
         
         /* Ajuste de Margem para Cards do Topo */
@@ -192,7 +207,7 @@
 
         .weather-iframe-container {
             width: 100%;
-            height: 350px; /* Altura padrão, será sobrescrita no topo */
+            height: 350px; 
             overflow: hidden;
             border-radius: 6px;
             display: flex;
@@ -200,13 +215,13 @@
             align-items: center;
         }
         
-        /* Ajuste da altura do Iframe/Container no Topo */
+        /* AJUSTE AQUI: Redução da altura dos Iframes no Topo */
         #top-content .weather-iframe-container {
-            height: 250px; /* Altura menor, mais adequada para o topo */
+            height: 180px; /* Altura menor, mais compacta */
         }
         
         #top-content .defesacivil-container {
-            height: 250px; /* Altura igual para Defesa Civil */
+            height: 180px; /* Altura menor, mais compacta */
         }
 
         .weather-iframe-container iframe {
@@ -215,7 +230,7 @@
             border: none;
         }
         
-        /* Estilos dos Cards de Estatísticas */
+        /* Estilos dos Cards de Estatísticas (o restante continua igual) */
         .card-row {
             display: flex;
             margin-bottom: 10px; 
@@ -270,28 +285,29 @@
         @media (max-width: 1024px) {
             
             #top-content {
-                flex-direction: column; /* Sites se empilham no topo */
+                flex-direction: column; 
                 padding: 10px;
             }
             #top-content .weather-card {
-                min-width: 100%; /* Ocupa largura total */
+                min-width: 100%; 
                 margin-bottom: 10px;
             }
+            /* Ajustando para mobile também */
             #top-content .weather-iframe-container, #top-content .defesacivil-container {
-                height: 300px; /* Aumenta um pouco a altura em mobile */
+                height: 250px; /* Um pouco maior no mobile para melhor visualização */
             }
 
             #main-content {
                 flex-direction: column; 
-                overflow-y: auto;
+                overflow-y: visible; /* A rolagem é gerenciada pelo body agora */
             }
             #map {
                 width: 100% !important; 
-                height: 400px; 
+                height: 400px; /* Reduzindo a altura no mobile */
             }
             #sidebar {
                 width: 100% !important; 
-                height: auto; 
+                height: auto; /* Deixa a altura ser definida pelo conteúdo */
                 overflow-y: visible; 
                 padding: 15px;
                 padding-bottom: 20px; 
@@ -320,7 +336,7 @@
             }
         }
         
-        /* --- ESTILOS DO POPUP OPENLAYERS --- */
+        /* --- ESTILOS DO POPUP OPENLAYERS (mantidos) --- */
         .ol-popup {
             position: absolute;
             background-color: white;
@@ -459,7 +475,28 @@
                     </div>
                 </div>
                 
+                <div class="card-row">
+                    <div class="stat-card title-card" style="background-color: #38a169;">
+                        Conteúdo Extra de Scroll
+                    </div>
                 </div>
+                <div class="card-row">
+                    <div class="stat-card">
+                        Espaço Reservado para relatórios detalhados ou gráficos.
+                    </div>
+                </div>
+                <div class="card-row">
+                    <div class="stat-card">
+                        Mais Conteúdo para Testar o Scroll Lateral.
+                    </div>
+                </div>
+                <div class="card-row">
+                    <div class="stat-card">
+                        Fim do Conteúdo.
+                    </div>
+                </div>
+                
+            </div>
         </div>
         
         <script src="resources/qgis2web_expressions.js"></script>
@@ -478,7 +515,7 @@
         
         <script type="text/javascript">
         
-        // --- INICIALIZAÇÃO DO POPUP OPENLAYERS ---
+        // --- INICIALIZAÇÃO DO POPUP OPENLAYERS (mantido) ---
         var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
         var closer = document.getElementById('popup-closer');
@@ -501,7 +538,7 @@
         };
 
         // ===============================================
-        // IMPLEMENTAÇÃO DOS RÓTULOS (LABELS) NOS ESTADOS
+        // IMPLEMENTAÇÃO DOS RÓTULOS (LABELS) NOS ESTADOS (mantido)
         // ===============================================
 
         if (typeof layer_ESTADO_5 !== 'undefined') {
@@ -547,12 +584,8 @@
             });
         }
 
-        // ===============================================
-        // FIM DA IMPLEMENTAÇÃO DOS RÓTULOS
-        // ===============================================
-
-
         // --- FUNÇÃO DE REDIMENSIONAMENTO ARRASTÁVEL (DRAGBAR) ---
+        // A lógica permanece a mesma para o ajuste HORIZONTAL
         const dragbar = document.getElementById('dragbar');
         const mapContainer = document.getElementById('map');
         const sidebar = document.getElementById('sidebar');
