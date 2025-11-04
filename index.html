@@ -32,10 +32,10 @@
             background-color: #ffffff;
             margin: 0; 
             padding: 0;
-            height: 100%; /* FIXO: Ocupa 100% da viewport */
+            height: 100%; 
             display: flex; 
             flex-direction: column; 
-            overflow: hidden; /* FIXO: Não permite rolagem na página principal */
+            overflow: hidden; 
             font-family: 'Inter', sans-serif; 
         }
         
@@ -109,19 +109,32 @@
             letter-spacing: 1px;
         }
         
+        /* NOVO: ESTILO PARA A SEÇÃO SUPERIOR (SITES) */
+        #top-content {
+            display: flex; /* Coloca os cards lado a lado */
+            flex-shrink: 0; /* Não deixa encolher */
+            width: 100%;
+            gap: 10px; /* Espaço entre os cards */
+            padding: 10px 15px;
+            box-sizing: border-box;
+            background-color: var(--cor-secundaria); 
+            border-bottom: 2px solid #ccc;
+            overflow-x: auto; /* Garante scroll horizontal em telas pequenas */
+        }
+        
         /* CONTÊINER PRINCIPAL: MAPA + DIVISÓRIA + SIDEBAR */
         #main-content {
             display: flex; 
-            flex-grow: 1; /* Permite que ocupe o restante da altura da tela */
+            flex-grow: 1; 
             padding: 0; 
             background-color: #f0f0f0; 
-            overflow: hidden; /* Garante que a rolagem seja apenas dentro da sidebar */
+            overflow: hidden; 
         }
         
         /* Barra arrastável */
         #dragbar {
-            width: 8px; /* Largura da barra */
-            cursor: ew-resize; /* Cursor para indicar redimensionamento horizontal */
+            width: 8px; 
+            cursor: ew-resize; 
             background-color: #d1d1d1;
             z-index: 1000; 
             flex-shrink: 0; 
@@ -129,8 +142,8 @@
 
         /* AJUSTE DO MAPA (40% inicial) */
         #map {
-            width: 40%; /* Largura inicial */
-            height: 100%; /* Ocupa 100% da altura do main-content */
+            width: 40%; 
+            height: 100%; 
             margin: 0;
             position: relative; 
             top: auto;
@@ -141,11 +154,11 @@
 
         /* ESTILO PARA A SIDEBAR (60% inicial) */
         #sidebar {
-            width: 60%; /* Largura inicial */
-            height: 100%; /* Ocupa 100% da altura do main-content */
+            width: 60%; 
+            height: 100%; 
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
-            overflow-y: auto; /* FIXO: A rolagem agora é interna à sidebar */
+            overflow-y: auto; /* A rolagem agora é interna à sidebar */
             background-color: #ffffff; 
             padding-bottom: 20px; 
         }
@@ -160,6 +173,13 @@
             border-radius: 8px;
             margin-bottom: 20px; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            flex-grow: 1; /* Novo: Garante que os cards no topo se expandam */
+            min-width: 400px; /* Garante que não fiquem muito estreitos */
+        }
+        
+        /* Ajuste de Margem para Cards do Topo */
+        #top-content .weather-card {
+            margin-bottom: 0; 
         }
 
         .weather-card h3 {
@@ -172,7 +192,7 @@
 
         .weather-iframe-container {
             width: 100%;
-            height: 350px; /* Altura padrão para o Epagri */
+            height: 350px; /* Altura padrão, será sobrescrita no topo */
             overflow: hidden;
             border-radius: 6px;
             display: flex;
@@ -180,9 +200,13 @@
             align-items: center;
         }
         
-        /* Estilo específico para o iframe da Defesa Civil */
-        .defesacivil-container {
-            height: 450px; /* Altura maior para Defesa Civil */
+        /* Ajuste da altura do Iframe/Container no Topo */
+        #top-content .weather-iframe-container {
+            height: 250px; /* Altura menor, mais adequada para o topo */
+        }
+        
+        #top-content .defesacivil-container {
+            height: 250px; /* Altura igual para Defesa Civil */
         }
 
         .weather-iframe-container iframe {
@@ -191,6 +215,7 @@
             border: none;
         }
         
+        /* Estilos dos Cards de Estatísticas */
         .card-row {
             display: flex;
             margin-bottom: 10px; 
@@ -243,6 +268,19 @@
 
         /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
         @media (max-width: 1024px) {
+            
+            #top-content {
+                flex-direction: column; /* Sites se empilham no topo */
+                padding: 10px;
+            }
+            #top-content .weather-card {
+                min-width: 100%; /* Ocupa largura total */
+                margin-bottom: 10px;
+            }
+            #top-content .weather-iframe-container, #top-content .defesacivil-container {
+                height: 300px; /* Aumenta um pouco a altura em mobile */
+            }
+
             #main-content {
                 flex-direction: column; 
                 overflow-y: auto;
@@ -341,6 +379,43 @@
         <header id="cabecalho-simples">
             <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
         </header>
+        
+        <div id="top-content">
+            
+            <div class="weather-card">
+                <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
+                <div class="weather-iframe-container">
+                    <iframe 
+                        src="https://ciram.epagri.sc.gov.br/index.php/previsao-municipio/" 
+                        frameborder="0" 
+                        allowfullscreen 
+                        sandbox="allow-scripts allow-same-origin allow-forms"
+                        title="Previsão do Tempo - CIRAM Epagri"
+                        style="height: 100%; width: 100%;">
+                    </iframe>
+                </div>
+                <p style="font-size: 0.8em; margin-top: 10px;">Fonte: CIRAM/Epagri - Previsão Municipal</p>
+            </div>
+
+            <div class="weather-card">
+                <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
+                <div class="weather-iframe-container defesacivil-container">
+                    <iframe 
+                        src="https://www.defesacivil.sc.gov.br/" 
+                        frameborder="0" 
+                        allowfullscreen 
+                        sandbox="allow-scripts allow-same-origin allow-forms"
+                        title="Defesa Civil SC - Alertas e Notícias"
+                        style="height: 100%; width: 100%;">
+                    </iframe>
+                </div>
+                <p style="font-size: 0.8em; margin-top: 10px;">
+                    Fonte: Defesa Civil de Santa Catarina.
+                </p>
+            </div>
+            
+        </div>
+        
         <div id="main-content">
             
             <div id="map">
@@ -354,38 +429,6 @@
 
             <div id="sidebar">
                 
-                <div class="weather-card">
-                    <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
-                    <div class="weather-iframe-container">
-                        <iframe 
-                            src="https://ciram.epagri.sc.gov.br/index.php/previsao-municipio/" 
-                            frameborder="0" 
-                            allowfullscreen 
-                            sandbox="allow-scripts allow-same-origin allow-forms"
-                            title="Previsão do Tempo - CIRAM Epagri"
-                            style="height: 100%; width: 100%;">
-                        </iframe>
-                    </div>
-                    <p style="font-size: 0.8em; margin-top: 10px;">Fonte: CIRAM/Epagri - Previsão Municipal</p>
-                </div>
-
-                <div class="weather-card">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
-                    <div class="weather-iframe-container defesacivil-container">
-                        <iframe 
-                            src="https://www.defesacivil.sc.gov.br/" 
-                            frameborder="0" 
-                            allowfullscreen 
-                            sandbox="allow-scripts allow-same-origin allow-forms"
-                            title="Defesa Civil SC - Alertas e Notícias"
-                            style="height: 100%; width: 100%;">
-                        </iframe>
-                    </div>
-                    <p style="font-size: 0.8em; margin-top: 10px;">
-                        Fonte: Defesa Civil de Santa Catarina.
-                    </p>
-                </div>
-
                 <div class="card-row">
                     <div class="stat-card">
                         Colaboradores <br> **120 AdviceHealth**
@@ -416,11 +459,7 @@
                     </div>
                 </div>
                 
-                <div style="height: 400px; background-color: #f0f0f0; border: 1px dashed #ccc; margin-top: 20px; padding: 20px; color: #333;">
-                    <p>Este bloco extra demonstra que a barra lateral rola internamente.</p>
                 </div>
-
-            </div>
         </div>
         
         <script src="resources/qgis2web_expressions.js"></script>
