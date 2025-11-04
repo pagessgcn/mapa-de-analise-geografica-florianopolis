@@ -1,21 +1,3 @@
-Excelente, vamos fazer esses ajustes! Entendi o que você precisa: uma área de sites mais compacta no topo e o scroll vertical na página inteira.
-
-O scroll na página inteira exige uma pequena alteração na forma como o mapa e a sidebar calculam suas alturas, que antes ocupavam 100% do espaço restante da tela. Agora, vamos definir uma altura fixa (e generosa) para que o mapa e a sidebar fiquem alinhados e, caso o conteúdo da sidebar se expanda, o scroll da página apareça.
-
-🛠️ Alterações no Código (index.html)
-Fiz as seguintes mudanças principais no seu bloco <style>:
-
-Scroll Global Ativado: Removi as propriedades height: 100% e overflow: hidden do html e body.
-
-Altura do Mapa e Sidebar Fixada: Defini a altura de #map e #sidebar para 900px. Isso garante que o mapa tenha uma área visível e que a sidebar fique alinhada com ele.
-
-Altura dos Sites Reduzida: Diminuí a altura dos iframes dentro de #top-content de 250px para 180px, deixando a barra superior mais discreta.
-
-💻 Código Completo Atualizado
-Substitua o conteúdo do seu index.html pelo código abaixo:
-
-HTML
-
 <!doctype html>
 <html lang="pt-BR">
     <head>
@@ -45,16 +27,19 @@ HTML
             --header-height: 84px; 
         }
 
-        /* --- ESTILOS BASE E LAYOUT PRINCIPAL (AGORA COM SCROLL GLOBAL) --- */
+        /* --- ESTILOS BASE E LAYOUT PRINCIPAL (FLEXBOX PARA OCUPAR A TELA) --- */
         html, body {
             background-color: #ffffff;
             margin: 0; 
             padding: 0;
-            /* REMOVIDO: height: 100% e overflow: hidden para permitir o scroll na página inteira */
+            height: 100%; /* Ocupa 100% da altura do viewport */
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; /* Remove o scroll global, o scroll será interno ao sidebar */
             font-family: 'Inter', sans-serif; 
         }
         
-        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB */
+        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB (mantidos) */
         .ol-control > * {
             background-color: #f8f8f8!important;
             color: #154a93!important;
@@ -140,7 +125,7 @@ HTML
         /* CONTÊINER PRINCIPAL: MAPA + DIVISÓRIA + SIDEBAR */
         #main-content {
             display: flex; 
-            /* REMOVIDO: flex-grow: 1 */
+            flex-grow: 1; /* Permite que ocupe todo o espaço vertical restante */
             padding: 0; 
             background-color: #f0f0f0; 
             overflow: hidden; 
@@ -155,10 +140,10 @@ HTML
             flex-shrink: 0; 
         }
 
-        /* AJUSTE DO MAPA: Agora com altura fixa (900px) */
+        /* AJUSTE DO MAPA (100% da área restante) */
         #map {
             width: 40%; 
-            height: 900px; /* Altura fixa para o mapa funcionar com o scroll global */
+            height: 100%; /* Ocupa 100% do #main-content */
             margin: 0;
             position: relative; 
             top: auto;
@@ -167,13 +152,13 @@ HTML
             box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
         }
 
-        /* ESTILO PARA A SIDEBAR: Altura fixa igual ao mapa */
+        /* ESTILO PARA A SIDEBAR (100% da área restante) */
         #sidebar {
             width: 60%; 
-            height: 900px; /* Altura fixa igual ao mapa */
+            height: 100%; /* Ocupa 100% do #main-content */
             padding: 15px 15px 15px 10px; 
             box-sizing: border-box;
-            overflow-y: auto; 
+            overflow-y: auto; /* A rolagem é interna à sidebar */
             background-color: #ffffff; 
             padding-bottom: 20px; 
         }
@@ -215,13 +200,13 @@ HTML
             align-items: center;
         }
         
-        /* AJUSTE AQUI: Redução da altura dos Iframes no Topo */
+        /* AJUSTE AQUI: Altura original dos Iframes no Topo (250px) */
         #top-content .weather-iframe-container {
-            height: 180px; /* Altura menor, mais compacta */
+            height: 250px; 
         }
         
         #top-content .defesacivil-container {
-            height: 180px; /* Altura menor, mais compacta */
+            height: 250px; 
         }
 
         .weather-iframe-container iframe {
@@ -230,7 +215,7 @@ HTML
             border: none;
         }
         
-        /* Estilos dos Cards de Estatísticas (o restante continua igual) */
+        /* Estilos dos Cards de Estatísticas */
         .card-row {
             display: flex;
             margin-bottom: 10px; 
@@ -292,22 +277,21 @@ HTML
                 min-width: 100%; 
                 margin-bottom: 10px;
             }
-            /* Ajustando para mobile também */
             #top-content .weather-iframe-container, #top-content .defesacivil-container {
-                height: 250px; /* Um pouco maior no mobile para melhor visualização */
+                height: 300px; 
             }
 
             #main-content {
                 flex-direction: column; 
-                overflow-y: visible; /* A rolagem é gerenciada pelo body agora */
+                overflow-y: auto;
             }
             #map {
                 width: 100% !important; 
-                height: 400px; /* Reduzindo a altura no mobile */
+                height: 400px; 
             }
             #sidebar {
                 width: 100% !important; 
-                height: auto; /* Deixa a altura ser definida pelo conteúdo */
+                height: auto; 
                 overflow-y: visible; 
                 padding: 15px;
                 padding-bottom: 20px; 
@@ -340,307 +324,3 @@ HTML
         .ol-popup {
             position: absolute;
             background-color: white;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
-            min-width: 250px;
-            font-family: 'Inter', sans-serif;
-            z-index: 100;
-        }
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
-        }
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
-        }
-        .ol-popup-closer {
-            text-decoration: none;
-            position: absolute;
-            top: 2px;
-            right: 8px;
-            color: #333;
-            font-size: 1.2em;
-        }
-        .ol-popup-closer:after {
-            content: "✖";
-        }
-        #popup-content {
-            max-height: 200px;
-            overflow-y: auto;
-            color: #333;
-            font-size: 0.9em;
-        }
-        </style>
-    </head>
-    <body>
-        
-        <header id="cabecalho-simples">
-            <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
-        </header>
-        
-        <div id="top-content">
-            
-            <div class="weather-card">
-                <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
-                <div class="weather-iframe-container">
-                    <iframe 
-                        src="https://ciram.epagri.sc.gov.br/index.php/previsao-municipio/" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        sandbox="allow-scripts allow-same-origin allow-forms"
-                        title="Previsão do Tempo - CIRAM Epagri"
-                        style="height: 100%; width: 100%;">
-                    </iframe>
-                </div>
-                <p style="font-size: 0.8em; margin-top: 10px;">Fonte: CIRAM/Epagri - Previsão Municipal</p>
-            </div>
-
-            <div class="weather-card">
-                <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
-                <div class="weather-iframe-container defesacivil-container">
-                    <iframe 
-                        src="https://www.defesacivil.sc.gov.br/" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        sandbox="allow-scripts allow-same-origin allow-forms"
-                        title="Defesa Civil SC - Alertas e Notícias"
-                        style="height: 100%; width: 100%;">
-                    </iframe>
-                </div>
-                <p style="font-size: 0.8em; margin-top: 10px;">
-                    Fonte: Defesa Civil de Santa Catarina.
-                </p>
-            </div>
-            
-        </div>
-        
-        <div id="main-content">
-            
-            <div id="map">
-                <div id="popup" class="ol-popup">
-                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                    <div id="popup-content"></div>
-                </div>
-            </div>
-            
-            <div id="dragbar"></div> 
-
-            <div id="sidebar">
-                
-                <div class="card-row">
-                    <div class="stat-card">
-                        Colaboradores <br> **120 AdviceHealth**
-                    </div>
-                    <div class="stat-card">
-                        Colaboradores <br> **95 Mapeados**
-                    </div>
-                </div>
-
-                <div class="card-row">
-                    <div class="stat-card title-card">
-                        Colaboradores por Região da Grande Florianópolis
-                    </div>
-                </div>
-
-                <div class="card-row region-row">
-                    <div class="stat-card region-card">
-                        **Norte** <br> 15
-                    </div>
-                    <div class="stat-card region-card">
-                        **Sul** <br> 40
-                    </div>
-                    <div class="stat-card region-card">
-                        **Centro** <br> 25
-                    </div>
-                    <div class="stat-card region-card">
-                        **Leste** <br> 15
-                    </div>
-                </div>
-                
-                <div class="card-row">
-                    <div class="stat-card title-card" style="background-color: #38a169;">
-                        Conteúdo Extra de Scroll
-                    </div>
-                </div>
-                <div class="card-row">
-                    <div class="stat-card">
-                        Espaço Reservado para relatórios detalhados ou gráficos.
-                    </div>
-                </div>
-                <div class="card-row">
-                    <div class="stat-card">
-                        Mais Conteúdo para Testar o Scroll Lateral.
-                    </div>
-                </div>
-                <div class="card-row">
-                    <div class="stat-card">
-                        Fim do Conteúdo.
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        <script src="resources/qgis2web_expressions.js"></script>
-        <script src="resources/proj4.js"></script>
-        <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
-        <script src="./resources/functions.js"></script>
-        <script src="./resources/ol.js"></script>
-        <script src="./resources/ol-layerswitcher.js"></script>
-        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
-
-        <script src="layers/temp1_0.js"></script><script src="layers/moradias_geocodificado_1.js"></script><script src="layers/moradias_geocodificado_2.js"></script><script src="layers/moradias_geocodificado_3.js"></script><script src="layers/BRASIL_4.js"></script><script src="layers/ESTADO_5.js"></script><script src="layers/MUNICIPIOS_6.js"></script><script src="layers/BAIRROS_7.js"></script><script src="layers/MUNICIPVIZINHOS_8.js"></script><script src="layers/MOVIMENTODEMASSA_9.js"></script><script src="layers/BACIAS_10.js"></script><script src="layers/ENXURRADAS_11.js"></script><script src="layers/INUNDACAO_12.js"></script><script src="layers/CAPITAIS_13.js"></script><script src="layers/QGISPROJECT_14.js"></script><script src="layers/CAMADACOLAB_15.js"></script>
-        <script src="styles/temp1_0_style.js"></script><script src="styles/moradias_geocodificado_1_style.js"></script><script src="styles/moradias_geocodificado_2_style.js"></script><script src="styles/moradias_geocodificado_3_style.js"></script><script src="styles/BRASIL_4_style.js"></script><script src="styles/ESTADO_5_style.js"></script><script src="styles/MUNICIPIOS_6_style.js"></script><script src="styles/BAIRROS_7_style.js"></script><script src="styles/MUNICIPVIZINHOS_8_style.js"></script><script src="styles/MOVIMENTODEMASSA_9_style.js"></script><script src="styles/BACIAS_10_style.js"></script><script src="styles/ENXURRADAS_11_style.js"></script><script src="styles/INUNDACAO_12_style.js"></script><script src="styles/CAPITAIS_13_style.js"></script><script src="styles/QGISPROJECT_14_style.js"></script><script src="styles/CAMADACOLAB_15_style.js"></script>
-        <script src="./layers/layers.js" type="text/javascript"></script> 
-        <script src="./resources/Autolinker.min.js"></script>
-        <script src="./resources/qgis2web.js"></script>
-        
-        <script type="text/javascript">
-        
-        // --- INICIALIZAÇÃO DO POPUP OPENLAYERS (mantido) ---
-        var container = document.getElementById('popup');
-        var content = document.getElementById('popup-content');
-        var closer = document.getElementById('popup-closer');
-        var popup = new ol.Overlay({
-            element: container,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
-        });
-        
-        if (typeof map !== 'undefined') {
-            map.addOverlay(popup);
-        }
-
-        closer.onclick = function() {
-            popup.setPosition(undefined);
-            closer.blur();
-            return false;
-        };
-
-        // ===============================================
-        // IMPLEMENTAÇÃO DOS RÓTULOS (LABELS) NOS ESTADOS (mantido)
-        // ===============================================
-
-        if (typeof layer_ESTADO_5 !== 'undefined') {
-            
-            layer_ESTADO_5.setStyle(function(feature) {
-                
-                const stateName = feature.get('NM_ESTADO'); 
-
-                let styles = [
-                    new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(21, 74, 147, 0.7)',
-                            lineDash: null,
-                            lineCap: 'butt',
-                            lineJoin: 'miter',
-                            width: 2
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 255, 255, 0.01)'
-                        })
-                    })
-                ];
-
-                if (stateName) {
-                    styles.push(new ol.style.Style({
-                        text: new ol.style.Text({
-                            text: stateName, 
-                            font: 'bold 16px Inter', 
-                            fill: new ol.style.Fill({
-                                color: 'rgba(11, 31, 60, 1)'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'rgba(255, 255, 255, 0.8)',
-                                width: 3
-                            }),
-                            textAlign: 'center',
-                            textBaseline: 'middle'
-                        })
-                    }));
-                }
-
-                return styles;
-            });
-        }
-
-        // --- FUNÇÃO DE REDIMENSIONAMENTO ARRASTÁVEL (DRAGBAR) ---
-        // A lógica permanece a mesma para o ajuste HORIZONTAL
-        const dragbar = document.getElementById('dragbar');
-        const mapContainer = document.getElementById('map');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-
-        let isDragging = false;
-        
-        // Inicia o arrasto
-        dragbar.addEventListener('mousedown', function(e) {
-            e.preventDefault();
-            if (window.innerWidth > 1024) { 
-                isDragging = true;
-                document.body.style.cursor = 'ew-resize';
-                mapContainer.style.userSelect = 'none';
-                sidebar.style.userSelect = 'none';
-            }
-        });
-
-        // Durante o arrasto
-        document.addEventListener('mousemove', function(e) {
-            if (!isDragging) return;
-            
-            const mainRect = mainContent.getBoundingClientRect();
-            let newMapWidth = e.clientX - mainRect.left;
-            const totalWidth = mainRect.width;
-            
-            const minWidth = totalWidth * 0.15;
-            
-            // Limita o novo tamanho
-            if (newMapWidth < minWidth) {
-                newMapWidth = minWidth;
-            }
-            if (totalWidth - newMapWidth - dragbar.offsetWidth < minWidth) {
-                newMapWidth = totalWidth - minWidth - dragbar.offsetWidth;
-            }
-
-            // Aplica o novo tamanho (em pixels)
-            mapContainer.style.width = newMapWidth + 'px';
-            sidebar.style.width = (totalWidth - newMapWidth - dragbar.offsetWidth) + 'px';
-
-            // Dispara o evento de redimensionamento do mapa OpenLayers
-            if (typeof map !== 'undefined' && map) {
-                map.updateSize();
-            }
-        });
-
-        // Finaliza o arrasto
-        document.addEventListener('mouseup', function() {
-            isDragging = false;
-            document.body.style.cursor = 'default';
-            mapContainer.style.userSelect = 'auto';
-            sidebar.style.userSelect = 'auto';
-        });
-
-        </script>
-        
-    </body>
-</html>
