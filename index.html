@@ -1,3 +1,10 @@
+Com certeza! É mais prático ter o arquivo completo para garantir que todas as mudanças foram aplicadas corretamente e no lugar certo.
+
+Aqui está o código completo do seu index.html, incluindo a correção da tag <base> e o novo ajuste de altura dos iframes para 180px.
+
+📄 index.html Completo e Corrigido
+HTML
+
 <!doctype html>
 <html lang="pt-BR">
     <head>
@@ -6,6 +13,8 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        
+        <base href="/mapa-de-analise-geografica-florianopolis/"> 
         
         <link rel="stylesheet" href="resources/ol.css"> 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -200,13 +209,12 @@
             align-items: center;
         }
         
-        /* Altura original dos Iframes no Topo (250px) */
         #top-content .weather-iframe-container {
-            height: 250px; 
+            height: 180px; 
         }
         
         #top-content .defesacivil-container {
-            height: 250px; 
+            height: 180px; 
         }
 
         .weather-iframe-container iframe {
