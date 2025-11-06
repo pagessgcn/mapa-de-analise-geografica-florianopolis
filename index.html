@@ -1,3 +1,8 @@
+Com certeza! Aqui está o código index.html completo com todas as modificações que discutimos: o novo layout 2x2 e o esquema de cores limpo (fundo claro, cabeçalho escuro, destaques em azul ciano).
+
+Você pode copiar todo este código e substituir todo o conteúdo do seu arquivo index.html atual.
+
+HTML
 
 <!doctype html>
 <html lang="pt-BR">
@@ -20,19 +25,21 @@
         <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
 
         <style>
-        /* --- VARIÁVEIS DE COR --- */
+        /* --- VARIÁVEIS DE COR (NOVO ESQUEMA DE CORES) --- */
         :root {
-            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
-            --cor-primaria: #154a93;
+            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); /* Antiga cor (mantida para compatibilidade, mas menos usada) */
+            --cor-primaria: #008CBA; /* NOVO: Azul Ciano/Destaque */
             --cor-secundaria: #f8f8f8;
             --cor-alerta: #e53e3e;
             --cor-ia: #ffc107;
             --header-height: 84px; 
+            --cor-fundo-cabecalho: #1D232A; /* NOVO: Cinza/Preto para o topo */
+            --cor-fundo-pagina: #EAEAEA; /* NOVO: Cinza bem claro para o fundo principal */
         }
 
-        /* --- ESTILOS BASE E LAYOUT PRINCIPAL (FLEXBOX PARA OCUPAR A TELA) --- */
+        /* --- ESTILOS BASE E LAYOUT PRINCIPAL --- */
         html, body {
-            background-color: #ffffff;
+            background-color: var(--cor-fundo-pagina); 
             margin: 0; 
             padding: 0;
             height: 100%; 
@@ -42,14 +49,14 @@
             font-family: 'Inter', sans-serif; 
         }
         
-        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB (mantidos) */
+        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB (mantidos e ajustados para a nova cor primária) */
         .ol-control > * {
             background-color: #f8f8f8!important;
-            color: #154a93!important;
+            color: var(--cor-primaria)!important;
             border-radius: 0px;
         }
         .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
-            color: #154a93!important;
+            color: var(--cor-primaria)!important;
         }
         .search-layer-layer-search-autocomplete { 
             z-index: 2001; 
@@ -91,9 +98,9 @@
             position: absolute;
         }
         
-        /* ESTILOS DO CABEÇALHO */
+        /* ESTILOS DO CABEÇALHO (AJUSTADO) */
         #cabecalho-simples {
-            background-color: var(--azul-escuro-transparente); 
+            background-color: var(--cor-fundo-cabecalho); /* NOVO: Cinza/Preto */
             padding: 15px; 
             text-align: center; 
             width: 100%; 
@@ -111,123 +118,94 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
-        /* SEÇÃO SUPERIOR (SITES) */
-        #top-content {
-            display: flex; 
-            flex-shrink: 0; 
-            width: 100%;
+
+        /* --- NOVOS ESTILOS PARA LAYOUT DE 4 BLOCOS (2x2) --- */
+        #container-principal {
+            display: flex;
+            flex-direction: column; 
+            flex-grow: 1; 
+            padding: 10px;
             gap: 10px; 
-            padding: 10px 15px;
-            box-sizing: border-box;
-            background-color: var(--cor-secundaria); 
-            border-bottom: 2px solid #ccc;
-            overflow-x: auto; 
-        }
-        
-        /* CONTÊINER PRINCIPAL: MAPA + DIVISÓRIA + SIDEBAR */
-        #main-content {
-            display: flex; 
-            flex-grow: 1; /* Permite que ocupe todo o espaço vertical restante */
-            padding: 0; 
-            background-color: #f0f0f0; 
+            background-color: var(--cor-fundo-pagina); 
             overflow: hidden; 
         }
-        
-        /* Barra arrastável */
-        #dragbar {
-            width: 8px; 
-            cursor: ew-resize; 
-            background-color: #d1d1d1;
-            z-index: 1000; 
-            flex-shrink: 0; 
-        }
 
-        /* AJUSTE DO MAPA (100% da área restante) */
-        #map {
-            width: 40%; 
-            height: 100%; /* Ocupa 100% do #main-content */
-            margin: 0;
-            position: relative; 
-            top: auto;
-            min-height: 0;
-            background-color: white; 
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
-        }
-
-        /* ESTILO PARA A SIDEBAR (100% da área restante) */
-        #sidebar {
-            width: 60%; 
-            height: 100%; /* Ocupa 100% do #main-content */
-            padding: 15px 15px 15px 10px; 
-            box-sizing: border-box;
-            overflow-y: auto; /* A rolagem é interna à sidebar */
-            background-color: #ffffff; 
-            padding-bottom: 20px; 
-        }
-        
-        /* --- ESTILOS PARA CARDS (Estatísticas e Tempo) --- */
-        .weather-card {
-            background-color: var(--azul-escuro-transparente); 
-            color: white;
-            padding: 15px;
-            box-sizing: border-box;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 20px; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        #row-top, #row-bottom {
+            display: flex;
             flex-grow: 1; 
-            min-width: 400px; 
-        }
-        
-        /* Ajuste de Margem para Cards do Topo */
-        #top-content .weather-card {
-            margin-bottom: 0; 
+            gap: 10px; 
         }
 
-        .weather-card h3 {
-            font-weight: 700;
-            font-size: 1.5em;
+        .layout-bloco {
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            padding: 15px; 
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+
+        /* Estilos específicos para o conteúdo dentro dos blocos */
+        .layout-bloco h3 {
             margin-top: 0;
             margin-bottom: 10px;
-            color: #ffd700; 
+            color: var(--cor-primaria); /* Destaque no título */
+            font-size: 1.2em;
+            text-align: center;
         }
 
-        .weather-iframe-container {
+        .iframe-conteudo {
+            flex-grow: 1; 
             width: 100%;
-            height: 350px; 
+            height: 100%; 
             overflow: hidden;
-            border-radius: 6px;
-            display: flex;
+            display: flex; 
             justify-content: center;
             align-items: center;
         }
-        
-        #top-content .weather-iframe-container {
-            height: 180px; 
-        }
-        
-        #top-content .defesacivil-container {
-            height: 180px; 
-        }
 
-        .weather-iframe-container iframe {
-            width: 100%; 
+        .iframe-conteudo iframe {
+            width: 100%;
             height: 100%;
             border: none;
         }
-        
-        /* Estilos dos Cards de Estatísticas */
+
+        .fonte-info {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Ajustes para o mapa dentro do Bloco 3 */
+        #bloco-3 #map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            position: relative;
+            top: auto;
+            min-height: 0;
+            background-color: white;
+            box-shadow: none; 
+        }
+
+        /* Ajustes para o conteúdo de dados (Bloco 4) */
+        #bloco-4 {
+            overflow-y: auto; 
+        }
+
+        /* Estilos dos Cards de Estatísticas (AJUSTADO PARA NOVAS CORES) */
         .card-row {
             display: flex;
             margin-bottom: 10px; 
             width: 100%;
             gap: 10px; 
         }
-
         .stat-card {
             background-color: transparent; 
-            color: var(--azul-escuro-transparente); 
+            color: var(--cor-primaria); 
             padding: 15px; 
             box-sizing: border-box;
             text-align: center;
@@ -237,29 +215,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--azul-escuro-transparente); 
+            border: 2px solid var(--cor-primaria); /* Borda com o novo azul */
             border-radius: 8px; 
             transition: all 0.3s ease; 
             flex-grow: 1; 
         }
-        
         .title-card {
             font-weight: 600; 
             font-size: 18px; 
             padding: 15px; 
-            background-color: var(--azul-escuro-transparente); 
+            background-color: var(--cor-primaria); /* Fundo com o novo azul */
             color: white; 
             border: none; 
             border-radius: 8px; 
             text-transform: uppercase;
         }
-
-        .region-row {
-            margin-bottom: 10px;
-            gap: 10px; 
-        }
         .region-card {
-            background-color: var(--azul-escuro-transparente); 
+            background-color: var(--cor-primaria); /* Fundo com o novo azul */
             color: white; 
             font-size: 18px; 
             padding: 20px 10px; 
@@ -267,39 +239,21 @@
             border-radius: 8px;
             flex-grow: 1;
         }
+        .region-row {
+            margin-bottom: 10px;
+            gap: 10px; 
+        }
 
         /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
         @media (max-width: 1024px) {
-            
-            #top-content {
-                flex-direction: column; 
-                padding: 10px;
+            #container-principal {
+                overflow-y: auto; /* Permite scroll vertical na página inteira em mobile */
             }
-            #top-content .weather-card {
-                min-width: 100%; 
-                margin-bottom: 10px;
+            #row-top, #row-bottom {
+                flex-direction: column; /* Em telas menores, os blocos empilham */
             }
-            #top-content .weather-iframe-container, #top-content .defesacivil-container {
-                height: 300px; 
-            }
-
-            #main-content {
-                flex-direction: column; 
-                overflow-y: auto;
-            }
-            #map {
-                width: 100% !important; 
-                height: 400px; 
-            }
-            #sidebar {
-                width: 100% !important; 
-                height: auto; 
-                overflow-y: visible; 
-                padding: 15px;
-                padding-bottom: 20px; 
-            }
-            #dragbar {
-                display: none; 
+            .iframe-conteudo {
+                height: 250px; /* Altura razoável para iframes em mobile */
             }
             .card-row {
                 flex-wrap: wrap; 
@@ -309,19 +263,19 @@
                 margin-bottom: 10px;
             }
             .region-row .region-card {
-                flex-basis: 23%; 
-            }
-            @media (max-width: 600px) {
-                .region-row .region-card {
-                    flex-basis: 48%; 
-                }
+                flex-basis: 48%; 
             }
             .ol-zoom {
                 right: 5px !important;
                 bottom: 5px !important;
             }
         }
-        
+        @media (max-width: 600px) {
+            .stat-card, .region-row .region-card {
+                flex-basis: 100%; 
+            }
+        }
+
         /* --- ESTILOS DO POPUP OPENLAYERS (mantidos) --- */
         .ol-popup {
             position: absolute;
@@ -382,86 +336,82 @@
             <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
         </header>
         
-        <div id="top-content">
+        <div id="container-principal">
             
-            <div class="weather-card">
-                <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
-                <div class="weather-iframe-container">
-                    <iframe 
-                        src="https://ciram.epagri.sc.gov.br/index.php/previsao-municipio/" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        sandbox="allow-scripts allow-same-origin allow-forms"
-                        title="Previsão do Tempo - CIRAM Epagri"
-                        style="height: 100%; width: 100%;">
-                    </iframe>
+            <div id="row-top">
+                <div id="bloco-1" class="layout-bloco">
+                    <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
+                    <div class="iframe-conteudo">
+                        <iframe 
+                            src="https://ciram.epagri.sc.gov.br/index.php/previsao-municipio/" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            sandbox="allow-scripts allow-same-origin allow-forms"
+                            title="Previsão do Tempo - CIRAM Epagri">
+                        </iframe>
+                    </div>
+                    <p class="fonte-info">Fonte: CIRAM/Epagri - Previsão Municipal</p>
                 </div>
-                <p style="font-size: 0.8em; margin-top: 10px;">Fonte: CIRAM/Epagri - Previsão Municipal</p>
-            </div>
-
-            <div class="weather-card">
-                <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
-                <div class="weather-iframe-container defesacivil-container">
-                    <iframe 
-                        src="https://www.defesacivil.sc.gov.br/" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        sandbox="allow-scripts allow-same-origin allow-forms"
-                        title="Defesa Civil SC - Alertas e Notícias"
-                        style="height: 100%; width: 100%;">
-                    </iframe>
-                </div>
-                <p style="font-size: 0.8em; margin-top: 10px;">
-                    Fonte: Defesa Civil de Santa Catarina.
-                </p>
-            </div>
-            
-        </div>
-        
-        <div id="main-content">
-            
-            <div id="map">
-                <div id="popup" class="ol-popup">
-                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                    <div id="popup-content"></div>
-                </div>
-            </div>
-            
-            <div id="dragbar"></div> 
-
-            <div id="sidebar">
                 
-                <div class="card-row">
-                    <div class="stat-card">
-                        Colaboradores <br> **120 AdviceHealth**
+                <div id="bloco-2" class="layout-bloco">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
+                    <div class="iframe-conteudo">
+                        <iframe 
+                            src="https://www.defesacivil.sc.gov.br/" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            sandbox="allow-scripts allow-same-origin allow-forms"
+                            title="Defesa Civil SC - Alertas e Notícias">
+                        </iframe>
                     </div>
-                    <div class="stat-card">
-                        Colaboradores <br> **95 Mapeados**
-                    </div>
+                    <p class="fonte-info">Fonte: Defesa Civil de Santa Catarina.</p>
                 </div>
+            </div>
 
-                <div class="card-row">
-                    <div class="stat-card title-card">
-                        Colaboradores por Região da Grande Florianópolis
-                    </div>
-                </div>
-
-                <div class="card-row region-row">
-                    <div class="stat-card region-card">
-                        **Norte** <br> 15
-                    </div>
-                    <div class="stat-card region-card">
-                        **Sul** <br> 40
-                    </div>
-                    <div class="stat-card region-card">
-                        **Centro** <br> 25
-                    </div>
-                    <div class="stat-card region-card">
-                        **Leste** <br> 15
+            <div id="row-bottom">
+                
+                <div id="bloco-3" class="layout-bloco">
+                    <div id="map">
+                        <div id="popup" class="ol-popup">
+                            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                            <div id="popup-content"></div>
+                        </div>
                     </div>
                 </div>
                 
+                <div id="bloco-4" class="layout-bloco">
+                    
+                    <div class="card-row">
+                        <div class="stat-card">
+                            Colaboradores <br> **120 AdviceHealth**
+                        </div>
+                        <div class="stat-card">
+                            Colaboradores <br> **95 Mapeados**
+                        </div>
+                    </div>
+
+                    <div class="card-row">
+                        <div class="stat-card title-card">
+                            Colaboradores por Região da Grande Florianópolis
+                        </div>
+                    </div>
+
+                    <div class="card-row region-row">
+                        <div class="stat-card region-card">
+                            **Norte** <br> 15
+                        </div>
+                        <div class="stat-card region-card">
+                            **Sul** <br> 40
+                        </div>
+                        <div class="stat-card region-card">
+                            **Centro** <br> 25
+                        </div>
+                        <div class="stat-card region-card">
+                            **Leste** <br> 15
+                        </div>
+                    </div>
                 </div>
+            </div>
         </div>
         
         <script src="resources/qgis2web_expressions.js"></script>
@@ -549,61 +499,9 @@
             });
         }
 
-        // --- FUNÇÃO DE REDIMENSIONAMENTO ARRASTÁVEL (DRAGBAR) ---
-        const dragbar = document.getElementById('dragbar');
-        const mapContainer = document.getElementById('map');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-
-        let isDragging = false;
+        // --- FUNÇÃO DE REDIMENSIONAMENTO ARRASTÁVEL (DRAGBAR) REMOVIDA
+        // O layout 2x2 não usa mais a barra de arrasto.
         
-        // Inicia o arrasto
-        dragbar.addEventListener('mousedown', function(e) {
-            e.preventDefault();
-            if (window.innerWidth > 1024) { 
-                isDragging = true;
-                document.body.style.cursor = 'ew-resize';
-                mapContainer.style.userSelect = 'none';
-                sidebar.style.userSelect = 'none';
-            }
-        });
-
-        // Durante o arrasto
-        document.addEventListener('mousemove', function(e) {
-            if (!isDragging) return;
-            
-            const mainRect = mainContent.getBoundingClientRect();
-            let newMapWidth = e.clientX - mainRect.left;
-            const totalWidth = mainRect.width;
-            
-            const minWidth = totalWidth * 0.15;
-            
-            // Limita o novo tamanho
-            if (newMapWidth < minWidth) {
-                newMapWidth = minWidth;
-            }
-            if (totalWidth - newMapWidth - dragbar.offsetWidth < minWidth) {
-                newMapWidth = totalWidth - minWidth - dragbar.offsetWidth;
-            }
-
-            // Aplica o novo tamanho (em pixels)
-            mapContainer.style.width = newMapWidth + 'px';
-            sidebar.style.width = (totalWidth - newMapWidth - dragbar.offsetWidth) + 'px';
-
-            // Dispara o evento de redimensionamento do mapa OpenLayers
-            if (typeof map !== 'undefined' && map) {
-                map.updateSize();
-            }
-        });
-
-        // Finaliza o arrasto
-        document.addEventListener('mouseup', function() {
-            isDragging = false;
-            document.body.style.cursor = 'default';
-            mapContainer.style.userSelect = 'auto';
-            sidebar.style.userSelect = 'auto';
-        });
-
         </script>
         
     </body>
