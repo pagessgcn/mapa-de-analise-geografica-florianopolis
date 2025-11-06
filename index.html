@@ -1,5 +1,4 @@
-
-<!doctype html>
+Ah, certo! A disposição anterior (CIRAM/Defesa Civil na esquerda e Dados/Mapa na direita) não estava correta. Vamos reverter a ordem das colunas e garantir que a nova organização, mantendo as proporções 35%/65% e o empilhamento vertical, seja:35% (Coluna Esquerda)65% (Coluna Direita)Bloco 1 (CIRAM)Bloco 2 (Dados e Estatísticas)Bloco 3 (Defesa Civil)Bloco 4 (Mapa)Para isso, precisamos apenas trocar o conteúdo das divs #coluna-esquerda e #coluna-direita no HTML.📝 Código index.html (Final e Corrigido)Este código reflete a estrutura de colunas corrigida, com a Coluna Esquerda (35%) contendo CIRAM e Defesa Civil, e a Coluna Direita (65%) contendo Dados e Mapa. O CSS de proporção e empilhamento está mantido e garante que o layout funcione.Substitua o conteúdo inteiro do seu index.html por este código:HTML<!doctype html>
 <html lang="pt-BR">
     <head>
         <meta charset="utf-8">
@@ -20,7 +19,7 @@
         <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
 
         <style>
-        /* --- VARIÁVEIS DE COR (NOVO ESQUEMA DE CORES) --- */
+        /* --- VARIÁVEIS DE COR --- */
         :root {
             --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
             --cor-primaria: #008CBA; /* Azul Ciano/Destaque */
@@ -44,54 +43,17 @@
             font-family: 'Inter', sans-serif; 
         }
         
-        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB */
-        .ol-control > * {
-            background-color: #f8f8f8!important;
-            color: var(--cor-primaria)!important;
-            border-radius: 0px;
-        }
-        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
-            color: var(--cor-primaria)!important;
-        }
-        .search-layer-layer-search-autocomplete { 
-            z-index: 2001; 
-            top: 10px !important; 
-            left: 10px !important;
-            right: auto !important;
-        }
-        .search-layer-layer-search-autocomplete > button, 
-        .search-layer-layer-search-autocomplete > input {
-            background-color: var(--cor-secundaria) !important; 
-            color: var(--cor-primaria) !important; 
-            border: 1px solid var(--cor-primaria) !important;
-        }
-        .search-layer-layer-search-autocomplete > button:hover {
-            background-color: rgba(248, 248, 248, 0.7)!important;
-        }
-        .search-layer-layer-search-autocomplete .autocomplete-list {
-            background-color: white;
-            border: 1px solid var(--cor-primaria);
-            color: #333;
-        }
-        .search-layer-input-search {
-            background-color: #f8f8f8!important;
-        }
-        .ol-control > *:focus, .ol-control >*:hover {
-            background-color: rgba(248, 248, 248, 0.7)!important;
-        } 
-        .ol-control {
-            background-color: rgba(255,255,255,.4) !important;
-            padding: 2px !important;
-        } 
-        
-        /* Reposicionamento do controle de zoom */
-        .ol-zoom {
-            top: auto !important;
-            left: auto !important;
-            bottom: 10px !important;
-            right: 10px !important;
-            position: absolute;
-        }
+        /* Estilos e Correções do QGIS2WEB (mantidos) */
+        .ol-control > * { background-color: #f8f8f8!important; color: var(--cor-primaria)!important; border-radius: 0px; }
+        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder { color: var(--cor-primaria)!important; }
+        .search-layer-layer-search-autocomplete { z-index: 2001; top: 10px !important; left: 10px !important; right: auto !important; }
+        .search-layer-layer-search-autocomplete > button, .search-layer-layer-search-autocomplete > input { background-color: var(--cor-secundaria) !important; color: var(--cor-primaria) !important; border: 1px solid var(--cor-primaria) !important; }
+        .search-layer-layer-search-autocomplete > button:hover { background-color: rgba(248, 248, 248, 0.7)!important; }
+        .search-layer-layer-search-autocomplete .autocomplete-list { background-color: white; border: 1px solid var(--cor-primaria); color: #333; }
+        .search-layer-input-search { background-color: #f8f8f8!important; }
+        .ol-control > *:focus, .ol-control >*:hover { background-color: rgba(248, 248, 248, 0.7)!important; } 
+        .ol-control { background-color: rgba(255,255,255,.4) !important; padding: 2px !important; } 
+        .ol-zoom { top: auto !important; left: auto !important; bottom: 10px !important; right: 10px !important; position: absolute; }
         
         /* ESTILOS DO CABEÇALHO */
         #cabecalho-simples {
@@ -114,10 +76,10 @@
             letter-spacing: 1px;
         }
 
-        /* --- ESTILOS DE LAYOUT DE 4 BLOCOS (2x2) --- */
+        /* --- LAYOUT DE DUAS COLUNAS 35%/65% (CORREÇÃO) --- */
         #container-principal {
-            display: flex;
-            flex-direction: column; 
+            display: flex; /* Define o container para as duas colunas lado a lado */
+            flex-direction: row; 
             flex-grow: 1; 
             padding: 10px;
             gap: 10px; 
@@ -125,12 +87,30 @@
             overflow: hidden; 
         }
 
-        #row-top, #row-bottom {
+        #coluna-esquerda, #coluna-direita {
             display: flex;
-            flex-grow: 1; 
+            flex-direction: column; /* Conteúdo empilhado verticalmente */
             gap: 10px; 
         }
 
+        /* PROPORÇÕES 35% / 65% */
+        /* Coluna Esquerda: CIRAM e Defesa Civil (35%) */
+        #coluna-esquerda {
+            flex-basis: 35%; 
+            min-width: 35%; 
+            max-width: 35%;
+            flex-grow: 0; 
+        }
+
+        /* Coluna Direita: Dados e Mapa (65%) */
+        #coluna-direita {
+            flex-basis: 65%; 
+            min-width: 65%;
+            max-width: 65%;
+            flex-grow: 0; 
+        }
+
+        /* Distribuição Vertical dos Blocos */
         .layout-bloco {
             background-color: #ffffff; 
             border-radius: 8px; 
@@ -140,214 +120,73 @@
             flex-direction: column;
             overflow: hidden; 
         }
-        
-        /* REGRAS PARA PROPORÇÃO 35% / 65% */
-        /* Blocos da esquerda (CIRAM e DADOS) */
-        #bloco-1, #bloco-4 {
-            flex-basis: 35%; 
-            min-width: 35%; 
-            max-width: 35%;
-            flex-grow: 0; 
-        }
 
-        /* Blocos da direita (DEFESA CIVIL e MAPA) */
-        #bloco-2, #bloco-3 {
-            flex-basis: 65%; 
-            min-width: 65%;
-            max-width: 65%;
-            flex-grow: 0; 
-        }
-
-        /* Estilos específicos para o conteúdo dentro dos blocos */
-        .layout-bloco h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: var(--cor-primaria); 
-            font-size: 1.2em;
-            text-align: center;
-        }
-
-        .iframe-conteudo {
-            flex-grow: 1; 
-            width: 100%;
-            height: 100%; 
-            overflow: hidden;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-        }
-
-        .iframe-conteudo iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .fonte-info {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        /* Ajustes para o mapa dentro do Bloco 3 */
-        #bloco-3 #map {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            position: relative;
-            top: auto;
-            min-height: 0;
-            background-color: white;
-            box-shadow: none; 
-        }
-
-        /* Ajustes para o conteúdo de dados (Bloco 4) */
-        #bloco-4 {
-            overflow-y: auto; 
-        }
-
-        /* Estilos dos Cards de Estatísticas */
-        .card-row {
-            display: flex;
-            margin-bottom: 10px; 
-            width: 100%;
-            gap: 10px; 
-        }
-        .stat-card {
-            background-color: transparent; 
-            color: var(--cor-primaria); 
-            padding: 15px; 
-            box-sizing: border-box;
-            text-align: center;
-            line-height: 1.4; 
-            font-size: 16px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--cor-primaria); 
-            border-radius: 8px; 
-            transition: all 0.3s ease; 
-            flex-grow: 1; 
-        }
-        .title-card {
-            font-weight: 600; 
-            font-size: 18px; 
-            padding: 15px; 
-            background-color: var(--cor-primaria); 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            text-transform: uppercase;
-        }
-        .region-card {
-            background-color: var(--cor-primaria); 
-            color: white; 
-            font-size: 18px; 
-            padding: 20px 10px; 
-            border: none; 
-            border-radius: 8px;
+        /* Esquerda (B1 e B3): Compartilham o espaço vertical igualmente (50% cada) */
+        #bloco-1, #bloco-3 {
             flex-grow: 1;
+            flex-basis: 50%;
         }
-        .region-row {
-            margin-bottom: 10px;
-            gap: 10px; 
+
+        /* Direita (B2 e B4): Dados (B2) com altura baseada no conteúdo, Mapa (B4) preenche o restante */
+        #bloco-2 {
+            flex-grow: 0; /* Altura baseada no conteúdo */
+            flex-shrink: 0;
         }
+        #bloco-4 {
+            flex-grow: 1; /* Preenche todo o espaço vertical restante */
+        }
+        
+        /* Estilos de conteúdo (mantidos) */
+        .layout-bloco h3 { margin-top: 0; margin-bottom: 10px; color: var(--cor-primaria); font-size: 1.2em; text-align: center; }
+        .iframe-conteudo { flex-grow: 1; width: 100%; height: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .iframe-conteudo iframe { width: 100%; height: 100%; border: none; }
+        .fonte-info { font-size: 0.8em; color: #666; margin-top: 10px; text-align: center; }
+        #bloco-4 #map { width: 100%; height: 100%; margin: 0; position: relative; top: auto; min-height: 0; background-color: white; box-shadow: none; }
+        #bloco-2 { overflow-y: auto; } /* Ajuste o scroll para o bloco de Dados */
+
+        /* Estilos dos Cards de Estatísticas (mantidos) */
+        .card-row { display: flex; margin-bottom: 10px; width: 100%; gap: 10px; }
+        .stat-card { background-color: transparent; color: var(--cor-primaria); padding: 15px; box-sizing: border-box; text-align: center; line-height: 1.4; font-size: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid var(--cor-primaria); border-radius: 8px; transition: all 0.3s ease; flex-grow: 1; }
+        .title-card { font-weight: 600; font-size: 18px; padding: 15px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 8px; text-transform: uppercase; }
+        .region-card { background-color: var(--cor-primaria); color: white; font-size: 18px; padding: 20px 10px; border: none; border-radius: 8px; flex-grow: 1; }
+        .region-row { margin-bottom: 10px; gap: 10px; }
 
         /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
         @media (max-width: 1024px) {
             #container-principal {
+                flex-direction: column; 
                 overflow-y: auto; 
             }
-            #row-top, #row-bottom {
-                flex-direction: column; 
-            }
-            .iframe-conteudo {
-                height: 250px; 
-            }
-            .card-row {
-                flex-wrap: wrap; 
-            }
-            
-            /* Resetar a proporção para 100% em telas pequenas */
-            #bloco-1, #bloco-2, #bloco-3, #bloco-4 {
-                flex-basis: 100%;
-                min-width: 100%;
+            #coluna-esquerda, #coluna-direita {
+                flex-basis: 100%; 
+                min-width: 100%; 
                 max-width: 100%;
                 flex-grow: 1; 
             }
-
-            .stat-card {
-                flex-basis: 48%; 
-                margin-bottom: 10px;
+            /* Garantir que todos os blocos ocupem 100% da largura em mobile */
+            #bloco-1, #bloco-2, #bloco-3, #bloco-4 {
+                flex-grow: 1;
+                flex-basis: auto; 
+                min-height: 250px; 
             }
-            .region-row .region-card {
-                flex-basis: 48%; 
-            }
-            .ol-zoom {
-                right: 5px !important;
-                bottom: 5px !important;
-            }
+            .iframe-conteudo { height: 250px; }
+            .card-row { flex-wrap: wrap; }
+            .stat-card { flex-basis: 48%; margin-bottom: 10px; }
+            .region-row .region-card { flex-basis: 48%; }
+            .ol-zoom { right: 5px !important; bottom: 5px !important; }
         }
         @media (max-width: 600px) {
-            .stat-card, .region-row .region-card {
-                flex-basis: 100%; 
-            }
+            .stat-card, .region-row .region-card { flex-basis: 100%; }
         }
 
-        /* --- ESTILOS DO POPUP OPENLAYERS --- */
-        .ol-popup {
-            position: absolute;
-            background-color: white;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
-            min-width: 250px;
-            font-family: 'Inter', sans-serif;
-            z-index: 100;
-        }
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
-        }
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
-        }
-        .ol-popup-closer {
-            text-decoration: none;
-            position: absolute;
-            top: 2px;
-            right: 8px;
-            color: #333;
-            font-size: 1.2em;
-        }
-        .ol-popup-closer:after {
-            content: "✖";
-        }
-        #popup-content {
-            max-height: 200px;
-            overflow-y: auto;
-            color: #333;
-            font-size: 0.9em;
-        }
+        /* --- ESTILOS DO POPUP OPENLAYERS (mantidos) --- */
+        .ol-popup { position: absolute; background-color: white; box-shadow: 0 1px 4px rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid #cccccc; bottom: 12px; left: -50px; min-width: 250px; font-family: 'Inter', sans-serif; z-index: 100; }
+        .ol-popup:after, .ol-popup:before { top: 100%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; }
+        .ol-popup:after { border-top-color: white; border-width: 10px; left: 48px; margin-left: -10px; }
+        .ol-popup:before { border-top-color: #cccccc; border-width: 11px; left: 48px; margin-left: -11px; }
+        .ol-popup-closer { text-decoration: none; position: absolute; top: 2px; right: 8px; color: #333; font-size: 1.2em; }
+        .ol-popup-closer:after { content: "✖"; }
+        #popup-content { max-height: 200px; overflow-y: auto; color: #333; font-size: 0.9em; }
         </style>
     </head>
     <body>
@@ -358,7 +197,8 @@
         
         <div id="container-principal">
             
-            <div id="row-top">
+            <div id="coluna-esquerda">
+                
                 <div id="bloco-1" class="layout-bloco">
                     <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
                     <div class="iframe-conteudo">
@@ -373,7 +213,7 @@
                     <p class="fonte-info">Fonte: CIRAM/Epagri - Previsão Municipal</p>
                 </div>
                 
-                <div id="bloco-2" class="layout-bloco">
+                <div id="bloco-3" class="layout-bloco">
                     <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
                     <div class="iframe-conteudo">
                         <iframe 
@@ -388,9 +228,9 @@
                 </div>
             </div>
 
-            <div id="row-bottom">
+            <div id="coluna-direita">
                 
-                <div id="bloco-4" class="layout-bloco">
+                <div id="bloco-2" class="layout-bloco">
                     
                     <div class="card-row">
                         <div class="stat-card">
@@ -423,7 +263,7 @@
                     </div>
                 </div>
 
-                <div id="bloco-3" class="layout-bloco">
+                <div id="bloco-4" class="layout-bloco">
                     <div id="map">
                         <div id="popup" class="ol-popup">
                             <a href="#" id="popup-closer" class="ol-popup-closer"></a>
