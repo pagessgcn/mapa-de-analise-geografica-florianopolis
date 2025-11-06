@@ -22,14 +22,14 @@
         <style>
         /* --- VARIÁVEIS DE COR (NOVO ESQUEMA DE CORES) --- */
         :root {
-            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); /* Antiga cor (mantida para compatibilidade, mas menos usada) */
-            --cor-primaria: #008CBA; /* NOVO: Azul Ciano/Destaque */
+            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
+            --cor-primaria: #008CBA; /* Azul Ciano/Destaque */
             --cor-secundaria: #f8f8f8;
             --cor-alerta: #e53e3e;
             --cor-ia: #ffc107;
             --header-height: 84px; 
-            --cor-fundo-cabecalho: #1D232A; /* NOVO: Cinza/Preto para o topo */
-            --cor-fundo-pagina: #EAEAEA; /* NOVO: Cinza bem claro para o fundo principal */
+            --cor-fundo-cabecalho: #1D232A; /* Cinza/Preto para o topo */
+            --cor-fundo-pagina: #EAEAEA; /* Cinza bem claro para o fundo principal */
         }
 
         /* --- ESTILOS BASE E LAYOUT PRINCIPAL --- */
@@ -44,7 +44,7 @@
             font-family: 'Inter', sans-serif; 
         }
         
-        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB (mantidos e ajustados para a nova cor primária) */
+        /* ESTILOS ORIGINAIS E CORREÇÕES DO QGIS2WEB */
         .ol-control > * {
             background-color: #f8f8f8!important;
             color: var(--cor-primaria)!important;
@@ -93,9 +93,9 @@
             position: absolute;
         }
         
-        /* ESTILOS DO CABEÇALHO (AJUSTADO) */
+        /* ESTILOS DO CABEÇALHO */
         #cabecalho-simples {
-            background-color: var(--cor-fundo-cabecalho); /* NOVO: Cinza/Preto */
+            background-color: var(--cor-fundo-cabecalho); 
             padding: 15px; 
             text-align: center; 
             width: 100%; 
@@ -114,7 +114,7 @@
             letter-spacing: 1px;
         }
 
-        /* --- NOVOS ESTILOS PARA LAYOUT DE 4 BLOCOS (2x2) --- */
+        /* --- ESTILOS DE LAYOUT DE 4 BLOCOS (2x2) --- */
         #container-principal {
             display: flex;
             flex-direction: column; 
@@ -136,17 +136,33 @@
             border-radius: 8px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
             padding: 15px; 
-            flex-grow: 1; 
             display: flex;
             flex-direction: column;
             overflow: hidden; 
+        }
+        
+        /* REGRAS PARA PROPORÇÃO 35% / 65% */
+        /* Blocos da esquerda (CIRAM e DADOS) */
+        #bloco-1, #bloco-4 {
+            flex-basis: 35%; 
+            min-width: 35%; 
+            max-width: 35%;
+            flex-grow: 0; 
+        }
+
+        /* Blocos da direita (DEFESA CIVIL e MAPA) */
+        #bloco-2, #bloco-3 {
+            flex-basis: 65%; 
+            min-width: 65%;
+            max-width: 65%;
+            flex-grow: 0; 
         }
 
         /* Estilos específicos para o conteúdo dentro dos blocos */
         .layout-bloco h3 {
             margin-top: 0;
             margin-bottom: 10px;
-            color: var(--cor-primaria); /* Destaque no título */
+            color: var(--cor-primaria); 
             font-size: 1.2em;
             text-align: center;
         }
@@ -191,7 +207,7 @@
             overflow-y: auto; 
         }
 
-        /* Estilos dos Cards de Estatísticas (AJUSTADO PARA NOVAS CORES) */
+        /* Estilos dos Cards de Estatísticas */
         .card-row {
             display: flex;
             margin-bottom: 10px; 
@@ -210,7 +226,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--cor-primaria); /* Borda com o novo azul */
+            border: 2px solid var(--cor-primaria); 
             border-radius: 8px; 
             transition: all 0.3s ease; 
             flex-grow: 1; 
@@ -219,14 +235,14 @@
             font-weight: 600; 
             font-size: 18px; 
             padding: 15px; 
-            background-color: var(--cor-primaria); /* Fundo com o novo azul */
+            background-color: var(--cor-primaria); 
             color: white; 
             border: none; 
             border-radius: 8px; 
             text-transform: uppercase;
         }
         .region-card {
-            background-color: var(--cor-primaria); /* Fundo com o novo azul */
+            background-color: var(--cor-primaria); 
             color: white; 
             font-size: 18px; 
             padding: 20px 10px; 
@@ -242,17 +258,26 @@
         /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
         @media (max-width: 1024px) {
             #container-principal {
-                overflow-y: auto; /* Permite scroll vertical na página inteira em mobile */
+                overflow-y: auto; 
             }
             #row-top, #row-bottom {
-                flex-direction: column; /* Em telas menores, os blocos empilham */
+                flex-direction: column; 
             }
             .iframe-conteudo {
-                height: 250px; /* Altura razoável para iframes em mobile */
+                height: 250px; 
             }
             .card-row {
                 flex-wrap: wrap; 
             }
+            
+            /* Resetar a proporção para 100% em telas pequenas */
+            #bloco-1, #bloco-2, #bloco-3, #bloco-4 {
+                flex-basis: 100%;
+                min-width: 100%;
+                max-width: 100%;
+                flex-grow: 1; 
+            }
+
             .stat-card {
                 flex-basis: 48%; 
                 margin-bottom: 10px;
@@ -271,7 +296,7 @@
             }
         }
 
-        /* --- ESTILOS DO POPUP OPENLAYERS (mantidos) --- */
+        /* --- ESTILOS DO POPUP OPENLAYERS --- */
         .ol-popup {
             position: absolute;
             background-color: white;
@@ -365,15 +390,6 @@
 
             <div id="row-bottom">
                 
-                <div id="bloco-3" class="layout-bloco">
-                    <div id="map">
-                        <div id="popup" class="ol-popup">
-                            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                            <div id="popup-content"></div>
-                        </div>
-                    </div>
-                </div>
-                
                 <div id="bloco-4" class="layout-bloco">
                     
                     <div class="card-row">
@@ -403,6 +419,15 @@
                         </div>
                         <div class="stat-card region-card">
                             **Leste** <br> 15
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bloco-3" class="layout-bloco">
+                    <div id="map">
+                        <div id="popup" class="ol-popup">
+                            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                            <div id="popup-content"></div>
                         </div>
                     </div>
                 </div>
@@ -493,9 +518,6 @@
                 return styles;
             });
         }
-
-        // --- FUNÇÃO DE REDIMENSIONAMENTO ARRASTÁVEL (DRAGBAR) REMOVIDA
-        // O layout 2x2 não usa mais a barra de arrasto.
         
         </script>
         
