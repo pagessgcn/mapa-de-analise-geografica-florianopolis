@@ -1,364 +1,436 @@
-<head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        
-        <base href="/mapa-de-analise-geografica-florianopolis/"> 
-        
-        <link rel="stylesheet" href="resources/ol.css"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="resources/ol-layerswitcher.css">
-        <link rel="stylesheet" href="resources/qgis2web.css">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-        
-        <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
+        <base href="/mapa-de-analise-geografica-florianopolis/"> 
+        
+        <link rel="stylesheet" href="resources/ol.css"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="resources/ol-layerswitcher.css">
+        <link rel="stylesheet" href="resources/qgis2web.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        
+        <title>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</title>
 
-        <style>
-        /* --- VARIÁVEIS DE COR --- */
-        :root {
-            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
-            --cor-primaria: #008CBA; /* Azul Ciano/Destaque */
-            --cor-secundaria: #f8f8f8;
-            --cor-alerta: #e53e3e;
-            --cor-ia: #ffc107;
-            --header-height: 84px; 
-            --cor-fundo-cabecalho: #1D232A; /* Cinza/Preto para o topo */
-            --cor-fundo-pagina: #EAEAEA; /* Cinza bem claro para o fundo principal */
-        }
+        <style>
+        /* --- VARIÁVEIS DE COR --- */
+        :root {
+            --azul-escuro-transparente: rgba(11, 31, 60, 0.9); 
+            --cor-primaria: #008CBA; /* Azul Ciano/Destaque */
+            --cor-secundaria: #f8f8f8;
+            --cor-alerta: #e53e3e;
+            --cor-ia: #ffc107;
+            --header-height: 84px; 
+            --cor-fundo-cabecalho: #1D232A; /* Cinza/Preto para o topo */
+            --cor-fundo-pagina: #EAEAEA; /* Cinza bem claro para o fundo principal */
+        }
 
-        /* --- ESTILOS BASE E LAYOUT PRINCIPAL --- */
-        html, body {
-            background-color: var(--cor-fundo-pagina); 
-            margin: 0; 
-            padding: 0;
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-            font-family: 'Inter', sans-serif; 
-        }
-        
-        /* Estilos e Correções do QGIS2WEB (mantidos) */
-        .ol-control > * { background-color: #f8f8f8!important; color: var(--cor-primaria)!important; border-radius: 0px; }
-        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder { color: var(--cor-primaria)!important; }
-        .search-layer-layer-search-autocomplete { z-index: 2001; top: 10px !important; left: 10px !important; right: auto !important; }
-        .search-layer-layer-search-autocomplete > button, .search-layer-layer-search-autocomplete > input { background-color: var(--cor-secundaria) !important; color: var(--cor-primaria) !important; border: 1px solid var(--cor-primaria) !important; }
-        .search-layer-layer-search-autocomplete > button:hover { background-color: rgba(248, 248, 248, 0.7)!important; }
-        .search-layer-layer-search-autocomplete .autocomplete-list { background-color: white; border: 1px solid var(--cor-primaria); color: #333; }
-        .search-layer-input-search { background-color: #f8f8f8!important; }
-        .ol-control > *:focus, .ol-control >*:hover { background-color: rgba(248, 248, 248, 0.7)!important; } 
-        .ol-control { background-color: rgba(255,255,255,.4) !important; padding: 2px !important; } 
-        .ol-zoom { top: auto !important; left: auto !important; bottom: 10px !important; right: 10px !important; position: absolute; }
-        
-        /* ESTILOS DO CABEÇALHO */
-        #cabecalho-simples {
-            background-color: var(--cor-fundo-cabecalho); 
-            padding: 15px; 
-            text-align: center; 
-            width: 100%; 
-            box-sizing: border-box;
-            z-index: 2000;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-        }
+        /* --- ESTILOS BASE E LAYOUT PRINCIPAL --- */
+        html, body {
+            background-color: var(--cor-fundo-pagina); 
+            margin: 0; 
+            padding: 0;
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        /* Estilos e Correções do QGIS2WEB (mantidos) */
+        .ol-control > * { background-color: #f8f8f8!important; color: var(--cor-primaria)!important; border-radius: 0px; }
+        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder { color: var(--cor-primaria)!important; }
+        .search-layer-layer-search-autocomplete { z-index: 2001; top: 10px !important; left: 10px !important; right: auto !important; }
+        .search-layer-layer-search-autocomplete > button, .search-layer-layer-search-autocomplete > input { background-color: var(--cor-secundaria) !important; color: var(--cor-primaria) !important; border: 1px solid var(--cor-primaria) !important; }
+        .search-layer-layer-search-autocomplete > button:hover { background-color: rgba(248, 248, 248, 0.7)!important; }
+        .search-layer-layer-search-autocomplete .autocomplete-list { background-color: white; border: 1px solid var(--cor-primaria); color: #333; }
+        .search-layer-input-search { background-color: #f8f8f8!important; }
+        .ol-control > *:focus, .ol-control >*:hover { background-color: rgba(248, 248, 248, 0.7)!important; } 
+        .ol-control { background-color: rgba(255,255,255,.4) !important; padding: 2px !important; } 
+        .ol-zoom { top: auto !important; left: auto !important; bottom: 10px !important; right: 10px !important; position: absolute; }
+        
+        /* ESTILOS DO CABEÇALHO */
+        #cabecalho-simples {
+            background-color: var(--cor-fundo-cabecalho); 
+            padding: 15px; 
+            text-align: center; 
+            width: 100%; 
+            box-sizing: border-box;
+            z-index: 2000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
 
-        #cabecalho-simples h1 {
-            font-size: 24px; 
-            color: white; 
-            font-weight: bold; 
-            margin: 0; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        #cabecalho-simples h1 {
+            font-size: 24px; 
+            color: white; 
+            font-weight: bold; 
+            margin: 0; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* --- NOVO CSS PARA OS BOTÕES DE NAVEGAÇÃO --- */
+        #menu-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px; /* Espaço entre o título e os botões */
+            flex-wrap: wrap; /* Para garantir que quebrem a linha em telas pequenas */
+        }
 
-        /* --- LAYOUT DE DUAS COLUNAS 35%/65% (CORREÇÃO) --- */
-        #container-principal {
-            display: flex; /* Define o container para as duas colunas lado a lado */
-            flex-direction: row; 
-            flex-grow: 1; 
-            padding: 10px;
-            gap: 10px; 
-            background-color: var(--cor-fundo-pagina); 
-            overflow: hidden; 
-        }
+        .header-btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            color: white;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+            text-align: center;
+        }
 
-        #coluna-esquerda, #coluna-direita {
-            display: flex;
-            flex-direction: column; /* Conteúdo empilhado verticalmente */
-            gap: 10px; 
-        }
+        /* Cores específicas dos botões */
+        .epagri-btn {
+            background-color: #008CBA; /* cor-primaria */
+        }
+        .epagri-btn:hover {
+            background-color: #006D8A; 
+        }
 
-        /* PROPORÇÕES 35% / 65% */
-        /* Coluna Esquerda: CIRAM e Defesa Civil (35%) */
-        #coluna-esquerda {
-            flex-basis: 35%; 
-            min-width: 35%; 
-            max-width: 35%;
-            flex-grow: 0; 
-        }
+        .defesacivil-btn {
+            background-color: #2ECC71; /* Verde */
+        }
+        .defesacivil-btn:hover {
+            background-color: #27AE60;
+        }
 
-        /* Coluna Direita: Dados e Mapa (65%) */
-        #coluna-direita {
-            flex-basis: 65%; 
-            min-width: 65%;
-            max-width: 65%;
-            flex-grow: 0; 
-        }
+        .radar-btn {
+            background-color: #FFC107; /* Amarelo/Laranja */
+            color: #333; /* Cor de texto escura */
+        }
+        .radar-btn:hover {
+            background-color: #E0A800;
+        }
 
-        /* Distribuição Vertical dos Blocos */
-        .layout-bloco {
-            background-color: #ffffff; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-            padding: 15px; 
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; 
-        }
+        .crise-btn {
+            background-color: var(--cor-alerta); /* Vermelho */
+        }
+        .crise-btn:hover {
+            background-color: #C53030;
+        }
+        /* --- FIM DO NOVO CSS PARA OS BOTÕES --- */
 
-        /* Esquerda (B1 e B3): Compartilham o espaço vertical igualmente (50% cada) */
-        #bloco-1, #bloco-3 {
-            flex-grow: 1;
-            flex-basis: 50%;
-        }
+        /* --- LAYOUT DE DUAS COLUNAS 35%/65% (CORREÇÃO) --- */
+        #container-principal {
+            display: flex; /* Define o container para as duas colunas lado a lado */
+            flex-direction: row; 
+            flex-grow: 1; 
+            padding: 10px;
+            gap: 10px; 
+            background-color: var(--cor-fundo-pagina); 
+            overflow: hidden; 
+        }
 
-        /* Direita (B2 e B4): Dados (B2) com altura baseada no conteúdo, Mapa (B4) preenche o restante */
-        #bloco-2 {
-            flex-grow: 0; /* Altura baseada no conteúdo */
-            flex-shrink: 0;
-        }
-        #bloco-4 {
-            flex-grow: 1; /* Preenche todo o espaço vertical restante */
-        }
-        
-        /* Estilos de conteúdo (mantidos) */
-        .layout-bloco h3 { margin-top: 0; margin-bottom: 10px; color: var(--cor-primaria); font-size: 1.2em; text-align: center; }
-        .iframe-conteudo { flex-grow: 1; width: 100%; height: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-        .iframe-conteudo iframe { width: 100%; height: 100%; border: none; }
-        .fonte-info { font-size: 0.8em; color: #666; margin-top: 10px; text-align: center; }
-        #bloco-4 #map { width: 100%; height: 100%; margin: 0; position: relative; top: auto; min-height: 0; background-color: white; box-shadow: none; }
-        #bloco-2 { overflow-y: auto; } /* Ajuste o scroll para o bloco de Dados */
+        #coluna-esquerda, #coluna-direita {
+            display: flex;
+            flex-direction: column; /* Conteúdo empilhado verticalmente */
+            gap: 10px; 
+        }
 
-        /* Estilos dos Cards de Estatísticas (mantidos) */
-        .card-row { display: flex; margin-bottom: 10px; width: 100%; gap: 10px; }
-        .stat-card { background-color: transparent; color: var(--cor-primaria); padding: 15px; box-sizing: border-box; text-align: center; line-height: 1.4; font-size: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid var(--cor-primaria); border-radius: 8px; transition: all 0.3s ease; flex-grow: 1; }
-        .title-card { font-weight: 600; font-size: 18px; padding: 15px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 8px; text-transform: uppercase; }
-        .region-card { background-color: var(--cor-primaria); color: white; font-size: 18px; padding: 20px 10px; border: none; border-radius: 8px; flex-grow: 1; }
-        .region-row { margin-bottom: 10px; gap: 10px; }
+        /* PROPORÇÕES 35% / 65% */
+        /* Coluna Esquerda: CIRAM e Defesa Civil (35%) */
+        #coluna-esquerda {
+            flex-basis: 35%; 
+            min-width: 35%; 
+            max-width: 35%;
+            flex-grow: 0; 
+        }
 
-        /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
-        @media (max-width: 1024px) {
-            #container-principal {
-                flex-direction: column; 
-                overflow-y: auto; 
-            }
-            #coluna-esquerda, #coluna-direita {
-                flex-basis: 100%; 
-                min-width: 100%; 
-                max-width: 100%;
-                flex-grow: 1; 
-            }
-            /* Garantir que todos os blocos ocupem 100% da largura em mobile */
-            #bloco-1, #bloco-2, #bloco-3, #bloco-4 {
-                flex-grow: 1;
-                flex-basis: auto; 
-                min-height: 250px; 
-            }
-            .iframe-conteudo { height: 250px; }
-            .card-row { flex-wrap: wrap; }
-            .stat-card { flex-basis: 48%; margin-bottom: 10px; }
-            .region-row .region-card { flex-basis: 48%; }
-            .ol-zoom { right: 5px !important; bottom: 5px !important; }
-        }
-        @media (max-width: 600px) {
-            .stat-card, .region-row .region-card { flex-basis: 100%; }
-        }
+        /* Coluna Direita: Dados e Mapa (65%) */
+        #coluna-direita {
+            flex-basis: 65%; 
+            min-width: 65%;
+            max-width: 65%;
+            flex-grow: 0; 
+        }
 
-        /* --- ESTILOS DO POPUP OPENLAYERS (mantidos) --- */
-        .ol-popup { position: absolute; background-color: white; box-shadow: 0 1px 4px rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid #cccccc; bottom: 12px; left: -50px; min-width: 250px; font-family: 'Inter', sans-serif; z-index: 100; }
-        .ol-popup:after, .ol-popup:before { top: 100%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; }
-        .ol-popup:after { border-top-color: white; border-width: 10px; left: 48px; margin-left: -10px; }
-        .ol-popup:before { border-top-color: #cccccc; border-width: 11px; left: 48px; margin-left: -11px; }
-        .ol-popup-closer { text-decoration: none; position: absolute; top: 2px; right: 8px; color: #333; font-size: 1.2em; }
-        .ol-popup-closer:after { content: "✖"; }
-        #popup-content { max-height: 200px; overflow-y: auto; color: #333; font-size: 0.9em; }
-        </style>
-    </head>
-    <body>
-        
-        <header id="cabecalho-simples">
-            <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
-        </header>
-        
-        <div id="container-principal">
-            
-            <div id="coluna-esquerda">
-                
-                <div id="bloco-1" class="layout-bloco">
-                    <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
-                    <div class="iframe-conteudo">
-                        <iframe 
-                            src="https://ciram.epagri.sc.gov.br/index.php/previsao-municipio/" 
-                            frameborder="0" 
-                            allowfullscreen 
-                            sandbox="allow-scripts allow-same-origin allow-forms"
-                            title="Previsão do Tempo - CIRAM Epagri">
-                        </iframe>
-                    </div>
-                    <p class="fonte-info">Fonte: CIRAM/Epagri - Previsão Municipal</p>
-                </div>
-                
-                <div id="bloco-3" class="layout-bloco">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
-                    <div class="iframe-conteudo">
-                        <iframe 
-                            src="https://www.defesacivil.sc.gov.br/" 
-                            frameborder="0" 
-                            allowfullscreen 
-                            sandbox="allow-scripts allow-same-origin allow-forms"
-                            title="Defesa Civil SC - Alertas e Notícias">
-                        </iframe>
-                    </div>
-                    <p class="fonte-info">Fonte: Defesa Civil de Santa Catarina.</p>
-                </div>
-            </div>
+        /* Distribuição Vertical dos Blocos */
+        .layout-bloco {
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            padding: 15px; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
 
-            <div id="coluna-direita">
-                
-                <div id="bloco-2" class="layout-bloco">
-                    
-                    <div class="card-row">
-                        <div class="stat-card">
-                            Colaboradores <br> **120 AdviceHealth**
-                        </div>
-                        <div class="stat-card">
-                            Colaboradores <br> **95 Mapeados**
-                        </div>
-                    </div>
+        /* Esquerda (B1 e B3): Compartilham o espaço vertical igualmente (50% cada) */
+        #bloco-1, #bloco-3 {
+            flex-grow: 1;
+            flex-basis: 50%;
+        }
 
-                    <div class="card-row">
-                        <div class="stat-card title-card">
-                            Colaboradores por Região da Grande Florianópolis
-                        </div>
-                    </div>
+        /* Direita (B2 e B4): Dados (B2) com altura baseada no conteúdo, Mapa (B4) preenche o restante */
+        #bloco-2 {
+            flex-grow: 0; /* Altura baseada no conteúdo */
+            flex-shrink: 0;
+        }
+        #bloco-4 {
+            flex-grow: 1; /* Preenche todo o espaço vertical restante */
+        }
+        
+        /* Estilos de conteúdo (mantidos) */
+        .layout-bloco h3 { margin-top: 0; margin-bottom: 10px; color: var(--cor-primaria); font-size: 1.2em; text-align: center; }
+        .iframe-conteudo { flex-grow: 1; width: 100%; height: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .iframe-conteudo iframe { width: 100%; height: 100%; border: none; }
+        .fonte-info { font-size: 0.8em; color: #666; margin-top: 10px; text-align: center; }
+        #bloco-4 #map { width: 100%; height: 100%; margin: 0; position: relative; top: auto; min-height: 0; background-color: white; box-shadow: none; }
+        #bloco-2 { overflow-y: auto; } /* Ajuste o scroll para o bloco de Dados */
 
-                    <div class="card-row region-row">
-                        <div class="stat-card region-card">
-                            **Norte** <br> 15
-                        </div>
-                        <div class="stat-card region-card">
-                            **Sul** <br> 40
-                        </div>
-                        <div class="stat-card region-card">
-                            **Centro** <br> 25
-                        </div>
-                        <div class="stat-card region-card">
-                            **Leste** <br> 15
-                        </div>
-                    </div>
-                </div>
+        /* Estilos dos Cards de Estatísticas (mantidos) */
+        .card-row { display: flex; margin-bottom: 10px; width: 100%; gap: 10px; }
+        .stat-card { background-color: transparent; color: var(--cor-primaria); padding: 15px; box-sizing: border-box; text-align: center; line-height: 1.4; font-size: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid var(--cor-primaria); border-radius: 8px; transition: all 0.3s ease; flex-grow: 1; }
+        .title-card { font-weight: 600; font-size: 18px; padding: 15px; background-color: var(--cor-primaria); color: white; border: none; border-radius: 8px; text-transform: uppercase; }
+        .region-card { background-color: var(--cor-primaria); color: white; font-size: 18px; padding: 20px 10px; border: none; border-radius: 8px; flex-grow: 1; }
+        .region-row { margin-bottom: 10px; gap: 10px; }
 
-                <div id="bloco-4" class="layout-bloco">
-                    <div id="map">
-                        <div id="popup" class="ol-popup">
-                            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                            <div id="popup-content"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <script src="resources/qgis2web_expressions.js"></script>
-        <script src="resources/proj4.js"></script>
-        <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
-        <script src="resources/functions.js"></script>
-        <script src="resources/ol.js"></script>
-        <script src="resources/ol-layerswitcher.js"></script>
-        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
+        /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
+        @media (max-width: 1024px) {
+            #container-principal {
+                flex-direction: column; 
+                overflow-y: auto; 
+            }
+            #coluna-esquerda, #coluna-direita {
+                flex-basis: 100%; 
+                min-width: 100%; 
+                max-width: 100%;
+                flex-grow: 1; 
+            }
+            /* Garantir que todos os blocos ocupem 100% da largura em mobile */
+            #bloco-1, #bloco-2, #bloco-3, #bloco-4 {
+                flex-grow: 1;
+                flex-basis: auto; 
+                min-height: 250px; 
+            }
+            .iframe-conteudo { height: 250px; }
+            .card-row { flex-wrap: wrap; }
+            .stat-card { flex-basis: 48%; margin-bottom: 10px; }
+            .region-row .region-card { flex-basis: 48%; }
+            .ol-zoom { right: 5px !important; bottom: 5px !important; }
+            
+            /* Ajuste de Responsividade dos Botões no mobile */
+            #menu-links {
+                gap: 5px;
+            }
+            .header-btn {
+                flex-grow: 1; 
+                margin: 5px 0;
+            }
+        }
+        @media (max-width: 600px) {
+            .stat-card, .region-row .region-card { flex-basis: 100%; }
+        }
 
-                <script src="layers/Inundacao_pontos_defesa_0.js"></script><script src="layers/CAPITAIS_1.js"></script><script src="layers/INUNDACAO_2.js"></script><script src="layers/ENXURRADAS_3.js"></script><script src="layers/BACIAS_4.js"></script><script src="layers/MOVIMENTODEMASSA_5.js"></script><script src="layers/BAIRROS_6.js"></script><script src="layers/MUNICIPIOS_7.js"></script><script src="layers/ESTADO_8.js"></script><script src="layers/BRASIL_9.js"></script>
-        <script src="styles/Inundacao_pontos_defesa_0_style.js"></script><script src="styles/CAPITAIS_1_style.js"></script><script src="styles/INUNDACAO_2_style.js"></script><script src="styles/ENXURRADAS_3_style.js"></script><script src="styles/BACIAS_4_style.js"></script><script src="styles/MOVIMENTODEMASSA_5_style.js"></script><script src="styles/BAIRROS_6_style.js"></script><script src="styles/MUNICIPIOS_7_style.js"></script><script src="styles/ESTADO_8_style.js"></script><script src="styles/BRASIL_9_style.js"></script>
-        <script src="layers/layers.js" type="text/javascript"></script> 
-        <script src="resources/Autolinker.min.js"></script>
-        <script src="resources/qgis2web.js"></script>
-        
-        <script type="text/javascript">
-        
-        // --- INICIALIZAÇÃO DO POPUP OPENLAYERS (mantido) ---
-        var container = document.getElementById('popup');
-        var content = document.getElementById('popup-content');
-        var closer = document.getElementById('popup-closer');
-        var popup = new ol.Overlay({
-            element: container,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
-        });
-        
-        if (typeof map !== 'undefined') {
-            map.addOverlay(popup);
-        }
+        /* --- ESTILOS DO POPUP OPENLAYERS (mantidos) --- */
+        .ol-popup { position: absolute; background-color: white; box-shadow: 0 1px 4px rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid #cccccc; bottom: 12px; left: -50px; min-width: 250px; font-family: 'Inter', sans-serif; z-index: 100; }
+        .ol-popup:after, .ol-popup:before { top: 100%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; }
+        .ol-popup:after { border-top-color: white; border-width: 10px; left: 48px; margin-left: -10px; }
+        .ol-popup:before { border-top-color: #cccccc; border-width: 11px; left: 48px; margin-left: -11px; }
+        .ol-popup-closer { text-decoration: none; position: absolute; top: 2px; right: 8px; color: #333; font-size: 1.2em; }
+        .ol-popup-closer:after { content: "✖"; }
+        #popup-content { max-height: 200px; overflow-y: auto; color: #333; font-size: 0.9em; }
+        </style>
+    </head>
+    <body>
+        
+        <header id="cabecalho-simples">
+            <h1>MAPA DE ÁREAS DE RISCO - MONITORAMENTO GCN</h1>
+            
+            <nav id="menu-links">
+                <a href="/mapa-de-analise-geografica-florianopolis/" target="_blank" class="header-btn epagri-btn">Epagri - Ciram</a>
+                
+                <a href="https://www.defesacivil.sc.gov.br/" target="_blank" class="header-btn defesacivil-btn">Defesa Civil</a>
+                
+                <a href="https://www.accuweather.com/pt/br/florian%C3%B3polis/35952/weather-radar/35952" target="_blank" class="header-btn radar-btn">Radar Meteorológico</a>
+                
+                <a href="pagina_de_crise.html" target="_blank" class="header-btn crise-btn">Estamos em crise!</a>
+            </nav>
+        </header>
+        
+        <div id="container-principal">
+            
+            <div id="coluna-esquerda">
+                
+                <div id="bloco-1" class="layout-bloco">
+                    <h3><i class="fas fa-cloud-sun"></i> Previsão do Tempo (CIRAM/Epagri)</h3>
+                    <div class="iframe-conteudo">
+                        <iframe 
+                            src="https://ciram.epagri.sc.gov.br/index.php/previsao-municipio/" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            sandbox="allow-scripts allow-same-origin allow-forms"
+                            title="Previsão do Tempo - CIRAM Epagri">
+                        </iframe>
+                    </div>
+                    <p class="fonte-info">Fonte: CIRAM/Epagri - Previsão Municipal</p>
+                </div>
+                
+                <div id="bloco-3" class="layout-bloco">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Defesa Civil SC - Alertas e Notícias</h3>
+                    <div class="iframe-conteudo">
+                        <iframe 
+                            src="https://www.defesacivil.sc.gov.br/" 
+                            frameborder="0" 
+                            allowfullscreen 
+                            sandbox="allow-scripts allow-same-origin allow-forms"
+                            title="Defesa Civil SC - Alertas e Notícias">
+                        </iframe>
+                    </div>
+                    <p class="fonte-info">Fonte: Defesa Civil de Santa Catarina.</p>
+                </div>
+            </div>
 
-        closer.onclick = function() {
-            popup.setPosition(undefined);
-            closer.blur();
-            return false;
-        };
+            <div id="coluna-direita">
+                
+                <div id="bloco-2" class="layout-bloco">
+                    
+                    <div class="card-row">
+                        <div class="stat-card">
+                            Colaboradores <br> **120 AdviceHealth**
+                        </div>
+                        <div class="stat-card">
+                            Colaboradores <br> **95 Mapeados**
+                        </div>
+                    </div>
 
-        // ===============================================
-        // IMPLEMENTAÇÃO DOS RÓTULOS (LABELS) NOS ESTADOS
-        // A CAMADA ESTADO foi atualizada para layer_ESTADO_8
-        // ===============================================
+                    <div class="card-row">
+                        <div class="stat-card title-card">
+                            Colaboradores por Região da Grande Florianópolis
+                        </div>
+                    </div>
 
-        if (typeof layer_ESTADO_8 !== 'undefined') {
-            
-            layer_ESTADO_8.setStyle(function(feature) {
-                
-                const stateName = feature.get('NM_ESTADO'); 
+                    <div class="card-row region-row">
+                        <div class="stat-card region-card">
+                            **Norte** <br> 15
+                        </div>
+                        <div class="stat-card region-card">
+                            **Sul** <br> 40
+                        </div>
+                        <div class="stat-card region-card">
+                            **Centro** <br> 25
+                        </div>
+                        <div class="stat-card region-card">
+                            **Leste** <br> 15
+                        </div>
+                    </div>
+                </div>
 
-                let styles = [
-                    new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(21, 74, 147, 0.7)',
-                            lineDash: null,
-                            lineCap: 'butt',
-                            lineJoin: 'miter',
-                            width: 2
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 255, 255, 0.01)'
-                        })
-                    })
-                ];
+                <div id="bloco-4" class="layout-bloco">
+                    <div id="map">
+                        <div id="popup" class="ol-popup">
+                            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                            <div id="popup-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="resources/qgis2web_expressions.js"></script>
+        <script src="resources/proj4.js"></script>
+        <script>proj4.defs('EPSG:4326','+proj=longlat +datum=WGS84 +no_defs');</script>
+        <script src="resources/functions.js"></script>
+        <script src="resources/ol.js"></script>
+        <script src="resources/ol-layerswitcher.js"></script>
+        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
 
-                if (stateName) {
-                    styles.push(new ol.style.Style({
-                        text: new ol.style.Text({
-                            text: stateName, 
-                            font: 'bold 16px Inter', 
-                            fill: new ol.style.Fill({
-                                color: 'rgba(11, 31, 60, 1)'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'rgba(255, 255, 255, 0.8)',
-                                width: 3
-                            }),
-                            textAlign: 'center',
-                            textBaseline: 'middle'
-                        })
-                    }));
-                }
+                <script src="layers/Inundacao_pontos_defesa_0.js"></script><script src="layers/CAPITAIS_1.js"></script><script src="layers/INUNDACAO_2.js"></script><script src="layers/ENXURRADAS_3.js"></script><script src="layers/BACIAS_4.js"></script><script src="layers/MOVIMENTODEMASSA_5.js"></script><script src="layers/BAIRROS_6.js"></script><script src="layers/MUNICIPIOS_7.js"></script><script src="layers/ESTADO_8.js"></script><script src="layers/BRASIL_9.js"></script>
+        <script src="styles/Inundacao_pontos_defesa_0_style.js"></script><script src="styles/CAPITAIS_1_style.js"></script><script src="styles/INUNDACAO_2_style.js"></script><script src="styles/ENXURRADAS_3_style.js"></script><script src="styles/BACIAS_4_style.js"></script><script src="styles/MOVIMENTODEMASSA_5_style.js"></script><script src="styles/BAIRROS_6_style.js"></script><script src="styles/MUNICIPIOS_7_style.js"></script><script src="styles/ESTADO_8_style.js"></script><script src="styles/BRASIL_9_style.js"></script>
+        <script src="layers/layers.js" type="text/javascript"></script> 
+        <script src="resources/Autolinker.min.js"></script>
+        <script src="resources/qgis2web.js"></script>
+        
+        <script type="text/javascript">
+        
+        // --- INICIALIZAÇÃO DO POPUP OPENLAYERS (mantido) ---
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+        var popup = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        });
+        
+        if (typeof map !== 'undefined') {
+            map.addOverlay(popup);
+        }
 
-                return styles;
-            });
-        }
-        
-        </script>
-        
-    </body>
+        closer.onclick = function() {
+            popup.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+
+        // ===============================================
+        // IMPLEMENTAÇÃO DOS RÓTULOS (LABELS) NOS ESTADOS
+        // A CAMADA ESTADO foi atualizada para layer_ESTADO_8
+        // ===============================================
+
+        if (typeof layer_ESTADO_8 !== 'undefined') {
+            
+            layer_ESTADO_8.setStyle(function(feature) {
+                
+                const stateName = feature.get('NM_ESTADO'); 
+
+                let styles = [
+                    new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(21, 74, 147, 0.7)',
+                            lineDash: null,
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            width: 2
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 255, 0.01)'
+                        })
+                    })
+                ];
+
+                if (stateName) {
+                    styles.push(new ol.style.Style({
+                        text: new ol.style.Text({
+                            text: stateName, 
+                            font: 'bold 16px Inter', 
+                            fill: new ol.style.Fill({
+                                color: 'rgba(11, 31, 60, 1)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                width: 3
+                            }),
+                            textAlign: 'center',
+                            textBaseline: 'middle'
+                        })
+                    }));
+                }
+
+                return styles;
+            });
+        }
+        
+        </script>
+        
+    </body>
 </html>
